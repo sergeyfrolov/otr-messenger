@@ -1,6 +1,7 @@
 syntax = "proto2";
 
-package OTRMessenger;
+package OTRMessaging;
+option java_package = "org.otrmessenger.messaging";
 
 message Credentials {
 	required bytes username = 1;
@@ -40,17 +41,16 @@ enum ServerState {
 }
 
 
-message UserToServer {
+message msgClientToServer {
 	optional Credentials credentials = 1;
 	optional bytes updatedKey = 2;
 	optional AdminRequest adminReq = 3;
 	optional bytes requestInfoUsername = 4; // username of person to request the key, if online etc.
 	optional Message msg = 5;
 	optional bool requestKeyPairChange = 6; // Sergey: I am not sure I understand how usecase #9 works
-
 }
 
-message ServerToClient {
+message msgServerToClient {
 	repeated ClientInfo users = 1;
 	optional Message msg = 2;
 	optional ServerState state = 3;
