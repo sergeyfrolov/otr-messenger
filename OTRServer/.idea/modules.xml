@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/../OTRMessenger/OTRMessenger.iml" filepath="$PROJECT_DIR$/../OTRMessenger/OTRMessenger.iml" />
+      <module fileurl="file://$PROJECT_DIR$/OTRServer.iml" filepath="$PROJECT_DIR$/OTRServer.iml" />
+    </modules>
+  </component>
+</project>
