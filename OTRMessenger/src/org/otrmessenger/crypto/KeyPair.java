@@ -1,19 +1,39 @@
+package org.otrmessenger.crypto;
+
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.SecureRandom;
 
 public class KeyPair {
-	public byte[] pub;
-	public byte[] priv;
+	private PublicKey pub;
+	private PrivateKey priv;
 	
-	public byte[] getPub() {
-		return pub;
-	}
-	public void setPub(byte[] pub) {
-		this.pub = pub;
-	}
-	public byte[] getPriv() {
-		return priv;
-	}
-	public void setPriv(byte[] priv) {
-		this.priv = priv;
+	public KeyPair(){
+	    KeyPairGenerator keyGen = null;
+        SecureRandom random = null;
+        try {
+            keyGen = KeyPairGenerator.getInstance("DSA");
+            random = SecureRandom.getInstance("SHA1PRNG");
+        } catch (NoSuchAlgorithmException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        keyGen.initialize(2048, random);
+
+        java.security.KeyPair pair = keyGen.generateKeyPair();
+        this.priv = pair.getPrivate();
+        this.pub = pair.getPublic();
+
 	}
 
+    public PublicKey getPub() {
+        return pub;
+    }
+
+    public PrivateKey getPriv() {
+        return priv;
+    }
 }

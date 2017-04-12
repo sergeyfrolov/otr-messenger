@@ -1,10 +1,11 @@
-package org.otrmessenger;
+package org.otrmessenger.crypto;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.util.Base64;
 
+import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
@@ -16,24 +17,45 @@ public class Key {
 	private final int ITCOUNT = 65536;
 	private final int AESKEYLEN = 128;
 	
-	public Key(String pass, String salt, String type) 
-			throws NoSuchAlgorithmException, InvalidKeySpecException{
-			SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+	public Key(){
+	    KeyGenerator keyGen = null;
+        try {
+            keyGen = KeyGenerator.getInstance("AES");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+	    keyGen.init(this.AESKEYLEN);
+	    this.secret = keyGen.generateKey();
+	}
+
+	public Key(String pass, String salt, String type){
+			SecretKeyFactory factory = null;
+            try {
+                factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+                return;
+            }
 		if (type.equals("AES")){
 			KeySpec spec = new PBEKeySpec(pass.toCharArray(), salt.getBytes(), this.ITCOUNT, this.AESKEYLEN);
-			SecretKey tmp = factory.generateSecret(spec);
-			secret = new SecretKeySpec(tmp.getEncoded(), "AES");
+			SecretKey tmp = null;
+            try {
+                tmp = factory.generateSecret(spec);
+            } catch (InvalidKeySpecException e) {
+                e.printStackTrace();
+            }
+			this.secret = new SecretKeySpec(tmp.getEncoded(), "AES");
 		}
-		key = pass.getBytes();
+		this.key = pass.getBytes();
 	}
 	
-	public byte[] getKey(){return key;}
+	public byte[] getKey(){return this.key;}
 	
 	public SecretKey getSecret() {
-		return secret;
+		return this.secret;
 	}
 
 	public String toString(){
-		return Base64.getEncoder().encodeToString(key);
+		return Base64.getEncoder().encodeToString(this.key);
 	}
 }
