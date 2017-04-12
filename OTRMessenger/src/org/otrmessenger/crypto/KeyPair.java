@@ -21,7 +21,7 @@ public class KeyPair {
             e.printStackTrace();
         }
 
-        keyGen.initialize(2048, random);
+        keyGen.initialize(1024, random);
 
         java.security.KeyPair pair = keyGen.generateKeyPair();
         this.priv = pair.getPrivate();
