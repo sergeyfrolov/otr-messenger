@@ -9,8 +9,8 @@ import java.nio.ByteBuffer;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
 import org.otrmessenger.messaging.Messaging;
-import org.otrmessenger.messaging.Messaging.msgClientToServer;
-import org.otrmessenger.messaging.Messaging.msgServerToClient;
+import org.otrmessenger.messaging.Messaging.MsgClientToServer;
+import org.otrmessenger.messaging.Messaging.MsgServerToClient;
 import org.otrmessenger.messaging.Messaging.AdminRequest;
 import org.otrmessenger.messaging.Messaging.ClientInfo;
 
@@ -50,7 +50,7 @@ public class UserConn implements Runnable {
             e.printStackTrace();
         }
             while (!sock.isClosed()) {
-                msgClientToServer clientMsg = recvClientMsg();
+                MsgClientToServer clientMsg = recvClientMsg();
 
                 if (clientMsg == null) {
                     // If errored during message recv(could be just end of connection)
@@ -112,12 +112,12 @@ public class UserConn implements Runnable {
         boolean success;
         if (cred_admin) {
             success = assets.checkAdminPassword(creds.getUsername().toByteArray(),
-                    creds.getPasswordHash().toByteArray()))
+                    creds.getPasswordHash().toByteArray());
         } else {
             success = assets.checkPassword(creds.getUsername().toByteArray(),
                     creds.getPasswordHash().toByteArray());
         }
-        msgServerToClient.Builder msg = msgServerToClient.newBuilder();
+        MsgServerToClient.Builder msg = MsgServerToClient.newBuilder();
         msg.setLoginSuccess(success);
         sendServerMsg(msg.build());
         if (success) {
@@ -142,7 +142,7 @@ public class UserConn implements Runnable {
             success = assets.addUser(creds.getUsername().toByteArray(),
                     creds.getPasswordHash().toByteArray());
         }
-        msgServerToClient.Builder msg = msgServerToClient.newBuilder();
+        MsgServerToClient.Builder msg = MsgServerToClient.newBuilder();
         msg.setLoginSuccess(success);
         sendServerMsg(msg.build());
         // TODO: do I login on sign-up right away?
@@ -161,7 +161,7 @@ public class UserConn implements Runnable {
     }
 
     private void HandleAdminRequest(AdminRequest request) {
-        msgServerToClient.Builder msg = msgServerToClient.newBuilder();
+        MsgServerToClient.Builder msg = MsgServerToClient.newBuilder();
         switch (request) {
             case GET_ALL_KEYS:
                 for (String username : assets.getUsers()) {
@@ -190,7 +190,7 @@ public class UserConn implements Runnable {
             case RESET:
                 server.Reset();
                 msg.setState(server.getState());
-            case TERMINATE:
+            case STOP:
                 server.Terminate();
                 msg.setState(server.getState());
         }
@@ -221,7 +221,7 @@ public class UserConn implements Runnable {
 
     }
 
-    private void sendServerMsg(msgServerToClient msg){
+    private void sendServerMsg(MsgServerToClient msg){
         try {
             outputStream.writeInt(msg.getSerializedSize());
         } catch (IOException e) {
@@ -235,7 +235,7 @@ public class UserConn implements Runnable {
     }
 
     //called repeatedly for many objects in the same stream.
-    private msgClientToServer recvClientMsg(){
+    private MsgClientToServer recvClientMsg(){
         int length = 0;
         try {
             length = inputStream.readInt();
@@ -250,9 +250,9 @@ public class UserConn implements Runnable {
             e.printStackTrace();
             return null;
         }
-        msgClientToServer msg = null;
+        MsgClientToServer msg = null;
         try {
-            msg = msgClientToServer.parseFrom(buf);
+            msg = MsgClientToServer.parseFrom(buf);
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
             return null;
