@@ -1,3 +1,4 @@
+package org.otrmessenger.viewer;
 import java.util.ArrayList;
 
 public class Group {

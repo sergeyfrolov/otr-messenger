@@ -1,4 +1,4 @@
-
+package org.otrmessenger.viewer;
 public class Host extends User {
 	private KeyPair DHKeys;
 	private ServerConnector SC;

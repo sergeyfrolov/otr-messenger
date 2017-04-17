@@ -1,4 +1,4 @@
-
+package org.otrmessenger.viewer;
 public class OTRMessenger {
 	private Host curr;
 	public static void main(String[] args) {

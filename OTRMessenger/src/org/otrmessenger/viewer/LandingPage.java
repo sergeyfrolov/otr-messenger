@@ -1,3 +1,4 @@
+package org.otrmessenger.viewer;
 import javax.swing.JFrame;
 
 public class LandingPage extends JFrame {

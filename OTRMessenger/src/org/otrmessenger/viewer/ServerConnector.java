@@ -1,5 +1,7 @@
+package org.otrmessenger.viewer;
 import javax.net.ssl.SSLSocket;
-
+import org.otrmessenger.messaging.Messaging.Credentials;
+import org.otrmessenger.crypto.KeyPair;
 public class ServerConnector {
 	private SSLSocket sock;
 	private Credentials curr;

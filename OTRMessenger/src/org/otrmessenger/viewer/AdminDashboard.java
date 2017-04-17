@@ -1,3 +1,4 @@
+package org.otrmessenger.viewer;
 import javax.swing.JFrame;
 
 public class AdminDashboard extends JFrame{

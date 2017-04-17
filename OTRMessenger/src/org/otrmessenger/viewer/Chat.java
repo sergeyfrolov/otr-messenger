@@ -1,5 +1,10 @@
+package org.otrmessenger.viewer;
+import org.otrmessenger.viewer.Host;
+import org.otrmessenger.viewer.User;
+import org.otrmessenger.crypto.EncrypterAES;
 
-public class Chat {
+
+public class Chat  {
 	private Host host;
 	private User other;
 	private History history;
