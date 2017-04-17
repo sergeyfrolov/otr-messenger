@@ -2,6 +2,7 @@ package org.otrmessenger.viewer;
 import org.otrmessenger.viewer.Host;
 import org.otrmessenger.viewer.User;
 import org.otrmessenger.crypto.EncrypterAES;
+import org.otrmessenger.History;
 
 
 public class Chat  {
