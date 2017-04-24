@@ -3,6 +3,7 @@ package org.otrmessenger;
 import org.otrmessenger.messaging.Messaging.ServerState;
 
 import javax.net.ssl.SSLSocket;
+import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -19,7 +20,6 @@ public class OTRServer {
     protected OTRServer() {
         assets = new AssetHandler();
         activeConnections = Collections.synchronizedList(new ArrayList<UserConn>());
-        state = ServerState.SERVER_LAUNCHED;
     }
 
     public static OTRServer getInstance() {
@@ -29,16 +29,16 @@ public class OTRServer {
         return instance;
     }
 
-    public void ListenAndServe() {
+    public void Launch() {
+        state = ServerState.SERVER_LAUNCHED;
         try {
             ServerSocket server = new ServerSocket(10050);
-            while (true) {
+            while (state == ServerState.SERVER_LAUNCHED) {
                 Socket clientSock = server.accept();
                 UserConn userConn = new UserConn(clientSock);
                 userConn.run();
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.err.println("Exception caught:" + e);
         }
     }
@@ -54,12 +54,19 @@ public class OTRServer {
         return state;
     }
 
-    void Launch() {
-        // TODO:
-    }
-
-    void Terminate() {
-        // TODO
+    void Stop() {
+        state = ServerState.SERVER_STOPPED;
+        for (UserConn conn : activeConnections) {
+            if (!conn.isAdmin()) {
+                try {
+                    conn.getSocket().close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                activeConnections.remove(conn);
+            }
+        }
+        // TODO: consider listening for admin connections
     }
 
     void Reset() {

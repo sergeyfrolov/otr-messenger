@@ -3,16 +3,16 @@ package org.otrmessenger;
 import javax.net.ssl.SSLSocket;
 import java.io.*;
 import java.net.Socket;
-import java.nio.ByteBuffer;
 
-;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
 import org.otrmessenger.messaging.Messaging;
+import org.otrmessenger.messaging.Messaging.Credentials;
 import org.otrmessenger.messaging.Messaging.MsgClientToServer;
 import org.otrmessenger.messaging.Messaging.MsgServerToClient;
 import org.otrmessenger.messaging.Messaging.AdminRequest;
 import org.otrmessenger.messaging.Messaging.ClientInfo;
+import org.otrmessenger.messaging.Messaging.Message;
 
 /**
  * Created by sfrolov on 4/8/17.
@@ -63,7 +63,7 @@ public class UserConn implements Runnable {
                 }
 
                 if (clientMsg.hasCredentials()) {
-                    Messaging.Credentials creds = clientMsg.getCredentials();
+                    Credentials creds = clientMsg.getCredentials();
                     if (creds.getSignUp()) {
                         HandleSignUp(creds);
                     } else {
@@ -72,11 +72,14 @@ public class UserConn implements Runnable {
                 }
 
                 if (clientMsg.hasAdminReq()) {
-                    Messaging.AdminRequest request = clientMsg.getAdminReq();
+                    AdminRequest request = clientMsg.getAdminReq();
                     HandleAdminRequest(request);
                 }
 
-//                if clientMsg.hasMsg()
+                if (clientMsg.hasMsg()) {
+                    Message msg = clientMsg.getMsg();
+                    HandleSend(msg);
+                }
 
             }
 
@@ -107,7 +110,7 @@ public class UserConn implements Runnable {
         return this.admin;
     }
 
-    private void HandleLogin(Messaging.Credentials creds) {
+    private void HandleLogin(Credentials creds) {
         boolean cred_admin = creds.getAdmin();
         boolean success;
         if (cred_admin) {
@@ -132,7 +135,7 @@ public class UserConn implements Runnable {
         }
     }
 
-    private void HandleSignUp(Messaging.Credentials creds) {
+    private void HandleSignUp(Credentials creds) {
         boolean cred_admin = creds.getAdmin();
         boolean success;
         if (cred_admin) {
@@ -145,19 +148,6 @@ public class UserConn implements Runnable {
         MsgServerToClient.Builder msg = MsgServerToClient.newBuilder();
         msg.setLoginSuccess(success);
         sendServerMsg(msg.build());
-        // TODO: do I login on sign-up right away?
-        // If not, uncomment:
-        // return;
-        if (success) {
-            setUsername(creds.getUsername().toString());
-            admin = cred_admin;
-            loggedIn = true;
-        } else {
-            // not necessary, but better safe than sorry
-            setUsername("");
-            admin = false;
-            loggedIn = false;
-        }
     }
 
     private void HandleAdminRequest(AdminRequest request) {
@@ -191,29 +181,39 @@ public class UserConn implements Runnable {
                 server.Reset();
                 msg.setState(server.getState());
             case STOP:
-                server.Terminate();
+                server.Stop();
                 msg.setState(server.getState());
         }
         sendServerMsg(msg.build());
     }
 
-    private void HandleSend() {
+    private void HandleSend(Message msgFromUser) {
+        if (!msgFromUser.getFromUsername().toString().equals(getUsername())) {
+            System.out.print("User " + getUsername() + " tried to spoof message from " +
+                    msgFromUser.getFromUsername().toString());
+            // if we want to figure this out client-side, we can uncomment following return
+            return;
+        }
+        Message.Builder message = Message.newBuilder();
+        for (UserConn userConn : server.getActiveConnections()) {
+            if (userConn.getUsername().equals(msgFromUser.getToUsername().toString())) {
+                message.setToUsername(ByteString.copyFrom(username.getBytes()));
+                message.setFromUsername(ByteString.copyFrom(msgFromUser.getToUsername().toString().getBytes()));
+                message.setText(msgFromUser.getText());
+                message.setSignature(msgFromUser.getSignature());
 
+                MsgServerToClient.Builder msgFromServer = MsgServerToClient.newBuilder();
+                msgFromServer.setMsg(message);
+
+                sendServerMsg(msgFromServer.build());
+                return;
+            }
+        }
+        // is user is offline, then:
+        // TODO: send back something
     }
 
     private void HandleAskKey() {
-
-    }
-
-    private void HandleTerminate() {
-
-    }
-
-    private void HandleGetStats() {
-
-    }
-
-    private void HandleGetUserList() {
 
     }
 

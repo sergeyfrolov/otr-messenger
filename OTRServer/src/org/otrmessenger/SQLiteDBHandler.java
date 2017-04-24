@@ -21,6 +21,7 @@ public class SQLiteDBHandler {
             String url = "jdbc:sqlite:" + pathToDB;
             // create a connection to the database
             conn = DriverManager.getConnection(url);
+            createTables();
 
             System.out.println("Connection to SQLite has been established.");
 
@@ -39,7 +40,7 @@ public class SQLiteDBHandler {
 
     private void createTables() {
         List<String> sqlQueries = new LinkedList<String>();
-        sqlQueries.add("CREATE TABLE USERS " +
+        sqlQueries.add("CREATE TABLE IF NOT EXISTS USERS " +
                 " USERNAME       TEXT           PRIMARY KEY    NOT NULL, " +
                 " PASSHASH       varbinary(32), " +
                 " KEY            varbinary(32)) ");
