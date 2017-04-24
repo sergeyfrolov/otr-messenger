@@ -1,4 +1,4 @@
-
+package org.otrmessenger.viewer;
 public class User {
 	protected String username;
 	protected Signer signature;

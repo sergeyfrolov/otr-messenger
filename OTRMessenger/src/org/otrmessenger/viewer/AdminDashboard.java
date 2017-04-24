@@ -1,4 +1,6 @@
+package org.otrmessenger.viewer;
 import javax.swing.JFrame;
+import org.otrmessenger.viewer.Host;
 
 public class AdminDashboard extends JFrame{
 	private Host myself;
