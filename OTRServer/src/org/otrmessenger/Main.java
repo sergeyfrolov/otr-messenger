@@ -6,6 +6,6 @@ package org.otrmessenger;
 public class Main {
     public static void main(String[] args) {
         OTRServer server = OTRServer.getInstance();
-        server.ListenAndServe();
+        server.Launch();
     }
 }

@@ -6,6 +6,7 @@ import java.net.Socket;
 
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.otrmessenger.messaging.Messaging;
 import org.otrmessenger.messaging.Messaging.Credentials;
 import org.otrmessenger.messaging.Messaging.MsgClientToServer;
@@ -51,7 +52,6 @@ public class UserConn implements Runnable {
         }
             while (!sock.isClosed()) {
                 MsgClientToServer clientMsg = recvClientMsg();
-
                 if (clientMsg == null) {
                     // If errored during message recv(could be just end of connection)
                     try {
@@ -61,6 +61,8 @@ public class UserConn implements Runnable {
                     }
                     return;
                 }
+
+                System.out.print("# Received message:" + clientMsg.toString());
 
                 if (clientMsg.hasCredentials()) {
                     Credentials creds = clientMsg.getCredentials();
@@ -81,6 +83,20 @@ public class UserConn implements Runnable {
                     HandleSend(msg);
                 }
 
+                if (clientMsg.hasRequestInfoUsername()) {
+                    ByteString bstrUsername = clientMsg.getRequestInfoUsername();
+                    HandleGetUserInfo(bstrUsername.toByteArray());
+                }
+
+                if (clientMsg.hasUpdatedKey()) {
+                    ByteString bstrKey = clientMsg.getUpdatedKey();
+                    HandleUpdateKey(getUsername().getBytes(), bstrKey.toByteArray());
+                }
+
+                if (clientMsg.hasRequestKeyPairChange()) {
+                    Boolean wat = clientMsg.getRequestKeyPairChange();
+                    // TODO: wat?
+                }
             }
 
     }
@@ -142,8 +158,9 @@ public class UserConn implements Runnable {
             // No admin signing up
             success = false;
         } else {
-            success = assets.addUser(creds.getUsername().toByteArray(),
+            assets.addUser(creds.getUsername().toByteArray(),
                     creds.getPasswordHash().toByteArray());
+            success = true;
         }
         MsgServerToClient.Builder msg = MsgServerToClient.newBuilder();
         msg.setLoginSuccess(success);
@@ -154,16 +171,16 @@ public class UserConn implements Runnable {
         MsgServerToClient.Builder msg = MsgServerToClient.newBuilder();
         switch (request) {
             case GET_ALL_KEYS:
-                for (String username : assets.getUsers()) {
+                for (byte[] username : assets.getUsers()) {
                     ClientInfo.Builder clientInfo = ClientInfo.newBuilder();
-                    clientInfo.setUsername(ByteString.copyFrom(username.getBytes()));
-                    clientInfo.setKey(ByteString.copyFrom(assets.getKey(username.getBytes())));
+                    clientInfo.setUsername(ByteString.copyFrom(username));
+                    clientInfo.setKey(ByteString.copyFrom(assets.getKey(username)));
                     msg.addUsers(clientInfo.build());
                 }
             case GET_ALL_USERS:
-                for (String username : assets.getUsers()) {
+                for (byte[] username : assets.getUsers()) {
                     ClientInfo.Builder clientInfo = ClientInfo.newBuilder();
-                    clientInfo.setUsername(ByteString.copyFrom(username.getBytes()));
+                    clientInfo.setUsername(ByteString.copyFrom(username));
                     msg.addUsers(clientInfo.build());
                 }
             case GET_ONLINE_USERS:
@@ -213,15 +230,35 @@ public class UserConn implements Runnable {
         // TODO: send back something
     }
 
-    private void HandleAskKey() {
-
+    private void HandleGetUserInfo(byte[] username) {
+        MsgServerToClient.Builder msg = MsgServerToClient.newBuilder();
+        ClientInfo.Builder clientInfo = ClientInfo.newBuilder();
+        clientInfo.setUsername(ByteString.copyFrom(username));
+        clientInfo.setKey(ByteString.copyFrom(assets.getKey(username)));
+        clientInfo.setOnline(false);
+        for (UserConn userConn : server.getActiveConnections()) {
+            if (userConn.getUsername().equals(username.toString())) {
+                clientInfo.setOnline(true);
+            }
+        }
+        msg.addUsers(clientInfo.build());
+        sendServerMsg(msg.build());
     }
 
-    private void HandleGetUser() {
-
+    private Boolean HandleUpdateKey(byte[] username, byte[] key) {
+        if (getUsername().getBytes().equals(username)) {
+            return assets.setKey(username, key);
+        }
+        return false;
+/*
+        MsgServerToClient.Builder msg = MsgServerToClient.newBuilder();
+        msg.set // TODO: ADD UPDATE KEY SUCCESS
+        sendServerMsg(msg.build());
+*/
     }
 
     private void sendServerMsg(MsgServerToClient msg){
+        System.out.print("% trying to send message:" + msg.toString());
         try {
             outputStream.writeInt(msg.getSerializedSize());
         } catch (IOException e) {

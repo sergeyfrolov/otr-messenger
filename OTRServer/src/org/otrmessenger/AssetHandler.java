@@ -1,6 +1,8 @@
 package org.otrmessenger;
 
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by sfrolov on 4/8/17.
@@ -9,7 +11,12 @@ public class AssetHandler {
     private SQLiteDBHandler dbHandler;
     private CertFileHandler certHandler;
 
-    ArrayList<String> getUsers() {
+    AssetHandler() {
+        dbHandler = new SQLiteDBHandler("users.db");
+        certHandler = new CertFileHandler("key.pem");
+    }
+
+    List<byte[]> getUsers() {
         return dbHandler.getUsers();
     }
 
@@ -29,15 +36,13 @@ public class AssetHandler {
         return dbHandler.setKey(name, key);
     }
 
-    Boolean addUser(byte[] name, byte[] passHash) {
-        return dbHandler.addUser(name, passHash);
-    }
+    void addUser(byte[] name, byte[] passHash){dbHandler.addUser(name, passHash); }
 
-    byte[] getCertKey() {
+    X509Certificate getCertKey() {
         return certHandler.getCertKey();
     }
 
-    Boolean userExists(String username) {
+    Boolean userExists(byte[] username) {
         return dbHandler.userExists(username);
     }
 }
