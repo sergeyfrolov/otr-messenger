@@ -10,10 +10,11 @@ message Credentials {
 }
 
 message Message {
-	required bytes fromUsername = 1;
-	required bytes toUsername = 2;
-	required bytes text = 3;
-	required bytes signature = 4;
+	optional bytes fromUsername = 1;
+	optional bytes toUsername = 2;
+	optional bytes text = 3;
+	optional bytes signature = 4;
+        optional bytes iv = 5;
 }
 
 message ClientInfo {
