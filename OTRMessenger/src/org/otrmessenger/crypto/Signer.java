@@ -5,7 +5,9 @@ import java.security.NoSuchAlgorithmException;
 import java.security.Signature;
 import java.security.SignatureException;
 
-import org.otrmessenger.Message;
+import org.otrmessenger.messaging.Messaging.*;
+
+import com.google.protobuf.ByteString;
 
 public class Signer {
     private KeyPair kp;
@@ -30,20 +32,23 @@ public class Signer {
     }
     
     public Message sign(Message txt){
+        Message.Builder m = Message.newBuilder();
         try {
             this.sig.initSign(this.kp.getPriv());
         } catch (InvalidKeyException e) {
             e.printStackTrace();
         }
         
+        m.setText(txt.getText());
+        m.setIv(txt.getIv());
         try {
-            this.sig.update(txt.getText());
-            txt.setTag(this.sig.sign());
+            this.sig.update(txt.getText().toByteArray());
+            m.setSignature(ByteString.copyFrom(this.sig.sign()));
         } catch (SignatureException e) {
             e.printStackTrace();
         }
 
-        return txt;
+        return m.build();
     }
     
     public boolean verify(Message txt){
@@ -54,8 +59,8 @@ public class Signer {
         }
         
         try {
-            this.sig.update(txt.getText());
-            return this.sig.verify(txt.getTag());
+            this.sig.update(txt.getText().toByteArray());
+            return this.sig.verify(txt.getSignature().toByteArray());
         } catch (SignatureException e) {
             e.printStackTrace();
             return false;
