@@ -7,11 +7,9 @@ public class History {
 	
 	public void addMsg(Message text){
 		savedMsgs.add(text);
-		
 	}
 	public Message getMsg(int index){
 		
 		return savedMsgs.get(index); 
 	}
-
 }

@@ -1,4 +1,6 @@
 package org.otrmessenger.viewer;
+
+import org.otrmessenger.crypto.Signer;
 public class User {
 	protected String username;
 	protected Signer signature;
@@ -15,6 +17,4 @@ public class User {
 	public void setSignature(Signer signature) {
 		this.signature = signature;
 	}
-	
-
 }
