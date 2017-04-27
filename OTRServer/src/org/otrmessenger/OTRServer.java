@@ -38,6 +38,7 @@ public class OTRServer {
             while (state == ServerState.SERVER_LAUNCHED) {
                 Socket clientSock = server.accept();
                 UserConn userConn = new UserConn(clientSock);
+                activeConnections.add(userConn);
                 userConn.run();
             }
         } catch (Exception e) {

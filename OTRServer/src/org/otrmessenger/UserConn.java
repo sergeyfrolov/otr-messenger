@@ -3,6 +3,8 @@ package org.otrmessenger;
 import javax.net.ssl.SSLSocket;
 import java.io.*;
 import java.net.Socket;
+import java.util.Arrays;
+import java.util.regex.Pattern;
 
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
@@ -73,6 +75,8 @@ public class UserConn implements Runnable {
                     }
                 }
 
+                // todo: if not logged in abort
+
                 if (clientMsg.hasAdminReq()) {
                     AdminRequest request = clientMsg.getAdminReq();
                     HandleAdminRequest(request);
@@ -140,7 +144,7 @@ public class UserConn implements Runnable {
         msg.setLoginSuccess(success);
         sendServerMsg(msg.build());
         if (success) {
-            setUsername(creds.getUsername().toString());
+            setUsername(creds.getUsername().toStringUtf8());
             admin = cred_admin;
             loggedIn = true;
         } else {
@@ -205,17 +209,20 @@ public class UserConn implements Runnable {
     }
 
     private void HandleSend(Message msgFromUser) {
-        if (!msgFromUser.getFromUsername().toString().equals(getUsername())) {
-            System.out.print("User " + getUsername() + " tried to spoof message from " +
-                    msgFromUser.getFromUsername().toString());
+        if (!Arrays.equals(msgFromUser.getFromUsername().toByteArray(), getUsername().getBytes())) {
+            System.out.println("User " + getUsername() + " tried to spoof message from " +
+                    msgFromUser.getFromUsername().toStringUtf8());
             // if we want to figure this out client-side, we can uncomment following return
             return;
         }
         Message.Builder message = Message.newBuilder();
+        System.out.println("server.getActiveConnections()" + server.getActiveConnections());
         for (UserConn userConn : server.getActiveConnections()) {
-            if (userConn.getUsername().equals(msgFromUser.getToUsername().toString())) {
+            System.out.println("userConn" + userConn);
+            if (userConn.getUsername().equals(msgFromUser.getToUsername().toStringUtf8())) {
+                System.out.println("Found user");
                 message.setToUsername(ByteString.copyFrom(username.getBytes()));
-                message.setFromUsername(ByteString.copyFrom(msgFromUser.getToUsername().toString().getBytes()));
+                message.setFromUsername(ByteString.copyFrom(msgFromUser.getToUsername().toStringUtf8().getBytes()));
                 message.setText(msgFromUser.getText());
                 message.setSignature(msgFromUser.getSignature());
 
@@ -243,6 +250,18 @@ public class UserConn implements Runnable {
         }
         msg.addUsers(clientInfo.build());
         sendServerMsg(msg.build());
+    }
+
+    // Enforces Business Requirement to
+    static public Boolean checkPasswordRequirements(String password) {
+        // based on https://coderanch.com/t/583177/java/validate-string-characters-letter-number
+        final Pattern letter = Pattern.compile("[a-zA-z]");
+        final Pattern digit = Pattern.compile("[0-9]");
+        final Pattern special = Pattern.compile ("[!@#$%&*()_+=|<>?{}\\[\\]~-]");
+        return (password.length() >= 8)
+                && special.matcher(password).find()
+                && digit.matcher(password).find()
+                && letter.matcher(password).find();
     }
 
     private Boolean HandleUpdateKey(byte[] username, byte[] key) {
