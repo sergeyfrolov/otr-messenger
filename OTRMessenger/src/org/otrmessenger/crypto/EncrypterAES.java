@@ -8,7 +8,9 @@ import java.security.NoSuchAlgorithmException;
 import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
 
-import org.otrmessenger.Message;
+import org.otrmessenger.messaging.Messaging.*;
+
+import com.google.protobuf.ByteString;
 
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.GCMParameterSpec;
@@ -35,44 +37,42 @@ public class EncrypterAES {
 	}
 
 	public Message encrypt(Message txt){
-		Message m = new Message();
+		Message.Builder m = Message.newBuilder(); 
 		try {
             cipher.init(Cipher.ENCRYPT_MODE, this.key, 
             		new GCMParameterSpec(this.tagLen, this.IV.getIV()));
         } catch (InvalidKeyException | InvalidAlgorithmParameterException e) {
             e.printStackTrace();
         }
-		cipher.update(txt.getText());
+		cipher.update(txt.getText().toByteArray());
 		try {
-            m.setText(cipher.doFinal());
+            m.setText(ByteString.copyFrom(cipher.doFinal()));
         } catch (IllegalBlockSizeException | BadPaddingException e) {
             e.printStackTrace();
         }
-		m.setIV(this.IV.getIV());
+		m.setIv(ByteString.copyFrom(this.IV.getIV()));
 		updateIV();
 
-		return m;
+		return m.build();
 	}
 	
 	public Message decrypt(Message txt){
-		this.IV = new IvParameterSpec(txt.getIV());
-		Message m = new Message();
+		this.IV = new IvParameterSpec(txt.getIv().toByteArray());
+		Message.Builder m = Message.newBuilder();
 		try {
             cipher.init(Cipher.DECRYPT_MODE, this.key, 
             		new GCMParameterSpec(this.tagLen, this.IV.getIV()));
         } catch (InvalidKeyException | InvalidAlgorithmParameterException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
-		cipher.update(txt.getText());
+		cipher.update(txt.getText().toByteArray());
 		try {
-            m.setText(cipher.doFinal());
+            m.setText(ByteString.copyFrom(cipher.doFinal()));
         } catch (IllegalBlockSizeException | BadPaddingException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 		
-		return m;
+		return m.build();
 	}
 	
 	private void updateIV(){

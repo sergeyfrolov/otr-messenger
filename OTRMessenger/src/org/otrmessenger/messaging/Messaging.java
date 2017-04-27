@@ -6,7 +6,13 @@ package org.otrmessenger.messaging;
 public final class Messaging {
   private Messaging() {}
   public static void registerAllExtensions(
+      com.google.protobuf.ExtensionRegistryLite registry) {
+  }
+
+  public static void registerAllExtensions(
       com.google.protobuf.ExtensionRegistry registry) {
+    registerAllExtensions(
+        (com.google.protobuf.ExtensionRegistryLite) registry);
   }
   /**
    * Protobuf enum {@code org.otrmessenger.messaging.AdminRequest}
@@ -16,31 +22,31 @@ public final class Messaging {
     /**
      * <code>LAUNCH = 1;</code>
      */
-    LAUNCH(0, 1),
+    LAUNCH(1),
     /**
      * <code>STOP = 2;</code>
      */
-    STOP(1, 2),
+    STOP(2),
     /**
      * <code>RESET = 3;</code>
      */
-    RESET(2, 3),
+    RESET(3),
     /**
      * <code>GET_CURRENT_STATE = 4;</code>
      */
-    GET_CURRENT_STATE(3, 4),
+    GET_CURRENT_STATE(4),
     /**
      * <code>GET_ALL_USERS = 5;</code>
      */
-    GET_ALL_USERS(4, 5),
+    GET_ALL_USERS(5),
     /**
      * <code>GET_ONLINE_USERS = 6;</code>
      */
-    GET_ONLINE_USERS(5, 6),
+    GET_ONLINE_USERS(6),
     /**
      * <code>GET_ALL_KEYS = 7;</code>
      */
-    GET_ALL_KEYS(6, 7),
+    GET_ALL_KEYS(7),
     ;
 
     /**
@@ -73,9 +79,19 @@ public final class Messaging {
     public static final int GET_ALL_KEYS_VALUE = 7;
 
 
-    public final int getNumber() { return value; }
+    public final int getNumber() {
+      return value;
+    }
 
+    /**
+     * @deprecated Use {@link #forNumber(int)} instead.
+     */
+    @java.lang.Deprecated
     public static AdminRequest valueOf(int value) {
+      return forNumber(value);
+    }
+
+    public static AdminRequest forNumber(int value) {
       switch (value) {
         case 1: return LAUNCH;
         case 2: return STOP;
@@ -92,17 +108,17 @@ public final class Messaging {
         internalGetValueMap() {
       return internalValueMap;
     }
-    private static com.google.protobuf.Internal.EnumLiteMap<AdminRequest>
-        internalValueMap =
+    private static final com.google.protobuf.Internal.EnumLiteMap<
+        AdminRequest> internalValueMap =
           new com.google.protobuf.Internal.EnumLiteMap<AdminRequest>() {
             public AdminRequest findValueByNumber(int number) {
-              return AdminRequest.valueOf(number);
+              return AdminRequest.forNumber(number);
             }
           };
 
     public final com.google.protobuf.Descriptors.EnumValueDescriptor
         getValueDescriptor() {
-      return getDescriptor().getValues().get(index);
+      return getDescriptor().getValues().get(ordinal());
     }
     public final com.google.protobuf.Descriptors.EnumDescriptor
         getDescriptorForType() {
@@ -124,11 +140,9 @@ public final class Messaging {
       return VALUES[desc.getIndex()];
     }
 
-    private final int index;
     private final int value;
 
-    private AdminRequest(int index, int value) {
-      this.index = index;
+    private AdminRequest(int value) {
       this.value = value;
     }
 
@@ -143,19 +157,19 @@ public final class Messaging {
     /**
      * <code>SERVER_UNKNOWN = 0;</code>
      */
-    SERVER_UNKNOWN(0, 0),
+    SERVER_UNKNOWN(0),
     /**
      * <code>SERVER_LAUNCHED = 1;</code>
      */
-    SERVER_LAUNCHED(1, 1),
+    SERVER_LAUNCHED(1),
     /**
      * <code>SERVER_STOPPED = 2;</code>
      */
-    SERVER_STOPPED(2, 2),
+    SERVER_STOPPED(2),
     /**
      * <code>SERVER_RESET = 3;</code>
      */
-    SERVER_RESET(3, 3),
+    SERVER_RESET(3),
     ;
 
     /**
@@ -176,9 +190,19 @@ public final class Messaging {
     public static final int SERVER_RESET_VALUE = 3;
 
 
-    public final int getNumber() { return value; }
+    public final int getNumber() {
+      return value;
+    }
 
+    /**
+     * @deprecated Use {@link #forNumber(int)} instead.
+     */
+    @java.lang.Deprecated
     public static ServerState valueOf(int value) {
+      return forNumber(value);
+    }
+
+    public static ServerState forNumber(int value) {
       switch (value) {
         case 0: return SERVER_UNKNOWN;
         case 1: return SERVER_LAUNCHED;
@@ -192,17 +216,17 @@ public final class Messaging {
         internalGetValueMap() {
       return internalValueMap;
     }
-    private static com.google.protobuf.Internal.EnumLiteMap<ServerState>
-        internalValueMap =
+    private static final com.google.protobuf.Internal.EnumLiteMap<
+        ServerState> internalValueMap =
           new com.google.protobuf.Internal.EnumLiteMap<ServerState>() {
             public ServerState findValueByNumber(int number) {
-              return ServerState.valueOf(number);
+              return ServerState.forNumber(number);
             }
           };
 
     public final com.google.protobuf.Descriptors.EnumValueDescriptor
         getValueDescriptor() {
-      return getDescriptor().getValues().get(index);
+      return getDescriptor().getValues().get(ordinal());
     }
     public final com.google.protobuf.Descriptors.EnumDescriptor
         getDescriptorForType() {
@@ -224,11 +248,9 @@ public final class Messaging {
       return VALUES[desc.getIndex()];
     }
 
-    private final int index;
     private final int value;
 
-    private ServerState(int index, int value) {
-      this.index = index;
+    private ServerState(int value) {
       this.value = value;
     }
 
@@ -278,37 +300,31 @@ public final class Messaging {
   /**
    * Protobuf type {@code org.otrmessenger.messaging.Credentials}
    */
-  public static final class Credentials extends
-      com.google.protobuf.GeneratedMessage implements
+  public  static final class Credentials extends
+      com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:org.otrmessenger.messaging.Credentials)
       CredentialsOrBuilder {
     // Use Credentials.newBuilder() to construct.
-    private Credentials(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+    private Credentials(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
-      this.unknownFields = builder.getUnknownFields();
     }
-    private Credentials(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
-
-    private static final Credentials defaultInstance;
-    public static Credentials getDefaultInstance() {
-      return defaultInstance;
-    }
-
-    public Credentials getDefaultInstanceForType() {
-      return defaultInstance;
+    private Credentials() {
+      username_ = com.google.protobuf.ByteString.EMPTY;
+      passwordHash_ = com.google.protobuf.ByteString.EMPTY;
+      signUp_ = false;
+      admin_ = false;
     }
 
-    private final com.google.protobuf.UnknownFieldSet unknownFields;
     @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
+    getUnknownFields() {
       return this.unknownFields;
     }
     private Credentials(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      initFields();
+      this();
       int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
@@ -353,7 +369,7 @@ public final class Messaging {
         throw e.setUnfinishedMessage(this);
       } catch (java.io.IOException e) {
         throw new com.google.protobuf.InvalidProtocolBufferException(
-            e.getMessage()).setUnfinishedMessage(this);
+            e).setUnfinishedMessage(this);
       } finally {
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
@@ -364,26 +380,11 @@ public final class Messaging {
       return org.otrmessenger.messaging.Messaging.internal_static_org_otrmessenger_messaging_Credentials_descriptor;
     }
 
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.otrmessenger.messaging.Messaging.internal_static_org_otrmessenger_messaging_Credentials_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               org.otrmessenger.messaging.Messaging.Credentials.class, org.otrmessenger.messaging.Messaging.Credentials.Builder.class);
-    }
-
-    public static com.google.protobuf.Parser<Credentials> PARSER =
-        new com.google.protobuf.AbstractParser<Credentials>() {
-      public Credentials parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new Credentials(input, extensionRegistry);
-      }
-    };
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<Credentials> getParserForType() {
-      return PARSER;
     }
 
     private int bitField0_;
@@ -447,12 +448,6 @@ public final class Messaging {
       return admin_;
     }
 
-    private void initFields() {
-      username_ = com.google.protobuf.ByteString.EMPTY;
-      passwordHash_ = com.google.protobuf.ByteString.EMPTY;
-      signUp_ = false;
-      admin_ = false;
-    }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -481,7 +476,6 @@ public final class Messaging {
 
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         output.writeBytes(1, username_);
       }
@@ -494,12 +488,11 @@ public final class Messaging {
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         output.writeBool(4, admin_);
       }
-      getUnknownFields().writeTo(output);
+      unknownFields.writeTo(output);
     }
 
-    private int memoizedSerializedSize = -1;
     public int getSerializedSize() {
-      int size = memoizedSerializedSize;
+      int size = memoizedSize;
       if (size != -1) return size;
 
       size = 0;
@@ -519,16 +512,75 @@ public final class Messaging {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(4, admin_);
       }
-      size += getUnknownFields().getSerializedSize();
-      memoizedSerializedSize = size;
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
       return size;
     }
 
     private static final long serialVersionUID = 0L;
     @java.lang.Override
-    protected java.lang.Object writeReplace()
-        throws java.io.ObjectStreamException {
-      return super.writeReplace();
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof org.otrmessenger.messaging.Messaging.Credentials)) {
+        return super.equals(obj);
+      }
+      org.otrmessenger.messaging.Messaging.Credentials other = (org.otrmessenger.messaging.Messaging.Credentials) obj;
+
+      boolean result = true;
+      result = result && (hasUsername() == other.hasUsername());
+      if (hasUsername()) {
+        result = result && getUsername()
+            .equals(other.getUsername());
+      }
+      result = result && (hasPasswordHash() == other.hasPasswordHash());
+      if (hasPasswordHash()) {
+        result = result && getPasswordHash()
+            .equals(other.getPasswordHash());
+      }
+      result = result && (hasSignUp() == other.hasSignUp());
+      if (hasSignUp()) {
+        result = result && (getSignUp()
+            == other.getSignUp());
+      }
+      result = result && (hasAdmin() == other.hasAdmin());
+      if (hasAdmin()) {
+        result = result && (getAdmin()
+            == other.getAdmin());
+      }
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptorForType().hashCode();
+      if (hasUsername()) {
+        hash = (37 * hash) + USERNAME_FIELD_NUMBER;
+        hash = (53 * hash) + getUsername().hashCode();
+      }
+      if (hasPasswordHash()) {
+        hash = (37 * hash) + PASSWORDHASH_FIELD_NUMBER;
+        hash = (53 * hash) + getPasswordHash().hashCode();
+      }
+      if (hasSignUp()) {
+        hash = (37 * hash) + SIGNUP_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+            getSignUp());
+      }
+      if (hasAdmin()) {
+        hash = (37 * hash) + ADMIN_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+            getAdmin());
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
     }
 
     public static org.otrmessenger.messaging.Messaging.Credentials parseFrom(
@@ -554,46 +606,57 @@ public final class Messaging {
     }
     public static org.otrmessenger.messaging.Messaging.Credentials parseFrom(java.io.InputStream input)
         throws java.io.IOException {
-      return PARSER.parseFrom(input);
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
     }
     public static org.otrmessenger.messaging.Messaging.Credentials parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
     }
     public static org.otrmessenger.messaging.Messaging.Credentials parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input);
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
     }
     public static org.otrmessenger.messaging.Messaging.Credentials parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
     public static org.otrmessenger.messaging.Messaging.Credentials parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
-      return PARSER.parseFrom(input);
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
     }
     public static org.otrmessenger.messaging.Messaging.Credentials parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
-    public static Builder newBuilder() { return Builder.create(); }
     public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(org.otrmessenger.messaging.Messaging.Credentials prototype) {
-      return newBuilder().mergeFrom(prototype);
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
     }
-    public Builder toBuilder() { return newBuilder(this); }
+    public static Builder newBuilder(org.otrmessenger.messaging.Messaging.Credentials prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
 
     @java.lang.Override
     protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       Builder builder = new Builder(parent);
       return builder;
     }
@@ -601,7 +664,7 @@ public final class Messaging {
      * Protobuf type {@code org.otrmessenger.messaging.Credentials}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
         // @@protoc_insertion_point(builder_implements:org.otrmessenger.messaging.Credentials)
         org.otrmessenger.messaging.Messaging.CredentialsOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
@@ -609,7 +672,7 @@ public final class Messaging {
         return org.otrmessenger.messaging.Messaging.internal_static_org_otrmessenger_messaging_Credentials_descriptor;
       }
 
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.otrmessenger.messaging.Messaging.internal_static_org_otrmessenger_messaging_Credentials_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
@@ -622,18 +685,15 @@ public final class Messaging {
       }
 
       private Builder(
-          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
         super(parent);
         maybeForceBuilderInitialization();
       }
       private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
         }
       }
-      private static Builder create() {
-        return new Builder();
-      }
-
       public Builder clear() {
         super.clear();
         username_ = com.google.protobuf.ByteString.EMPTY;
@@ -645,10 +705,6 @@ public final class Messaging {
         admin_ = false;
         bitField0_ = (bitField0_ & ~0x00000008);
         return this;
-      }
-
-      public Builder clone() {
-        return create().mergeFrom(buildPartial());
       }
 
       public com.google.protobuf.Descriptors.Descriptor
@@ -693,6 +749,32 @@ public final class Messaging {
         return result;
       }
 
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.otrmessenger.messaging.Messaging.Credentials) {
           return mergeFrom((org.otrmessenger.messaging.Messaging.Credentials)other);
@@ -716,25 +798,22 @@ public final class Messaging {
         if (other.hasAdmin()) {
           setAdmin(other.getAdmin());
         }
-        this.mergeUnknownFields(other.getUnknownFields());
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
         return this;
       }
 
       public final boolean isInitialized() {
         if (!hasUsername()) {
-          
           return false;
         }
         if (!hasPasswordHash()) {
-          
           return false;
         }
         if (!hasSignUp()) {
-          
           return false;
         }
         if (!hasAdmin()) {
-          
           return false;
         }
         return true;
@@ -749,7 +828,7 @@ public final class Messaging {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
           parsedMessage = (org.otrmessenger.messaging.Messaging.Credentials) e.getUnfinishedMessage();
-          throw e;
+          throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
             mergeFrom(parsedMessage);
@@ -892,16 +971,53 @@ public final class Messaging {
         onChanged();
         return this;
       }
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
 
       // @@protoc_insertion_point(builder_scope:org.otrmessenger.messaging.Credentials)
     }
 
+    // @@protoc_insertion_point(class_scope:org.otrmessenger.messaging.Credentials)
+    private static final org.otrmessenger.messaging.Messaging.Credentials DEFAULT_INSTANCE;
     static {
-      defaultInstance = new Credentials(true);
-      defaultInstance.initFields();
+      DEFAULT_INSTANCE = new org.otrmessenger.messaging.Messaging.Credentials();
     }
 
-    // @@protoc_insertion_point(class_scope:org.otrmessenger.messaging.Credentials)
+    public static org.otrmessenger.messaging.Messaging.Credentials getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<Credentials>
+        PARSER = new com.google.protobuf.AbstractParser<Credentials>() {
+      public Credentials parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+          return new Credentials(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<Credentials> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<Credentials> getParserForType() {
+      return PARSER;
+    }
+
+    public org.otrmessenger.messaging.Messaging.Credentials getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
   }
 
   public interface MessageOrBuilder extends
@@ -909,75 +1025,79 @@ public final class Messaging {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>required bytes fromUsername = 1;</code>
+     * <code>optional bytes fromUsername = 1;</code>
      */
     boolean hasFromUsername();
     /**
-     * <code>required bytes fromUsername = 1;</code>
+     * <code>optional bytes fromUsername = 1;</code>
      */
     com.google.protobuf.ByteString getFromUsername();
 
     /**
-     * <code>required bytes toUsername = 2;</code>
+     * <code>optional bytes toUsername = 2;</code>
      */
     boolean hasToUsername();
     /**
-     * <code>required bytes toUsername = 2;</code>
+     * <code>optional bytes toUsername = 2;</code>
      */
     com.google.protobuf.ByteString getToUsername();
 
     /**
-     * <code>required bytes text = 3;</code>
+     * <code>optional bytes text = 3;</code>
      */
     boolean hasText();
     /**
-     * <code>required bytes text = 3;</code>
+     * <code>optional bytes text = 3;</code>
      */
     com.google.protobuf.ByteString getText();
 
     /**
-     * <code>required bytes signature = 4;</code>
+     * <code>optional bytes signature = 4;</code>
      */
     boolean hasSignature();
     /**
-     * <code>required bytes signature = 4;</code>
+     * <code>optional bytes signature = 4;</code>
      */
     com.google.protobuf.ByteString getSignature();
+
+    /**
+     * <code>optional bytes iv = 5;</code>
+     */
+    boolean hasIv();
+    /**
+     * <code>optional bytes iv = 5;</code>
+     */
+    com.google.protobuf.ByteString getIv();
   }
   /**
    * Protobuf type {@code org.otrmessenger.messaging.Message}
    */
-  public static final class Message extends
-      com.google.protobuf.GeneratedMessage implements
+  public  static final class Message extends
+      com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:org.otrmessenger.messaging.Message)
       MessageOrBuilder {
     // Use Message.newBuilder() to construct.
-    private Message(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+    private Message(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
-      this.unknownFields = builder.getUnknownFields();
     }
-    private Message(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
-
-    private static final Message defaultInstance;
-    public static Message getDefaultInstance() {
-      return defaultInstance;
-    }
-
-    public Message getDefaultInstanceForType() {
-      return defaultInstance;
+    private Message() {
+      fromUsername_ = com.google.protobuf.ByteString.EMPTY;
+      toUsername_ = com.google.protobuf.ByteString.EMPTY;
+      text_ = com.google.protobuf.ByteString.EMPTY;
+      signature_ = com.google.protobuf.ByteString.EMPTY;
+      iv_ = com.google.protobuf.ByteString.EMPTY;
     }
 
-    private final com.google.protobuf.UnknownFieldSet unknownFields;
     @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
+    getUnknownFields() {
       return this.unknownFields;
     }
     private Message(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      initFields();
+      this();
       int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
@@ -1016,13 +1136,18 @@ public final class Messaging {
               signature_ = input.readBytes();
               break;
             }
+            case 42: {
+              bitField0_ |= 0x00000010;
+              iv_ = input.readBytes();
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
         throw e.setUnfinishedMessage(this);
       } catch (java.io.IOException e) {
         throw new com.google.protobuf.InvalidProtocolBufferException(
-            e.getMessage()).setUnfinishedMessage(this);
+            e).setUnfinishedMessage(this);
       } finally {
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
@@ -1033,39 +1158,24 @@ public final class Messaging {
       return org.otrmessenger.messaging.Messaging.internal_static_org_otrmessenger_messaging_Message_descriptor;
     }
 
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.otrmessenger.messaging.Messaging.internal_static_org_otrmessenger_messaging_Message_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               org.otrmessenger.messaging.Messaging.Message.class, org.otrmessenger.messaging.Messaging.Message.Builder.class);
     }
 
-    public static com.google.protobuf.Parser<Message> PARSER =
-        new com.google.protobuf.AbstractParser<Message>() {
-      public Message parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new Message(input, extensionRegistry);
-      }
-    };
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<Message> getParserForType() {
-      return PARSER;
-    }
-
     private int bitField0_;
     public static final int FROMUSERNAME_FIELD_NUMBER = 1;
     private com.google.protobuf.ByteString fromUsername_;
     /**
-     * <code>required bytes fromUsername = 1;</code>
+     * <code>optional bytes fromUsername = 1;</code>
      */
     public boolean hasFromUsername() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>required bytes fromUsername = 1;</code>
+     * <code>optional bytes fromUsername = 1;</code>
      */
     public com.google.protobuf.ByteString getFromUsername() {
       return fromUsername_;
@@ -1074,13 +1184,13 @@ public final class Messaging {
     public static final int TOUSERNAME_FIELD_NUMBER = 2;
     private com.google.protobuf.ByteString toUsername_;
     /**
-     * <code>required bytes toUsername = 2;</code>
+     * <code>optional bytes toUsername = 2;</code>
      */
     public boolean hasToUsername() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
-     * <code>required bytes toUsername = 2;</code>
+     * <code>optional bytes toUsername = 2;</code>
      */
     public com.google.protobuf.ByteString getToUsername() {
       return toUsername_;
@@ -1089,13 +1199,13 @@ public final class Messaging {
     public static final int TEXT_FIELD_NUMBER = 3;
     private com.google.protobuf.ByteString text_;
     /**
-     * <code>required bytes text = 3;</code>
+     * <code>optional bytes text = 3;</code>
      */
     public boolean hasText() {
       return ((bitField0_ & 0x00000004) == 0x00000004);
     }
     /**
-     * <code>required bytes text = 3;</code>
+     * <code>optional bytes text = 3;</code>
      */
     public com.google.protobuf.ByteString getText() {
       return text_;
@@ -1104,53 +1214,45 @@ public final class Messaging {
     public static final int SIGNATURE_FIELD_NUMBER = 4;
     private com.google.protobuf.ByteString signature_;
     /**
-     * <code>required bytes signature = 4;</code>
+     * <code>optional bytes signature = 4;</code>
      */
     public boolean hasSignature() {
       return ((bitField0_ & 0x00000008) == 0x00000008);
     }
     /**
-     * <code>required bytes signature = 4;</code>
+     * <code>optional bytes signature = 4;</code>
      */
     public com.google.protobuf.ByteString getSignature() {
       return signature_;
     }
 
-    private void initFields() {
-      fromUsername_ = com.google.protobuf.ByteString.EMPTY;
-      toUsername_ = com.google.protobuf.ByteString.EMPTY;
-      text_ = com.google.protobuf.ByteString.EMPTY;
-      signature_ = com.google.protobuf.ByteString.EMPTY;
+    public static final int IV_FIELD_NUMBER = 5;
+    private com.google.protobuf.ByteString iv_;
+    /**
+     * <code>optional bytes iv = 5;</code>
+     */
+    public boolean hasIv() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
     }
+    /**
+     * <code>optional bytes iv = 5;</code>
+     */
+    public com.google.protobuf.ByteString getIv() {
+      return iv_;
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
       if (isInitialized == 0) return false;
 
-      if (!hasFromUsername()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasToUsername()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasText()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasSignature()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
       memoizedIsInitialized = 1;
       return true;
     }
 
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         output.writeBytes(1, fromUsername_);
       }
@@ -1163,12 +1265,14 @@ public final class Messaging {
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         output.writeBytes(4, signature_);
       }
-      getUnknownFields().writeTo(output);
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeBytes(5, iv_);
+      }
+      unknownFields.writeTo(output);
     }
 
-    private int memoizedSerializedSize = -1;
     public int getSerializedSize() {
-      int size = memoizedSerializedSize;
+      int size = memoizedSize;
       if (size != -1) return size;
 
       size = 0;
@@ -1188,16 +1292,86 @@ public final class Messaging {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(4, signature_);
       }
-      size += getUnknownFields().getSerializedSize();
-      memoizedSerializedSize = size;
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(5, iv_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
       return size;
     }
 
     private static final long serialVersionUID = 0L;
     @java.lang.Override
-    protected java.lang.Object writeReplace()
-        throws java.io.ObjectStreamException {
-      return super.writeReplace();
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof org.otrmessenger.messaging.Messaging.Message)) {
+        return super.equals(obj);
+      }
+      org.otrmessenger.messaging.Messaging.Message other = (org.otrmessenger.messaging.Messaging.Message) obj;
+
+      boolean result = true;
+      result = result && (hasFromUsername() == other.hasFromUsername());
+      if (hasFromUsername()) {
+        result = result && getFromUsername()
+            .equals(other.getFromUsername());
+      }
+      result = result && (hasToUsername() == other.hasToUsername());
+      if (hasToUsername()) {
+        result = result && getToUsername()
+            .equals(other.getToUsername());
+      }
+      result = result && (hasText() == other.hasText());
+      if (hasText()) {
+        result = result && getText()
+            .equals(other.getText());
+      }
+      result = result && (hasSignature() == other.hasSignature());
+      if (hasSignature()) {
+        result = result && getSignature()
+            .equals(other.getSignature());
+      }
+      result = result && (hasIv() == other.hasIv());
+      if (hasIv()) {
+        result = result && getIv()
+            .equals(other.getIv());
+      }
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptorForType().hashCode();
+      if (hasFromUsername()) {
+        hash = (37 * hash) + FROMUSERNAME_FIELD_NUMBER;
+        hash = (53 * hash) + getFromUsername().hashCode();
+      }
+      if (hasToUsername()) {
+        hash = (37 * hash) + TOUSERNAME_FIELD_NUMBER;
+        hash = (53 * hash) + getToUsername().hashCode();
+      }
+      if (hasText()) {
+        hash = (37 * hash) + TEXT_FIELD_NUMBER;
+        hash = (53 * hash) + getText().hashCode();
+      }
+      if (hasSignature()) {
+        hash = (37 * hash) + SIGNATURE_FIELD_NUMBER;
+        hash = (53 * hash) + getSignature().hashCode();
+      }
+      if (hasIv()) {
+        hash = (37 * hash) + IV_FIELD_NUMBER;
+        hash = (53 * hash) + getIv().hashCode();
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
     }
 
     public static org.otrmessenger.messaging.Messaging.Message parseFrom(
@@ -1223,46 +1397,57 @@ public final class Messaging {
     }
     public static org.otrmessenger.messaging.Messaging.Message parseFrom(java.io.InputStream input)
         throws java.io.IOException {
-      return PARSER.parseFrom(input);
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
     }
     public static org.otrmessenger.messaging.Messaging.Message parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
     }
     public static org.otrmessenger.messaging.Messaging.Message parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input);
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
     }
     public static org.otrmessenger.messaging.Messaging.Message parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
     public static org.otrmessenger.messaging.Messaging.Message parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
-      return PARSER.parseFrom(input);
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
     }
     public static org.otrmessenger.messaging.Messaging.Message parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
-    public static Builder newBuilder() { return Builder.create(); }
     public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(org.otrmessenger.messaging.Messaging.Message prototype) {
-      return newBuilder().mergeFrom(prototype);
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
     }
-    public Builder toBuilder() { return newBuilder(this); }
+    public static Builder newBuilder(org.otrmessenger.messaging.Messaging.Message prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
 
     @java.lang.Override
     protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       Builder builder = new Builder(parent);
       return builder;
     }
@@ -1270,7 +1455,7 @@ public final class Messaging {
      * Protobuf type {@code org.otrmessenger.messaging.Message}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
         // @@protoc_insertion_point(builder_implements:org.otrmessenger.messaging.Message)
         org.otrmessenger.messaging.Messaging.MessageOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
@@ -1278,7 +1463,7 @@ public final class Messaging {
         return org.otrmessenger.messaging.Messaging.internal_static_org_otrmessenger_messaging_Message_descriptor;
       }
 
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.otrmessenger.messaging.Messaging.internal_static_org_otrmessenger_messaging_Message_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
@@ -1291,18 +1476,15 @@ public final class Messaging {
       }
 
       private Builder(
-          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
         super(parent);
         maybeForceBuilderInitialization();
       }
       private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
         }
       }
-      private static Builder create() {
-        return new Builder();
-      }
-
       public Builder clear() {
         super.clear();
         fromUsername_ = com.google.protobuf.ByteString.EMPTY;
@@ -1313,11 +1495,9 @@ public final class Messaging {
         bitField0_ = (bitField0_ & ~0x00000004);
         signature_ = com.google.protobuf.ByteString.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000008);
+        iv_ = com.google.protobuf.ByteString.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000010);
         return this;
-      }
-
-      public Builder clone() {
-        return create().mergeFrom(buildPartial());
       }
 
       public com.google.protobuf.Descriptors.Descriptor
@@ -1357,11 +1537,41 @@ public final class Messaging {
           to_bitField0_ |= 0x00000008;
         }
         result.signature_ = signature_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.iv_ = iv_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
 
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.otrmessenger.messaging.Messaging.Message) {
           return mergeFrom((org.otrmessenger.messaging.Messaging.Message)other);
@@ -1385,27 +1595,15 @@ public final class Messaging {
         if (other.hasSignature()) {
           setSignature(other.getSignature());
         }
-        this.mergeUnknownFields(other.getUnknownFields());
+        if (other.hasIv()) {
+          setIv(other.getIv());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
         return this;
       }
 
       public final boolean isInitialized() {
-        if (!hasFromUsername()) {
-          
-          return false;
-        }
-        if (!hasToUsername()) {
-          
-          return false;
-        }
-        if (!hasText()) {
-          
-          return false;
-        }
-        if (!hasSignature()) {
-          
-          return false;
-        }
         return true;
       }
 
@@ -1418,7 +1616,7 @@ public final class Messaging {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
           parsedMessage = (org.otrmessenger.messaging.Messaging.Message) e.getUnfinishedMessage();
-          throw e;
+          throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
             mergeFrom(parsedMessage);
@@ -1430,19 +1628,19 @@ public final class Messaging {
 
       private com.google.protobuf.ByteString fromUsername_ = com.google.protobuf.ByteString.EMPTY;
       /**
-       * <code>required bytes fromUsername = 1;</code>
+       * <code>optional bytes fromUsername = 1;</code>
        */
       public boolean hasFromUsername() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>required bytes fromUsername = 1;</code>
+       * <code>optional bytes fromUsername = 1;</code>
        */
       public com.google.protobuf.ByteString getFromUsername() {
         return fromUsername_;
       }
       /**
-       * <code>required bytes fromUsername = 1;</code>
+       * <code>optional bytes fromUsername = 1;</code>
        */
       public Builder setFromUsername(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1454,7 +1652,7 @@ public final class Messaging {
         return this;
       }
       /**
-       * <code>required bytes fromUsername = 1;</code>
+       * <code>optional bytes fromUsername = 1;</code>
        */
       public Builder clearFromUsername() {
         bitField0_ = (bitField0_ & ~0x00000001);
@@ -1465,19 +1663,19 @@ public final class Messaging {
 
       private com.google.protobuf.ByteString toUsername_ = com.google.protobuf.ByteString.EMPTY;
       /**
-       * <code>required bytes toUsername = 2;</code>
+       * <code>optional bytes toUsername = 2;</code>
        */
       public boolean hasToUsername() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
-       * <code>required bytes toUsername = 2;</code>
+       * <code>optional bytes toUsername = 2;</code>
        */
       public com.google.protobuf.ByteString getToUsername() {
         return toUsername_;
       }
       /**
-       * <code>required bytes toUsername = 2;</code>
+       * <code>optional bytes toUsername = 2;</code>
        */
       public Builder setToUsername(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1489,7 +1687,7 @@ public final class Messaging {
         return this;
       }
       /**
-       * <code>required bytes toUsername = 2;</code>
+       * <code>optional bytes toUsername = 2;</code>
        */
       public Builder clearToUsername() {
         bitField0_ = (bitField0_ & ~0x00000002);
@@ -1500,19 +1698,19 @@ public final class Messaging {
 
       private com.google.protobuf.ByteString text_ = com.google.protobuf.ByteString.EMPTY;
       /**
-       * <code>required bytes text = 3;</code>
+       * <code>optional bytes text = 3;</code>
        */
       public boolean hasText() {
         return ((bitField0_ & 0x00000004) == 0x00000004);
       }
       /**
-       * <code>required bytes text = 3;</code>
+       * <code>optional bytes text = 3;</code>
        */
       public com.google.protobuf.ByteString getText() {
         return text_;
       }
       /**
-       * <code>required bytes text = 3;</code>
+       * <code>optional bytes text = 3;</code>
        */
       public Builder setText(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1524,7 +1722,7 @@ public final class Messaging {
         return this;
       }
       /**
-       * <code>required bytes text = 3;</code>
+       * <code>optional bytes text = 3;</code>
        */
       public Builder clearText() {
         bitField0_ = (bitField0_ & ~0x00000004);
@@ -1535,19 +1733,19 @@ public final class Messaging {
 
       private com.google.protobuf.ByteString signature_ = com.google.protobuf.ByteString.EMPTY;
       /**
-       * <code>required bytes signature = 4;</code>
+       * <code>optional bytes signature = 4;</code>
        */
       public boolean hasSignature() {
         return ((bitField0_ & 0x00000008) == 0x00000008);
       }
       /**
-       * <code>required bytes signature = 4;</code>
+       * <code>optional bytes signature = 4;</code>
        */
       public com.google.protobuf.ByteString getSignature() {
         return signature_;
       }
       /**
-       * <code>required bytes signature = 4;</code>
+       * <code>optional bytes signature = 4;</code>
        */
       public Builder setSignature(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1559,7 +1757,7 @@ public final class Messaging {
         return this;
       }
       /**
-       * <code>required bytes signature = 4;</code>
+       * <code>optional bytes signature = 4;</code>
        */
       public Builder clearSignature() {
         bitField0_ = (bitField0_ & ~0x00000008);
@@ -1568,15 +1766,87 @@ public final class Messaging {
         return this;
       }
 
+      private com.google.protobuf.ByteString iv_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <code>optional bytes iv = 5;</code>
+       */
+      public boolean hasIv() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional bytes iv = 5;</code>
+       */
+      public com.google.protobuf.ByteString getIv() {
+        return iv_;
+      }
+      /**
+       * <code>optional bytes iv = 5;</code>
+       */
+      public Builder setIv(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+        iv_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bytes iv = 5;</code>
+       */
+      public Builder clearIv() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        iv_ = getDefaultInstance().getIv();
+        onChanged();
+        return this;
+      }
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
       // @@protoc_insertion_point(builder_scope:org.otrmessenger.messaging.Message)
     }
 
+    // @@protoc_insertion_point(class_scope:org.otrmessenger.messaging.Message)
+    private static final org.otrmessenger.messaging.Messaging.Message DEFAULT_INSTANCE;
     static {
-      defaultInstance = new Message(true);
-      defaultInstance.initFields();
+      DEFAULT_INSTANCE = new org.otrmessenger.messaging.Messaging.Message();
     }
 
-    // @@protoc_insertion_point(class_scope:org.otrmessenger.messaging.Message)
+    public static org.otrmessenger.messaging.Messaging.Message getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<Message>
+        PARSER = new com.google.protobuf.AbstractParser<Message>() {
+      public Message parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+          return new Message(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<Message> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<Message> getParserForType() {
+      return PARSER;
+    }
+
+    public org.otrmessenger.messaging.Messaging.Message getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
   }
 
   public interface ClientInfoOrBuilder extends
@@ -1613,37 +1883,30 @@ public final class Messaging {
   /**
    * Protobuf type {@code org.otrmessenger.messaging.ClientInfo}
    */
-  public static final class ClientInfo extends
-      com.google.protobuf.GeneratedMessage implements
+  public  static final class ClientInfo extends
+      com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:org.otrmessenger.messaging.ClientInfo)
       ClientInfoOrBuilder {
     // Use ClientInfo.newBuilder() to construct.
-    private ClientInfo(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+    private ClientInfo(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
-      this.unknownFields = builder.getUnknownFields();
     }
-    private ClientInfo(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
-
-    private static final ClientInfo defaultInstance;
-    public static ClientInfo getDefaultInstance() {
-      return defaultInstance;
+    private ClientInfo() {
+      username_ = com.google.protobuf.ByteString.EMPTY;
+      key_ = com.google.protobuf.ByteString.EMPTY;
+      online_ = false;
     }
 
-    public ClientInfo getDefaultInstanceForType() {
-      return defaultInstance;
-    }
-
-    private final com.google.protobuf.UnknownFieldSet unknownFields;
     @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
+    getUnknownFields() {
       return this.unknownFields;
     }
     private ClientInfo(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      initFields();
+      this();
       int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
@@ -1683,7 +1946,7 @@ public final class Messaging {
         throw e.setUnfinishedMessage(this);
       } catch (java.io.IOException e) {
         throw new com.google.protobuf.InvalidProtocolBufferException(
-            e.getMessage()).setUnfinishedMessage(this);
+            e).setUnfinishedMessage(this);
       } finally {
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
@@ -1694,26 +1957,11 @@ public final class Messaging {
       return org.otrmessenger.messaging.Messaging.internal_static_org_otrmessenger_messaging_ClientInfo_descriptor;
     }
 
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.otrmessenger.messaging.Messaging.internal_static_org_otrmessenger_messaging_ClientInfo_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               org.otrmessenger.messaging.Messaging.ClientInfo.class, org.otrmessenger.messaging.Messaging.ClientInfo.Builder.class);
-    }
-
-    public static com.google.protobuf.Parser<ClientInfo> PARSER =
-        new com.google.protobuf.AbstractParser<ClientInfo>() {
-      public ClientInfo parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new ClientInfo(input, extensionRegistry);
-      }
-    };
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<ClientInfo> getParserForType() {
-      return PARSER;
     }
 
     private int bitField0_;
@@ -1762,11 +2010,6 @@ public final class Messaging {
       return online_;
     }
 
-    private void initFields() {
-      username_ = com.google.protobuf.ByteString.EMPTY;
-      key_ = com.google.protobuf.ByteString.EMPTY;
-      online_ = false;
-    }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -1783,7 +2026,6 @@ public final class Messaging {
 
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         output.writeBytes(1, username_);
       }
@@ -1793,12 +2035,11 @@ public final class Messaging {
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         output.writeBool(3, online_);
       }
-      getUnknownFields().writeTo(output);
+      unknownFields.writeTo(output);
     }
 
-    private int memoizedSerializedSize = -1;
     public int getSerializedSize() {
-      int size = memoizedSerializedSize;
+      int size = memoizedSize;
       if (size != -1) return size;
 
       size = 0;
@@ -1814,16 +2055,65 @@ public final class Messaging {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(3, online_);
       }
-      size += getUnknownFields().getSerializedSize();
-      memoizedSerializedSize = size;
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
       return size;
     }
 
     private static final long serialVersionUID = 0L;
     @java.lang.Override
-    protected java.lang.Object writeReplace()
-        throws java.io.ObjectStreamException {
-      return super.writeReplace();
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof org.otrmessenger.messaging.Messaging.ClientInfo)) {
+        return super.equals(obj);
+      }
+      org.otrmessenger.messaging.Messaging.ClientInfo other = (org.otrmessenger.messaging.Messaging.ClientInfo) obj;
+
+      boolean result = true;
+      result = result && (hasUsername() == other.hasUsername());
+      if (hasUsername()) {
+        result = result && getUsername()
+            .equals(other.getUsername());
+      }
+      result = result && (hasKey() == other.hasKey());
+      if (hasKey()) {
+        result = result && getKey()
+            .equals(other.getKey());
+      }
+      result = result && (hasOnline() == other.hasOnline());
+      if (hasOnline()) {
+        result = result && (getOnline()
+            == other.getOnline());
+      }
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptorForType().hashCode();
+      if (hasUsername()) {
+        hash = (37 * hash) + USERNAME_FIELD_NUMBER;
+        hash = (53 * hash) + getUsername().hashCode();
+      }
+      if (hasKey()) {
+        hash = (37 * hash) + KEY_FIELD_NUMBER;
+        hash = (53 * hash) + getKey().hashCode();
+      }
+      if (hasOnline()) {
+        hash = (37 * hash) + ONLINE_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+            getOnline());
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
     }
 
     public static org.otrmessenger.messaging.Messaging.ClientInfo parseFrom(
@@ -1849,46 +2139,57 @@ public final class Messaging {
     }
     public static org.otrmessenger.messaging.Messaging.ClientInfo parseFrom(java.io.InputStream input)
         throws java.io.IOException {
-      return PARSER.parseFrom(input);
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
     }
     public static org.otrmessenger.messaging.Messaging.ClientInfo parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
     }
     public static org.otrmessenger.messaging.Messaging.ClientInfo parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input);
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
     }
     public static org.otrmessenger.messaging.Messaging.ClientInfo parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
     public static org.otrmessenger.messaging.Messaging.ClientInfo parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
-      return PARSER.parseFrom(input);
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
     }
     public static org.otrmessenger.messaging.Messaging.ClientInfo parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
-    public static Builder newBuilder() { return Builder.create(); }
     public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(org.otrmessenger.messaging.Messaging.ClientInfo prototype) {
-      return newBuilder().mergeFrom(prototype);
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
     }
-    public Builder toBuilder() { return newBuilder(this); }
+    public static Builder newBuilder(org.otrmessenger.messaging.Messaging.ClientInfo prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
 
     @java.lang.Override
     protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       Builder builder = new Builder(parent);
       return builder;
     }
@@ -1896,7 +2197,7 @@ public final class Messaging {
      * Protobuf type {@code org.otrmessenger.messaging.ClientInfo}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
         // @@protoc_insertion_point(builder_implements:org.otrmessenger.messaging.ClientInfo)
         org.otrmessenger.messaging.Messaging.ClientInfoOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
@@ -1904,7 +2205,7 @@ public final class Messaging {
         return org.otrmessenger.messaging.Messaging.internal_static_org_otrmessenger_messaging_ClientInfo_descriptor;
       }
 
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.otrmessenger.messaging.Messaging.internal_static_org_otrmessenger_messaging_ClientInfo_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
@@ -1917,18 +2218,15 @@ public final class Messaging {
       }
 
       private Builder(
-          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
         super(parent);
         maybeForceBuilderInitialization();
       }
       private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
         }
       }
-      private static Builder create() {
-        return new Builder();
-      }
-
       public Builder clear() {
         super.clear();
         username_ = com.google.protobuf.ByteString.EMPTY;
@@ -1938,10 +2236,6 @@ public final class Messaging {
         online_ = false;
         bitField0_ = (bitField0_ & ~0x00000004);
         return this;
-      }
-
-      public Builder clone() {
-        return create().mergeFrom(buildPartial());
       }
 
       public com.google.protobuf.Descriptors.Descriptor
@@ -1982,6 +2276,32 @@ public final class Messaging {
         return result;
       }
 
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.otrmessenger.messaging.Messaging.ClientInfo) {
           return mergeFrom((org.otrmessenger.messaging.Messaging.ClientInfo)other);
@@ -2002,13 +2322,13 @@ public final class Messaging {
         if (other.hasOnline()) {
           setOnline(other.getOnline());
         }
-        this.mergeUnknownFields(other.getUnknownFields());
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
         return this;
       }
 
       public final boolean isInitialized() {
         if (!hasUsername()) {
-          
           return false;
         }
         return true;
@@ -2023,7 +2343,7 @@ public final class Messaging {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
           parsedMessage = (org.otrmessenger.messaging.Messaging.ClientInfo) e.getUnfinishedMessage();
-          throw e;
+          throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
             mergeFrom(parsedMessage);
@@ -2134,16 +2454,53 @@ public final class Messaging {
         onChanged();
         return this;
       }
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
 
       // @@protoc_insertion_point(builder_scope:org.otrmessenger.messaging.ClientInfo)
     }
 
+    // @@protoc_insertion_point(class_scope:org.otrmessenger.messaging.ClientInfo)
+    private static final org.otrmessenger.messaging.Messaging.ClientInfo DEFAULT_INSTANCE;
     static {
-      defaultInstance = new ClientInfo(true);
-      defaultInstance.initFields();
+      DEFAULT_INSTANCE = new org.otrmessenger.messaging.Messaging.ClientInfo();
     }
 
-    // @@protoc_insertion_point(class_scope:org.otrmessenger.messaging.ClientInfo)
+    public static org.otrmessenger.messaging.Messaging.ClientInfo getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<ClientInfo>
+        PARSER = new com.google.protobuf.AbstractParser<ClientInfo>() {
+      public ClientInfo parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+          return new ClientInfo(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<ClientInfo> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<ClientInfo> getParserForType() {
+      return PARSER;
+    }
+
+    public org.otrmessenger.messaging.Messaging.ClientInfo getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
   }
 
   public interface MsgClientToServerOrBuilder extends
@@ -2182,19 +2539,19 @@ public final class Messaging {
     org.otrmessenger.messaging.Messaging.AdminRequest getAdminReq();
 
     /**
-     * <code>optional bytes requestInfoUsername = 4;</code>
-     *
      * <pre>
      * username of person to request the key, if online etc.
      * </pre>
+     *
+     * <code>optional bytes requestInfoUsername = 4;</code>
      */
     boolean hasRequestInfoUsername();
     /**
-     * <code>optional bytes requestInfoUsername = 4;</code>
-     *
      * <pre>
      * username of person to request the key, if online etc.
      * </pre>
+     *
+     * <code>optional bytes requestInfoUsername = 4;</code>
      */
     com.google.protobuf.ByteString getRequestInfoUsername();
 
@@ -2212,56 +2569,50 @@ public final class Messaging {
     org.otrmessenger.messaging.Messaging.MessageOrBuilder getMsgOrBuilder();
 
     /**
-     * <code>optional bool requestKeyPairChange = 6;</code>
-     *
      * <pre>
      * Sergey: I am not sure I understand how usecase #9 works
      * </pre>
+     *
+     * <code>optional bool requestKeyPairChange = 6;</code>
      */
     boolean hasRequestKeyPairChange();
     /**
-     * <code>optional bool requestKeyPairChange = 6;</code>
-     *
      * <pre>
      * Sergey: I am not sure I understand how usecase #9 works
      * </pre>
+     *
+     * <code>optional bool requestKeyPairChange = 6;</code>
      */
     boolean getRequestKeyPairChange();
   }
   /**
    * Protobuf type {@code org.otrmessenger.messaging.MsgClientToServer}
    */
-  public static final class MsgClientToServer extends
-      com.google.protobuf.GeneratedMessage implements
+  public  static final class MsgClientToServer extends
+      com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:org.otrmessenger.messaging.MsgClientToServer)
       MsgClientToServerOrBuilder {
     // Use MsgClientToServer.newBuilder() to construct.
-    private MsgClientToServer(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+    private MsgClientToServer(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
-      this.unknownFields = builder.getUnknownFields();
     }
-    private MsgClientToServer(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
-
-    private static final MsgClientToServer defaultInstance;
-    public static MsgClientToServer getDefaultInstance() {
-      return defaultInstance;
-    }
-
-    public MsgClientToServer getDefaultInstanceForType() {
-      return defaultInstance;
+    private MsgClientToServer() {
+      updatedKey_ = com.google.protobuf.ByteString.EMPTY;
+      adminReq_ = 1;
+      requestInfoUsername_ = com.google.protobuf.ByteString.EMPTY;
+      requestKeyPairChange_ = false;
     }
 
-    private final com.google.protobuf.UnknownFieldSet unknownFields;
     @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
+    getUnknownFields() {
       return this.unknownFields;
     }
     private MsgClientToServer(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      initFields();
+      this();
       int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
@@ -2305,7 +2656,7 @@ public final class Messaging {
                 unknownFields.mergeVarintField(3, rawValue);
               } else {
                 bitField0_ |= 0x00000004;
-                adminReq_ = value;
+                adminReq_ = rawValue;
               }
               break;
             }
@@ -2338,7 +2689,7 @@ public final class Messaging {
         throw e.setUnfinishedMessage(this);
       } catch (java.io.IOException e) {
         throw new com.google.protobuf.InvalidProtocolBufferException(
-            e.getMessage()).setUnfinishedMessage(this);
+            e).setUnfinishedMessage(this);
       } finally {
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
@@ -2349,26 +2700,11 @@ public final class Messaging {
       return org.otrmessenger.messaging.Messaging.internal_static_org_otrmessenger_messaging_MsgClientToServer_descriptor;
     }
 
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.otrmessenger.messaging.Messaging.internal_static_org_otrmessenger_messaging_MsgClientToServer_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               org.otrmessenger.messaging.Messaging.MsgClientToServer.class, org.otrmessenger.messaging.Messaging.MsgClientToServer.Builder.class);
-    }
-
-    public static com.google.protobuf.Parser<MsgClientToServer> PARSER =
-        new com.google.protobuf.AbstractParser<MsgClientToServer>() {
-      public MsgClientToServer parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new MsgClientToServer(input, extensionRegistry);
-      }
-    };
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<MsgClientToServer> getParserForType() {
-      return PARSER;
     }
 
     private int bitField0_;
@@ -2384,13 +2720,13 @@ public final class Messaging {
      * <code>optional .org.otrmessenger.messaging.Credentials credentials = 1;</code>
      */
     public org.otrmessenger.messaging.Messaging.Credentials getCredentials() {
-      return credentials_;
+      return credentials_ == null ? org.otrmessenger.messaging.Messaging.Credentials.getDefaultInstance() : credentials_;
     }
     /**
      * <code>optional .org.otrmessenger.messaging.Credentials credentials = 1;</code>
      */
     public org.otrmessenger.messaging.Messaging.CredentialsOrBuilder getCredentialsOrBuilder() {
-      return credentials_;
+      return credentials_ == null ? org.otrmessenger.messaging.Messaging.Credentials.getDefaultInstance() : credentials_;
     }
 
     public static final int UPDATEDKEY_FIELD_NUMBER = 2;
@@ -2409,7 +2745,7 @@ public final class Messaging {
     }
 
     public static final int ADMINREQ_FIELD_NUMBER = 3;
-    private org.otrmessenger.messaging.Messaging.AdminRequest adminReq_;
+    private int adminReq_;
     /**
      * <code>optional .org.otrmessenger.messaging.AdminRequest adminReq = 3;</code>
      */
@@ -2420,27 +2756,28 @@ public final class Messaging {
      * <code>optional .org.otrmessenger.messaging.AdminRequest adminReq = 3;</code>
      */
     public org.otrmessenger.messaging.Messaging.AdminRequest getAdminReq() {
-      return adminReq_;
+      org.otrmessenger.messaging.Messaging.AdminRequest result = org.otrmessenger.messaging.Messaging.AdminRequest.valueOf(adminReq_);
+      return result == null ? org.otrmessenger.messaging.Messaging.AdminRequest.LAUNCH : result;
     }
 
     public static final int REQUESTINFOUSERNAME_FIELD_NUMBER = 4;
     private com.google.protobuf.ByteString requestInfoUsername_;
     /**
-     * <code>optional bytes requestInfoUsername = 4;</code>
-     *
      * <pre>
      * username of person to request the key, if online etc.
      * </pre>
+     *
+     * <code>optional bytes requestInfoUsername = 4;</code>
      */
     public boolean hasRequestInfoUsername() {
       return ((bitField0_ & 0x00000008) == 0x00000008);
     }
     /**
-     * <code>optional bytes requestInfoUsername = 4;</code>
-     *
      * <pre>
      * username of person to request the key, if online etc.
      * </pre>
+     *
+     * <code>optional bytes requestInfoUsername = 4;</code>
      */
     public com.google.protobuf.ByteString getRequestInfoUsername() {
       return requestInfoUsername_;
@@ -2458,46 +2795,38 @@ public final class Messaging {
      * <code>optional .org.otrmessenger.messaging.Message msg = 5;</code>
      */
     public org.otrmessenger.messaging.Messaging.Message getMsg() {
-      return msg_;
+      return msg_ == null ? org.otrmessenger.messaging.Messaging.Message.getDefaultInstance() : msg_;
     }
     /**
      * <code>optional .org.otrmessenger.messaging.Message msg = 5;</code>
      */
     public org.otrmessenger.messaging.Messaging.MessageOrBuilder getMsgOrBuilder() {
-      return msg_;
+      return msg_ == null ? org.otrmessenger.messaging.Messaging.Message.getDefaultInstance() : msg_;
     }
 
     public static final int REQUESTKEYPAIRCHANGE_FIELD_NUMBER = 6;
     private boolean requestKeyPairChange_;
     /**
-     * <code>optional bool requestKeyPairChange = 6;</code>
-     *
      * <pre>
      * Sergey: I am not sure I understand how usecase #9 works
      * </pre>
+     *
+     * <code>optional bool requestKeyPairChange = 6;</code>
      */
     public boolean hasRequestKeyPairChange() {
       return ((bitField0_ & 0x00000020) == 0x00000020);
     }
     /**
-     * <code>optional bool requestKeyPairChange = 6;</code>
-     *
      * <pre>
      * Sergey: I am not sure I understand how usecase #9 works
      * </pre>
+     *
+     * <code>optional bool requestKeyPairChange = 6;</code>
      */
     public boolean getRequestKeyPairChange() {
       return requestKeyPairChange_;
     }
 
-    private void initFields() {
-      credentials_ = org.otrmessenger.messaging.Messaging.Credentials.getDefaultInstance();
-      updatedKey_ = com.google.protobuf.ByteString.EMPTY;
-      adminReq_ = org.otrmessenger.messaging.Messaging.AdminRequest.LAUNCH;
-      requestInfoUsername_ = com.google.protobuf.ByteString.EMPTY;
-      msg_ = org.otrmessenger.messaging.Messaging.Message.getDefaultInstance();
-      requestKeyPairChange_ = false;
-    }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -2510,49 +2839,41 @@ public final class Messaging {
           return false;
         }
       }
-      if (hasMsg()) {
-        if (!getMsg().isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
       memoizedIsInitialized = 1;
       return true;
     }
 
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeMessage(1, credentials_);
+        output.writeMessage(1, getCredentials());
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         output.writeBytes(2, updatedKey_);
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeEnum(3, adminReq_.getNumber());
+        output.writeEnum(3, adminReq_);
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         output.writeBytes(4, requestInfoUsername_);
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        output.writeMessage(5, msg_);
+        output.writeMessage(5, getMsg());
       }
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
         output.writeBool(6, requestKeyPairChange_);
       }
-      getUnknownFields().writeTo(output);
+      unknownFields.writeTo(output);
     }
 
-    private int memoizedSerializedSize = -1;
     public int getSerializedSize() {
-      int size = memoizedSerializedSize;
+      int size = memoizedSize;
       if (size != -1) return size;
 
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(1, credentials_);
+          .computeMessageSize(1, getCredentials());
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
@@ -2560,7 +2881,7 @@ public final class Messaging {
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(3, adminReq_.getNumber());
+          .computeEnumSize(3, adminReq_);
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         size += com.google.protobuf.CodedOutputStream
@@ -2568,22 +2889,97 @@ public final class Messaging {
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(5, msg_);
+          .computeMessageSize(5, getMsg());
       }
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(6, requestKeyPairChange_);
       }
-      size += getUnknownFields().getSerializedSize();
-      memoizedSerializedSize = size;
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
       return size;
     }
 
     private static final long serialVersionUID = 0L;
     @java.lang.Override
-    protected java.lang.Object writeReplace()
-        throws java.io.ObjectStreamException {
-      return super.writeReplace();
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof org.otrmessenger.messaging.Messaging.MsgClientToServer)) {
+        return super.equals(obj);
+      }
+      org.otrmessenger.messaging.Messaging.MsgClientToServer other = (org.otrmessenger.messaging.Messaging.MsgClientToServer) obj;
+
+      boolean result = true;
+      result = result && (hasCredentials() == other.hasCredentials());
+      if (hasCredentials()) {
+        result = result && getCredentials()
+            .equals(other.getCredentials());
+      }
+      result = result && (hasUpdatedKey() == other.hasUpdatedKey());
+      if (hasUpdatedKey()) {
+        result = result && getUpdatedKey()
+            .equals(other.getUpdatedKey());
+      }
+      result = result && (hasAdminReq() == other.hasAdminReq());
+      if (hasAdminReq()) {
+        result = result && adminReq_ == other.adminReq_;
+      }
+      result = result && (hasRequestInfoUsername() == other.hasRequestInfoUsername());
+      if (hasRequestInfoUsername()) {
+        result = result && getRequestInfoUsername()
+            .equals(other.getRequestInfoUsername());
+      }
+      result = result && (hasMsg() == other.hasMsg());
+      if (hasMsg()) {
+        result = result && getMsg()
+            .equals(other.getMsg());
+      }
+      result = result && (hasRequestKeyPairChange() == other.hasRequestKeyPairChange());
+      if (hasRequestKeyPairChange()) {
+        result = result && (getRequestKeyPairChange()
+            == other.getRequestKeyPairChange());
+      }
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptorForType().hashCode();
+      if (hasCredentials()) {
+        hash = (37 * hash) + CREDENTIALS_FIELD_NUMBER;
+        hash = (53 * hash) + getCredentials().hashCode();
+      }
+      if (hasUpdatedKey()) {
+        hash = (37 * hash) + UPDATEDKEY_FIELD_NUMBER;
+        hash = (53 * hash) + getUpdatedKey().hashCode();
+      }
+      if (hasAdminReq()) {
+        hash = (37 * hash) + ADMINREQ_FIELD_NUMBER;
+        hash = (53 * hash) + adminReq_;
+      }
+      if (hasRequestInfoUsername()) {
+        hash = (37 * hash) + REQUESTINFOUSERNAME_FIELD_NUMBER;
+        hash = (53 * hash) + getRequestInfoUsername().hashCode();
+      }
+      if (hasMsg()) {
+        hash = (37 * hash) + MSG_FIELD_NUMBER;
+        hash = (53 * hash) + getMsg().hashCode();
+      }
+      if (hasRequestKeyPairChange()) {
+        hash = (37 * hash) + REQUESTKEYPAIRCHANGE_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+            getRequestKeyPairChange());
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
     }
 
     public static org.otrmessenger.messaging.Messaging.MsgClientToServer parseFrom(
@@ -2609,46 +3005,57 @@ public final class Messaging {
     }
     public static org.otrmessenger.messaging.Messaging.MsgClientToServer parseFrom(java.io.InputStream input)
         throws java.io.IOException {
-      return PARSER.parseFrom(input);
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
     }
     public static org.otrmessenger.messaging.Messaging.MsgClientToServer parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
     }
     public static org.otrmessenger.messaging.Messaging.MsgClientToServer parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input);
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
     }
     public static org.otrmessenger.messaging.Messaging.MsgClientToServer parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
     public static org.otrmessenger.messaging.Messaging.MsgClientToServer parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
-      return PARSER.parseFrom(input);
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
     }
     public static org.otrmessenger.messaging.Messaging.MsgClientToServer parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
-    public static Builder newBuilder() { return Builder.create(); }
     public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(org.otrmessenger.messaging.Messaging.MsgClientToServer prototype) {
-      return newBuilder().mergeFrom(prototype);
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
     }
-    public Builder toBuilder() { return newBuilder(this); }
+    public static Builder newBuilder(org.otrmessenger.messaging.Messaging.MsgClientToServer prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
 
     @java.lang.Override
     protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       Builder builder = new Builder(parent);
       return builder;
     }
@@ -2656,7 +3063,7 @@ public final class Messaging {
      * Protobuf type {@code org.otrmessenger.messaging.MsgClientToServer}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
         // @@protoc_insertion_point(builder_implements:org.otrmessenger.messaging.MsgClientToServer)
         org.otrmessenger.messaging.Messaging.MsgClientToServerOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
@@ -2664,7 +3071,7 @@ public final class Messaging {
         return org.otrmessenger.messaging.Messaging.internal_static_org_otrmessenger_messaging_MsgClientToServer_descriptor;
       }
 
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.otrmessenger.messaging.Messaging.internal_static_org_otrmessenger_messaging_MsgClientToServer_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
@@ -2677,36 +3084,33 @@ public final class Messaging {
       }
 
       private Builder(
-          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
         super(parent);
         maybeForceBuilderInitialization();
       }
       private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
           getCredentialsFieldBuilder();
           getMsgFieldBuilder();
         }
       }
-      private static Builder create() {
-        return new Builder();
-      }
-
       public Builder clear() {
         super.clear();
         if (credentialsBuilder_ == null) {
-          credentials_ = org.otrmessenger.messaging.Messaging.Credentials.getDefaultInstance();
+          credentials_ = null;
         } else {
           credentialsBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000001);
         updatedKey_ = com.google.protobuf.ByteString.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000002);
-        adminReq_ = org.otrmessenger.messaging.Messaging.AdminRequest.LAUNCH;
+        adminReq_ = 1;
         bitField0_ = (bitField0_ & ~0x00000004);
         requestInfoUsername_ = com.google.protobuf.ByteString.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000008);
         if (msgBuilder_ == null) {
-          msg_ = org.otrmessenger.messaging.Messaging.Message.getDefaultInstance();
+          msg_ = null;
         } else {
           msgBuilder_.clear();
         }
@@ -2714,10 +3118,6 @@ public final class Messaging {
         requestKeyPairChange_ = false;
         bitField0_ = (bitField0_ & ~0x00000020);
         return this;
-      }
-
-      public Builder clone() {
-        return create().mergeFrom(buildPartial());
       }
 
       public com.google.protobuf.Descriptors.Descriptor
@@ -2778,6 +3178,32 @@ public final class Messaging {
         return result;
       }
 
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.otrmessenger.messaging.Messaging.MsgClientToServer) {
           return mergeFrom((org.otrmessenger.messaging.Messaging.MsgClientToServer)other);
@@ -2807,20 +3233,14 @@ public final class Messaging {
         if (other.hasRequestKeyPairChange()) {
           setRequestKeyPairChange(other.getRequestKeyPairChange());
         }
-        this.mergeUnknownFields(other.getUnknownFields());
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
         return this;
       }
 
       public final boolean isInitialized() {
         if (hasCredentials()) {
           if (!getCredentials().isInitialized()) {
-            
-            return false;
-          }
-        }
-        if (hasMsg()) {
-          if (!getMsg().isInitialized()) {
-            
             return false;
           }
         }
@@ -2836,7 +3256,7 @@ public final class Messaging {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
           parsedMessage = (org.otrmessenger.messaging.Messaging.MsgClientToServer) e.getUnfinishedMessage();
-          throw e;
+          throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
             mergeFrom(parsedMessage);
@@ -2846,8 +3266,8 @@ public final class Messaging {
       }
       private int bitField0_;
 
-      private org.otrmessenger.messaging.Messaging.Credentials credentials_ = org.otrmessenger.messaging.Messaging.Credentials.getDefaultInstance();
-      private com.google.protobuf.SingleFieldBuilder<
+      private org.otrmessenger.messaging.Messaging.Credentials credentials_ = null;
+      private com.google.protobuf.SingleFieldBuilderV3<
           org.otrmessenger.messaging.Messaging.Credentials, org.otrmessenger.messaging.Messaging.Credentials.Builder, org.otrmessenger.messaging.Messaging.CredentialsOrBuilder> credentialsBuilder_;
       /**
        * <code>optional .org.otrmessenger.messaging.Credentials credentials = 1;</code>
@@ -2860,7 +3280,7 @@ public final class Messaging {
        */
       public org.otrmessenger.messaging.Messaging.Credentials getCredentials() {
         if (credentialsBuilder_ == null) {
-          return credentials_;
+          return credentials_ == null ? org.otrmessenger.messaging.Messaging.Credentials.getDefaultInstance() : credentials_;
         } else {
           return credentialsBuilder_.getMessage();
         }
@@ -2901,6 +3321,7 @@ public final class Messaging {
       public Builder mergeCredentials(org.otrmessenger.messaging.Messaging.Credentials value) {
         if (credentialsBuilder_ == null) {
           if (((bitField0_ & 0x00000001) == 0x00000001) &&
+              credentials_ != null &&
               credentials_ != org.otrmessenger.messaging.Messaging.Credentials.getDefaultInstance()) {
             credentials_ =
               org.otrmessenger.messaging.Messaging.Credentials.newBuilder(credentials_).mergeFrom(value).buildPartial();
@@ -2919,7 +3340,7 @@ public final class Messaging {
        */
       public Builder clearCredentials() {
         if (credentialsBuilder_ == null) {
-          credentials_ = org.otrmessenger.messaging.Messaging.Credentials.getDefaultInstance();
+          credentials_ = null;
           onChanged();
         } else {
           credentialsBuilder_.clear();
@@ -2942,17 +3363,18 @@ public final class Messaging {
         if (credentialsBuilder_ != null) {
           return credentialsBuilder_.getMessageOrBuilder();
         } else {
-          return credentials_;
+          return credentials_ == null ?
+              org.otrmessenger.messaging.Messaging.Credentials.getDefaultInstance() : credentials_;
         }
       }
       /**
        * <code>optional .org.otrmessenger.messaging.Credentials credentials = 1;</code>
        */
-      private com.google.protobuf.SingleFieldBuilder<
+      private com.google.protobuf.SingleFieldBuilderV3<
           org.otrmessenger.messaging.Messaging.Credentials, org.otrmessenger.messaging.Messaging.Credentials.Builder, org.otrmessenger.messaging.Messaging.CredentialsOrBuilder> 
           getCredentialsFieldBuilder() {
         if (credentialsBuilder_ == null) {
-          credentialsBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+          credentialsBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
               org.otrmessenger.messaging.Messaging.Credentials, org.otrmessenger.messaging.Messaging.Credentials.Builder, org.otrmessenger.messaging.Messaging.CredentialsOrBuilder>(
                   getCredentials(),
                   getParentForChildren(),
@@ -2997,7 +3419,7 @@ public final class Messaging {
         return this;
       }
 
-      private org.otrmessenger.messaging.Messaging.AdminRequest adminReq_ = org.otrmessenger.messaging.Messaging.AdminRequest.LAUNCH;
+      private int adminReq_ = 1;
       /**
        * <code>optional .org.otrmessenger.messaging.AdminRequest adminReq = 3;</code>
        */
@@ -3008,7 +3430,8 @@ public final class Messaging {
        * <code>optional .org.otrmessenger.messaging.AdminRequest adminReq = 3;</code>
        */
       public org.otrmessenger.messaging.Messaging.AdminRequest getAdminReq() {
-        return adminReq_;
+        org.otrmessenger.messaging.Messaging.AdminRequest result = org.otrmessenger.messaging.Messaging.AdminRequest.valueOf(adminReq_);
+        return result == null ? org.otrmessenger.messaging.Messaging.AdminRequest.LAUNCH : result;
       }
       /**
        * <code>optional .org.otrmessenger.messaging.AdminRequest adminReq = 3;</code>
@@ -3018,7 +3441,7 @@ public final class Messaging {
           throw new NullPointerException();
         }
         bitField0_ |= 0x00000004;
-        adminReq_ = value;
+        adminReq_ = value.getNumber();
         onChanged();
         return this;
       }
@@ -3027,38 +3450,38 @@ public final class Messaging {
        */
       public Builder clearAdminReq() {
         bitField0_ = (bitField0_ & ~0x00000004);
-        adminReq_ = org.otrmessenger.messaging.Messaging.AdminRequest.LAUNCH;
+        adminReq_ = 1;
         onChanged();
         return this;
       }
 
       private com.google.protobuf.ByteString requestInfoUsername_ = com.google.protobuf.ByteString.EMPTY;
       /**
-       * <code>optional bytes requestInfoUsername = 4;</code>
-       *
        * <pre>
        * username of person to request the key, if online etc.
        * </pre>
+       *
+       * <code>optional bytes requestInfoUsername = 4;</code>
        */
       public boolean hasRequestInfoUsername() {
         return ((bitField0_ & 0x00000008) == 0x00000008);
       }
       /**
-       * <code>optional bytes requestInfoUsername = 4;</code>
-       *
        * <pre>
        * username of person to request the key, if online etc.
        * </pre>
+       *
+       * <code>optional bytes requestInfoUsername = 4;</code>
        */
       public com.google.protobuf.ByteString getRequestInfoUsername() {
         return requestInfoUsername_;
       }
       /**
-       * <code>optional bytes requestInfoUsername = 4;</code>
-       *
        * <pre>
        * username of person to request the key, if online etc.
        * </pre>
+       *
+       * <code>optional bytes requestInfoUsername = 4;</code>
        */
       public Builder setRequestInfoUsername(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -3070,11 +3493,11 @@ public final class Messaging {
         return this;
       }
       /**
-       * <code>optional bytes requestInfoUsername = 4;</code>
-       *
        * <pre>
        * username of person to request the key, if online etc.
        * </pre>
+       *
+       * <code>optional bytes requestInfoUsername = 4;</code>
        */
       public Builder clearRequestInfoUsername() {
         bitField0_ = (bitField0_ & ~0x00000008);
@@ -3083,8 +3506,8 @@ public final class Messaging {
         return this;
       }
 
-      private org.otrmessenger.messaging.Messaging.Message msg_ = org.otrmessenger.messaging.Messaging.Message.getDefaultInstance();
-      private com.google.protobuf.SingleFieldBuilder<
+      private org.otrmessenger.messaging.Messaging.Message msg_ = null;
+      private com.google.protobuf.SingleFieldBuilderV3<
           org.otrmessenger.messaging.Messaging.Message, org.otrmessenger.messaging.Messaging.Message.Builder, org.otrmessenger.messaging.Messaging.MessageOrBuilder> msgBuilder_;
       /**
        * <code>optional .org.otrmessenger.messaging.Message msg = 5;</code>
@@ -3097,7 +3520,7 @@ public final class Messaging {
        */
       public org.otrmessenger.messaging.Messaging.Message getMsg() {
         if (msgBuilder_ == null) {
-          return msg_;
+          return msg_ == null ? org.otrmessenger.messaging.Messaging.Message.getDefaultInstance() : msg_;
         } else {
           return msgBuilder_.getMessage();
         }
@@ -3138,6 +3561,7 @@ public final class Messaging {
       public Builder mergeMsg(org.otrmessenger.messaging.Messaging.Message value) {
         if (msgBuilder_ == null) {
           if (((bitField0_ & 0x00000010) == 0x00000010) &&
+              msg_ != null &&
               msg_ != org.otrmessenger.messaging.Messaging.Message.getDefaultInstance()) {
             msg_ =
               org.otrmessenger.messaging.Messaging.Message.newBuilder(msg_).mergeFrom(value).buildPartial();
@@ -3156,7 +3580,7 @@ public final class Messaging {
        */
       public Builder clearMsg() {
         if (msgBuilder_ == null) {
-          msg_ = org.otrmessenger.messaging.Messaging.Message.getDefaultInstance();
+          msg_ = null;
           onChanged();
         } else {
           msgBuilder_.clear();
@@ -3179,17 +3603,18 @@ public final class Messaging {
         if (msgBuilder_ != null) {
           return msgBuilder_.getMessageOrBuilder();
         } else {
-          return msg_;
+          return msg_ == null ?
+              org.otrmessenger.messaging.Messaging.Message.getDefaultInstance() : msg_;
         }
       }
       /**
        * <code>optional .org.otrmessenger.messaging.Message msg = 5;</code>
        */
-      private com.google.protobuf.SingleFieldBuilder<
+      private com.google.protobuf.SingleFieldBuilderV3<
           org.otrmessenger.messaging.Messaging.Message, org.otrmessenger.messaging.Messaging.Message.Builder, org.otrmessenger.messaging.Messaging.MessageOrBuilder> 
           getMsgFieldBuilder() {
         if (msgBuilder_ == null) {
-          msgBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+          msgBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
               org.otrmessenger.messaging.Messaging.Message, org.otrmessenger.messaging.Messaging.Message.Builder, org.otrmessenger.messaging.Messaging.MessageOrBuilder>(
                   getMsg(),
                   getParentForChildren(),
@@ -3201,31 +3626,31 @@ public final class Messaging {
 
       private boolean requestKeyPairChange_ ;
       /**
-       * <code>optional bool requestKeyPairChange = 6;</code>
-       *
        * <pre>
        * Sergey: I am not sure I understand how usecase #9 works
        * </pre>
+       *
+       * <code>optional bool requestKeyPairChange = 6;</code>
        */
       public boolean hasRequestKeyPairChange() {
         return ((bitField0_ & 0x00000020) == 0x00000020);
       }
       /**
-       * <code>optional bool requestKeyPairChange = 6;</code>
-       *
        * <pre>
        * Sergey: I am not sure I understand how usecase #9 works
        * </pre>
+       *
+       * <code>optional bool requestKeyPairChange = 6;</code>
        */
       public boolean getRequestKeyPairChange() {
         return requestKeyPairChange_;
       }
       /**
-       * <code>optional bool requestKeyPairChange = 6;</code>
-       *
        * <pre>
        * Sergey: I am not sure I understand how usecase #9 works
        * </pre>
+       *
+       * <code>optional bool requestKeyPairChange = 6;</code>
        */
       public Builder setRequestKeyPairChange(boolean value) {
         bitField0_ |= 0x00000020;
@@ -3234,11 +3659,11 @@ public final class Messaging {
         return this;
       }
       /**
-       * <code>optional bool requestKeyPairChange = 6;</code>
-       *
        * <pre>
        * Sergey: I am not sure I understand how usecase #9 works
        * </pre>
+       *
+       * <code>optional bool requestKeyPairChange = 6;</code>
        */
       public Builder clearRequestKeyPairChange() {
         bitField0_ = (bitField0_ & ~0x00000020);
@@ -3246,16 +3671,53 @@ public final class Messaging {
         onChanged();
         return this;
       }
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
 
       // @@protoc_insertion_point(builder_scope:org.otrmessenger.messaging.MsgClientToServer)
     }
 
+    // @@protoc_insertion_point(class_scope:org.otrmessenger.messaging.MsgClientToServer)
+    private static final org.otrmessenger.messaging.Messaging.MsgClientToServer DEFAULT_INSTANCE;
     static {
-      defaultInstance = new MsgClientToServer(true);
-      defaultInstance.initFields();
+      DEFAULT_INSTANCE = new org.otrmessenger.messaging.Messaging.MsgClientToServer();
     }
 
-    // @@protoc_insertion_point(class_scope:org.otrmessenger.messaging.MsgClientToServer)
+    public static org.otrmessenger.messaging.Messaging.MsgClientToServer getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<MsgClientToServer>
+        PARSER = new com.google.protobuf.AbstractParser<MsgClientToServer>() {
+      public MsgClientToServer parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+          return new MsgClientToServer(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<MsgClientToServer> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<MsgClientToServer> getParserForType() {
+      return PARSER;
+    }
+
+    public org.otrmessenger.messaging.Messaging.MsgClientToServer getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
   }
 
   public interface MsgServerToClientOrBuilder extends
@@ -3320,37 +3782,30 @@ public final class Messaging {
   /**
    * Protobuf type {@code org.otrmessenger.messaging.MsgServerToClient}
    */
-  public static final class MsgServerToClient extends
-      com.google.protobuf.GeneratedMessage implements
+  public  static final class MsgServerToClient extends
+      com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:org.otrmessenger.messaging.MsgServerToClient)
       MsgServerToClientOrBuilder {
     // Use MsgServerToClient.newBuilder() to construct.
-    private MsgServerToClient(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+    private MsgServerToClient(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
-      this.unknownFields = builder.getUnknownFields();
     }
-    private MsgServerToClient(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
-
-    private static final MsgServerToClient defaultInstance;
-    public static MsgServerToClient getDefaultInstance() {
-      return defaultInstance;
+    private MsgServerToClient() {
+      users_ = java.util.Collections.emptyList();
+      state_ = 0;
+      loginSuccess_ = false;
     }
 
-    public MsgServerToClient getDefaultInstanceForType() {
-      return defaultInstance;
-    }
-
-    private final com.google.protobuf.UnknownFieldSet unknownFields;
     @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
+    getUnknownFields() {
       return this.unknownFields;
     }
     private MsgServerToClient(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      initFields();
+      this();
       int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
@@ -3374,7 +3829,8 @@ public final class Messaging {
                 users_ = new java.util.ArrayList<org.otrmessenger.messaging.Messaging.ClientInfo>();
                 mutable_bitField0_ |= 0x00000001;
               }
-              users_.add(input.readMessage(org.otrmessenger.messaging.Messaging.ClientInfo.PARSER, extensionRegistry));
+              users_.add(
+                  input.readMessage(org.otrmessenger.messaging.Messaging.ClientInfo.PARSER, extensionRegistry));
               break;
             }
             case 18: {
@@ -3397,7 +3853,7 @@ public final class Messaging {
                 unknownFields.mergeVarintField(3, rawValue);
               } else {
                 bitField0_ |= 0x00000002;
-                state_ = value;
+                state_ = rawValue;
               }
               break;
             }
@@ -3412,7 +3868,7 @@ public final class Messaging {
         throw e.setUnfinishedMessage(this);
       } catch (java.io.IOException e) {
         throw new com.google.protobuf.InvalidProtocolBufferException(
-            e.getMessage()).setUnfinishedMessage(this);
+            e).setUnfinishedMessage(this);
       } finally {
         if (((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
           users_ = java.util.Collections.unmodifiableList(users_);
@@ -3426,26 +3882,11 @@ public final class Messaging {
       return org.otrmessenger.messaging.Messaging.internal_static_org_otrmessenger_messaging_MsgServerToClient_descriptor;
     }
 
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return org.otrmessenger.messaging.Messaging.internal_static_org_otrmessenger_messaging_MsgServerToClient_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
               org.otrmessenger.messaging.Messaging.MsgServerToClient.class, org.otrmessenger.messaging.Messaging.MsgServerToClient.Builder.class);
-    }
-
-    public static com.google.protobuf.Parser<MsgServerToClient> PARSER =
-        new com.google.protobuf.AbstractParser<MsgServerToClient>() {
-      public MsgServerToClient parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new MsgServerToClient(input, extensionRegistry);
-      }
-    };
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<MsgServerToClient> getParserForType() {
-      return PARSER;
     }
 
     private int bitField0_;
@@ -3496,17 +3937,17 @@ public final class Messaging {
      * <code>optional .org.otrmessenger.messaging.Message msg = 2;</code>
      */
     public org.otrmessenger.messaging.Messaging.Message getMsg() {
-      return msg_;
+      return msg_ == null ? org.otrmessenger.messaging.Messaging.Message.getDefaultInstance() : msg_;
     }
     /**
      * <code>optional .org.otrmessenger.messaging.Message msg = 2;</code>
      */
     public org.otrmessenger.messaging.Messaging.MessageOrBuilder getMsgOrBuilder() {
-      return msg_;
+      return msg_ == null ? org.otrmessenger.messaging.Messaging.Message.getDefaultInstance() : msg_;
     }
 
     public static final int STATE_FIELD_NUMBER = 3;
-    private org.otrmessenger.messaging.Messaging.ServerState state_;
+    private int state_;
     /**
      * <code>optional .org.otrmessenger.messaging.ServerState state = 3;</code>
      */
@@ -3517,7 +3958,8 @@ public final class Messaging {
      * <code>optional .org.otrmessenger.messaging.ServerState state = 3;</code>
      */
     public org.otrmessenger.messaging.Messaging.ServerState getState() {
-      return state_;
+      org.otrmessenger.messaging.Messaging.ServerState result = org.otrmessenger.messaging.Messaging.ServerState.valueOf(state_);
+      return result == null ? org.otrmessenger.messaging.Messaging.ServerState.SERVER_UNKNOWN : result;
     }
 
     public static final int LOGINSUCCESS_FIELD_NUMBER = 4;
@@ -3535,12 +3977,6 @@ public final class Messaging {
       return loginSuccess_;
     }
 
-    private void initFields() {
-      users_ = java.util.Collections.emptyList();
-      msg_ = org.otrmessenger.messaging.Messaging.Message.getDefaultInstance();
-      state_ = org.otrmessenger.messaging.Messaging.ServerState.SERVER_UNKNOWN;
-      loginSuccess_ = false;
-    }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -3553,37 +3989,29 @@ public final class Messaging {
           return false;
         }
       }
-      if (hasMsg()) {
-        if (!getMsg().isInitialized()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-      }
       memoizedIsInitialized = 1;
       return true;
     }
 
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      getSerializedSize();
       for (int i = 0; i < users_.size(); i++) {
         output.writeMessage(1, users_.get(i));
       }
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeMessage(2, msg_);
+        output.writeMessage(2, getMsg());
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeEnum(3, state_.getNumber());
+        output.writeEnum(3, state_);
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         output.writeBool(4, loginSuccess_);
       }
-      getUnknownFields().writeTo(output);
+      unknownFields.writeTo(output);
     }
 
-    private int memoizedSerializedSize = -1;
     public int getSerializedSize() {
-      int size = memoizedSerializedSize;
+      int size = memoizedSize;
       if (size != -1) return size;
 
       size = 0;
@@ -3593,26 +4021,80 @@ public final class Messaging {
       }
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(2, msg_);
+          .computeMessageSize(2, getMsg());
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(3, state_.getNumber());
+          .computeEnumSize(3, state_);
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(4, loginSuccess_);
       }
-      size += getUnknownFields().getSerializedSize();
-      memoizedSerializedSize = size;
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
       return size;
     }
 
     private static final long serialVersionUID = 0L;
     @java.lang.Override
-    protected java.lang.Object writeReplace()
-        throws java.io.ObjectStreamException {
-      return super.writeReplace();
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof org.otrmessenger.messaging.Messaging.MsgServerToClient)) {
+        return super.equals(obj);
+      }
+      org.otrmessenger.messaging.Messaging.MsgServerToClient other = (org.otrmessenger.messaging.Messaging.MsgServerToClient) obj;
+
+      boolean result = true;
+      result = result && getUsersList()
+          .equals(other.getUsersList());
+      result = result && (hasMsg() == other.hasMsg());
+      if (hasMsg()) {
+        result = result && getMsg()
+            .equals(other.getMsg());
+      }
+      result = result && (hasState() == other.hasState());
+      if (hasState()) {
+        result = result && state_ == other.state_;
+      }
+      result = result && (hasLoginSuccess() == other.hasLoginSuccess());
+      if (hasLoginSuccess()) {
+        result = result && (getLoginSuccess()
+            == other.getLoginSuccess());
+      }
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptorForType().hashCode();
+      if (getUsersCount() > 0) {
+        hash = (37 * hash) + USERS_FIELD_NUMBER;
+        hash = (53 * hash) + getUsersList().hashCode();
+      }
+      if (hasMsg()) {
+        hash = (37 * hash) + MSG_FIELD_NUMBER;
+        hash = (53 * hash) + getMsg().hashCode();
+      }
+      if (hasState()) {
+        hash = (37 * hash) + STATE_FIELD_NUMBER;
+        hash = (53 * hash) + state_;
+      }
+      if (hasLoginSuccess()) {
+        hash = (37 * hash) + LOGINSUCCESS_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+            getLoginSuccess());
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
     }
 
     public static org.otrmessenger.messaging.Messaging.MsgServerToClient parseFrom(
@@ -3638,46 +4120,57 @@ public final class Messaging {
     }
     public static org.otrmessenger.messaging.Messaging.MsgServerToClient parseFrom(java.io.InputStream input)
         throws java.io.IOException {
-      return PARSER.parseFrom(input);
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
     }
     public static org.otrmessenger.messaging.Messaging.MsgServerToClient parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
     }
     public static org.otrmessenger.messaging.Messaging.MsgServerToClient parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input);
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
     }
     public static org.otrmessenger.messaging.Messaging.MsgServerToClient parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
     public static org.otrmessenger.messaging.Messaging.MsgServerToClient parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
-      return PARSER.parseFrom(input);
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
     }
     public static org.otrmessenger.messaging.Messaging.MsgServerToClient parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      return PARSER.parseFrom(input, extensionRegistry);
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
-    public static Builder newBuilder() { return Builder.create(); }
     public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(org.otrmessenger.messaging.Messaging.MsgServerToClient prototype) {
-      return newBuilder().mergeFrom(prototype);
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
     }
-    public Builder toBuilder() { return newBuilder(this); }
+    public static Builder newBuilder(org.otrmessenger.messaging.Messaging.MsgServerToClient prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
 
     @java.lang.Override
     protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
       Builder builder = new Builder(parent);
       return builder;
     }
@@ -3685,7 +4178,7 @@ public final class Messaging {
      * Protobuf type {@code org.otrmessenger.messaging.MsgServerToClient}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
         // @@protoc_insertion_point(builder_implements:org.otrmessenger.messaging.MsgServerToClient)
         org.otrmessenger.messaging.Messaging.MsgServerToClientOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
@@ -3693,7 +4186,7 @@ public final class Messaging {
         return org.otrmessenger.messaging.Messaging.internal_static_org_otrmessenger_messaging_MsgServerToClient_descriptor;
       }
 
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return org.otrmessenger.messaging.Messaging.internal_static_org_otrmessenger_messaging_MsgServerToClient_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
@@ -3706,20 +4199,17 @@ public final class Messaging {
       }
 
       private Builder(
-          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
         super(parent);
         maybeForceBuilderInitialization();
       }
       private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
           getUsersFieldBuilder();
           getMsgFieldBuilder();
         }
       }
-      private static Builder create() {
-        return new Builder();
-      }
-
       public Builder clear() {
         super.clear();
         if (usersBuilder_ == null) {
@@ -3729,20 +4219,16 @@ public final class Messaging {
           usersBuilder_.clear();
         }
         if (msgBuilder_ == null) {
-          msg_ = org.otrmessenger.messaging.Messaging.Message.getDefaultInstance();
+          msg_ = null;
         } else {
           msgBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000002);
-        state_ = org.otrmessenger.messaging.Messaging.ServerState.SERVER_UNKNOWN;
+        state_ = 0;
         bitField0_ = (bitField0_ & ~0x00000004);
         loginSuccess_ = false;
         bitField0_ = (bitField0_ & ~0x00000008);
         return this;
-      }
-
-      public Builder clone() {
-        return create().mergeFrom(buildPartial());
       }
 
       public com.google.protobuf.Descriptors.Descriptor
@@ -3796,6 +4282,32 @@ public final class Messaging {
         return result;
       }
 
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof org.otrmessenger.messaging.Messaging.MsgServerToClient) {
           return mergeFrom((org.otrmessenger.messaging.Messaging.MsgServerToClient)other);
@@ -3826,7 +4338,7 @@ public final class Messaging {
               users_ = other.users_;
               bitField0_ = (bitField0_ & ~0x00000001);
               usersBuilder_ = 
-                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                    getUsersFieldBuilder() : null;
             } else {
               usersBuilder_.addAllMessages(other.users_);
@@ -3842,20 +4354,14 @@ public final class Messaging {
         if (other.hasLoginSuccess()) {
           setLoginSuccess(other.getLoginSuccess());
         }
-        this.mergeUnknownFields(other.getUnknownFields());
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
         return this;
       }
 
       public final boolean isInitialized() {
         for (int i = 0; i < getUsersCount(); i++) {
           if (!getUsers(i).isInitialized()) {
-            
-            return false;
-          }
-        }
-        if (hasMsg()) {
-          if (!getMsg().isInitialized()) {
-            
             return false;
           }
         }
@@ -3871,7 +4377,7 @@ public final class Messaging {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
           parsedMessage = (org.otrmessenger.messaging.Messaging.MsgServerToClient) e.getUnfinishedMessage();
-          throw e;
+          throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
             mergeFrom(parsedMessage);
@@ -3890,7 +4396,7 @@ public final class Messaging {
          }
       }
 
-      private com.google.protobuf.RepeatedFieldBuilder<
+      private com.google.protobuf.RepeatedFieldBuilderV3<
           org.otrmessenger.messaging.Messaging.ClientInfo, org.otrmessenger.messaging.Messaging.ClientInfo.Builder, org.otrmessenger.messaging.Messaging.ClientInfoOrBuilder> usersBuilder_;
 
       /**
@@ -4106,11 +4612,11 @@ public final class Messaging {
            getUsersBuilderList() {
         return getUsersFieldBuilder().getBuilderList();
       }
-      private com.google.protobuf.RepeatedFieldBuilder<
+      private com.google.protobuf.RepeatedFieldBuilderV3<
           org.otrmessenger.messaging.Messaging.ClientInfo, org.otrmessenger.messaging.Messaging.ClientInfo.Builder, org.otrmessenger.messaging.Messaging.ClientInfoOrBuilder> 
           getUsersFieldBuilder() {
         if (usersBuilder_ == null) {
-          usersBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+          usersBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               org.otrmessenger.messaging.Messaging.ClientInfo, org.otrmessenger.messaging.Messaging.ClientInfo.Builder, org.otrmessenger.messaging.Messaging.ClientInfoOrBuilder>(
                   users_,
                   ((bitField0_ & 0x00000001) == 0x00000001),
@@ -4121,8 +4627,8 @@ public final class Messaging {
         return usersBuilder_;
       }
 
-      private org.otrmessenger.messaging.Messaging.Message msg_ = org.otrmessenger.messaging.Messaging.Message.getDefaultInstance();
-      private com.google.protobuf.SingleFieldBuilder<
+      private org.otrmessenger.messaging.Messaging.Message msg_ = null;
+      private com.google.protobuf.SingleFieldBuilderV3<
           org.otrmessenger.messaging.Messaging.Message, org.otrmessenger.messaging.Messaging.Message.Builder, org.otrmessenger.messaging.Messaging.MessageOrBuilder> msgBuilder_;
       /**
        * <code>optional .org.otrmessenger.messaging.Message msg = 2;</code>
@@ -4135,7 +4641,7 @@ public final class Messaging {
        */
       public org.otrmessenger.messaging.Messaging.Message getMsg() {
         if (msgBuilder_ == null) {
-          return msg_;
+          return msg_ == null ? org.otrmessenger.messaging.Messaging.Message.getDefaultInstance() : msg_;
         } else {
           return msgBuilder_.getMessage();
         }
@@ -4176,6 +4682,7 @@ public final class Messaging {
       public Builder mergeMsg(org.otrmessenger.messaging.Messaging.Message value) {
         if (msgBuilder_ == null) {
           if (((bitField0_ & 0x00000002) == 0x00000002) &&
+              msg_ != null &&
               msg_ != org.otrmessenger.messaging.Messaging.Message.getDefaultInstance()) {
             msg_ =
               org.otrmessenger.messaging.Messaging.Message.newBuilder(msg_).mergeFrom(value).buildPartial();
@@ -4194,7 +4701,7 @@ public final class Messaging {
        */
       public Builder clearMsg() {
         if (msgBuilder_ == null) {
-          msg_ = org.otrmessenger.messaging.Messaging.Message.getDefaultInstance();
+          msg_ = null;
           onChanged();
         } else {
           msgBuilder_.clear();
@@ -4217,17 +4724,18 @@ public final class Messaging {
         if (msgBuilder_ != null) {
           return msgBuilder_.getMessageOrBuilder();
         } else {
-          return msg_;
+          return msg_ == null ?
+              org.otrmessenger.messaging.Messaging.Message.getDefaultInstance() : msg_;
         }
       }
       /**
        * <code>optional .org.otrmessenger.messaging.Message msg = 2;</code>
        */
-      private com.google.protobuf.SingleFieldBuilder<
+      private com.google.protobuf.SingleFieldBuilderV3<
           org.otrmessenger.messaging.Messaging.Message, org.otrmessenger.messaging.Messaging.Message.Builder, org.otrmessenger.messaging.Messaging.MessageOrBuilder> 
           getMsgFieldBuilder() {
         if (msgBuilder_ == null) {
-          msgBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+          msgBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
               org.otrmessenger.messaging.Messaging.Message, org.otrmessenger.messaging.Messaging.Message.Builder, org.otrmessenger.messaging.Messaging.MessageOrBuilder>(
                   getMsg(),
                   getParentForChildren(),
@@ -4237,7 +4745,7 @@ public final class Messaging {
         return msgBuilder_;
       }
 
-      private org.otrmessenger.messaging.Messaging.ServerState state_ = org.otrmessenger.messaging.Messaging.ServerState.SERVER_UNKNOWN;
+      private int state_ = 0;
       /**
        * <code>optional .org.otrmessenger.messaging.ServerState state = 3;</code>
        */
@@ -4248,7 +4756,8 @@ public final class Messaging {
        * <code>optional .org.otrmessenger.messaging.ServerState state = 3;</code>
        */
       public org.otrmessenger.messaging.Messaging.ServerState getState() {
-        return state_;
+        org.otrmessenger.messaging.Messaging.ServerState result = org.otrmessenger.messaging.Messaging.ServerState.valueOf(state_);
+        return result == null ? org.otrmessenger.messaging.Messaging.ServerState.SERVER_UNKNOWN : result;
       }
       /**
        * <code>optional .org.otrmessenger.messaging.ServerState state = 3;</code>
@@ -4258,7 +4767,7 @@ public final class Messaging {
           throw new NullPointerException();
         }
         bitField0_ |= 0x00000004;
-        state_ = value;
+        state_ = value.getNumber();
         onChanged();
         return this;
       }
@@ -4267,7 +4776,7 @@ public final class Messaging {
        */
       public Builder clearState() {
         bitField0_ = (bitField0_ & ~0x00000004);
-        state_ = org.otrmessenger.messaging.Messaging.ServerState.SERVER_UNKNOWN;
+        state_ = 0;
         onChanged();
         return this;
       }
@@ -4303,77 +4812,114 @@ public final class Messaging {
         onChanged();
         return this;
       }
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
 
       // @@protoc_insertion_point(builder_scope:org.otrmessenger.messaging.MsgServerToClient)
     }
 
+    // @@protoc_insertion_point(class_scope:org.otrmessenger.messaging.MsgServerToClient)
+    private static final org.otrmessenger.messaging.Messaging.MsgServerToClient DEFAULT_INSTANCE;
     static {
-      defaultInstance = new MsgServerToClient(true);
-      defaultInstance.initFields();
+      DEFAULT_INSTANCE = new org.otrmessenger.messaging.Messaging.MsgServerToClient();
     }
 
-    // @@protoc_insertion_point(class_scope:org.otrmessenger.messaging.MsgServerToClient)
+    public static org.otrmessenger.messaging.Messaging.MsgServerToClient getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    @java.lang.Deprecated public static final com.google.protobuf.Parser<MsgServerToClient>
+        PARSER = new com.google.protobuf.AbstractParser<MsgServerToClient>() {
+      public MsgServerToClient parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+          return new MsgServerToClient(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<MsgServerToClient> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<MsgServerToClient> getParserForType() {
+      return PARSER;
+    }
+
+    public org.otrmessenger.messaging.Messaging.MsgServerToClient getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
   }
 
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_org_otrmessenger_messaging_Credentials_descriptor;
-  private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_org_otrmessenger_messaging_Credentials_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_org_otrmessenger_messaging_Message_descriptor;
-  private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_org_otrmessenger_messaging_Message_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_org_otrmessenger_messaging_ClientInfo_descriptor;
-  private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_org_otrmessenger_messaging_ClientInfo_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_org_otrmessenger_messaging_MsgClientToServer_descriptor;
-  private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_org_otrmessenger_messaging_MsgClientToServer_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_org_otrmessenger_messaging_MsgServerToClient_descriptor;
-  private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_org_otrmessenger_messaging_MsgServerToClient_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
     return descriptor;
   }
-  private static com.google.protobuf.Descriptors.FileDescriptor
+  private static  com.google.protobuf.Descriptors.FileDescriptor
       descriptor;
   static {
     java.lang.String[] descriptorData = {
       "\n\017messaging.proto\022\032org.otrmessenger.mess" +
       "aging\"T\n\013Credentials\022\020\n\010username\030\001 \002(\014\022\024" +
       "\n\014passwordHash\030\002 \002(\014\022\016\n\006signUp\030\003 \002(\010\022\r\n\005" +
-      "admin\030\004 \002(\010\"T\n\007Message\022\024\n\014fromUsername\030\001" +
-      " \002(\014\022\022\n\ntoUsername\030\002 \002(\014\022\014\n\004text\030\003 \002(\014\022\021" +
-      "\n\tsignature\030\004 \002(\014\";\n\nClientInfo\022\020\n\010usern" +
-      "ame\030\001 \002(\014\022\013\n\003key\030\002 \001(\014\022\016\n\006online\030\003 \001(\010\"\216" +
-      "\002\n\021MsgClientToServer\022<\n\013credentials\030\001 \001(" +
-      "\0132\'.org.otrmessenger.messaging.Credentia" +
-      "ls\022\022\n\nupdatedKey\030\002 \001(\014\022:\n\010adminReq\030\003 \001(\016",
-      "2(.org.otrmessenger.messaging.AdminReque" +
-      "st\022\033\n\023requestInfoUsername\030\004 \001(\014\0220\n\003msg\030\005" +
-      " \001(\0132#.org.otrmessenger.messaging.Messag" +
-      "e\022\034\n\024requestKeyPairChange\030\006 \001(\010\"\312\001\n\021MsgS" +
-      "erverToClient\0225\n\005users\030\001 \003(\0132&.org.otrme" +
-      "ssenger.messaging.ClientInfo\0220\n\003msg\030\002 \001(" +
-      "\0132#.org.otrmessenger.messaging.Message\0226" +
-      "\n\005state\030\003 \001(\0162\'.org.otrmessenger.messagi" +
-      "ng.ServerState\022\024\n\014loginSuccess\030\004 \001(\010*\201\001\n" +
-      "\014AdminRequest\022\n\n\006LAUNCH\020\001\022\010\n\004STOP\020\002\022\t\n\005R",
-      "ESET\020\003\022\025\n\021GET_CURRENT_STATE\020\004\022\021\n\rGET_ALL" +
-      "_USERS\020\005\022\024\n\020GET_ONLINE_USERS\020\006\022\020\n\014GET_AL" +
-      "L_KEYS\020\007*\\\n\013ServerState\022\022\n\016SERVER_UNKNOW" +
-      "N\020\000\022\023\n\017SERVER_LAUNCHED\020\001\022\022\n\016SERVER_STOPP" +
-      "ED\020\002\022\020\n\014SERVER_RESET\020\003"
+      "admin\030\004 \002(\010\"`\n\007Message\022\024\n\014fromUsername\030\001" +
+      " \001(\014\022\022\n\ntoUsername\030\002 \001(\014\022\014\n\004text\030\003 \001(\014\022\021" +
+      "\n\tsignature\030\004 \001(\014\022\n\n\002iv\030\005 \001(\014\";\n\nClientI" +
+      "nfo\022\020\n\010username\030\001 \002(\014\022\013\n\003key\030\002 \001(\014\022\016\n\006on" +
+      "line\030\003 \001(\010\"\216\002\n\021MsgClientToServer\022<\n\013cred" +
+      "entials\030\001 \001(\0132\'.org.otrmessenger.messagi" +
+      "ng.Credentials\022\022\n\nupdatedKey\030\002 \001(\014\022:\n\010ad",
+      "minReq\030\003 \001(\0162(.org.otrmessenger.messagin" +
+      "g.AdminRequest\022\033\n\023requestInfoUsername\030\004 " +
+      "\001(\014\0220\n\003msg\030\005 \001(\0132#.org.otrmessenger.mess" +
+      "aging.Message\022\034\n\024requestKeyPairChange\030\006 " +
+      "\001(\010\"\312\001\n\021MsgServerToClient\0225\n\005users\030\001 \003(\013" +
+      "2&.org.otrmessenger.messaging.ClientInfo" +
+      "\0220\n\003msg\030\002 \001(\0132#.org.otrmessenger.messagi" +
+      "ng.Message\0226\n\005state\030\003 \001(\0162\'.org.otrmesse" +
+      "nger.messaging.ServerState\022\024\n\014loginSucce" +
+      "ss\030\004 \001(\010*\201\001\n\014AdminRequest\022\n\n\006LAUNCH\020\001\022\010\n",
+      "\004STOP\020\002\022\t\n\005RESET\020\003\022\025\n\021GET_CURRENT_STATE\020" +
+      "\004\022\021\n\rGET_ALL_USERS\020\005\022\024\n\020GET_ONLINE_USERS" +
+      "\020\006\022\020\n\014GET_ALL_KEYS\020\007*\\\n\013ServerState\022\022\n\016S" +
+      "ERVER_UNKNOWN\020\000\022\023\n\017SERVER_LAUNCHED\020\001\022\022\n\016" +
+      "SERVER_STOPPED\020\002\022\020\n\014SERVER_RESET\020\003"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -4390,31 +4936,31 @@ public final class Messaging {
     internal_static_org_otrmessenger_messaging_Credentials_descriptor =
       getDescriptor().getMessageTypes().get(0);
     internal_static_org_otrmessenger_messaging_Credentials_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_otrmessenger_messaging_Credentials_descriptor,
         new java.lang.String[] { "Username", "PasswordHash", "SignUp", "Admin", });
     internal_static_org_otrmessenger_messaging_Message_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_org_otrmessenger_messaging_Message_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_otrmessenger_messaging_Message_descriptor,
-        new java.lang.String[] { "FromUsername", "ToUsername", "Text", "Signature", });
+        new java.lang.String[] { "FromUsername", "ToUsername", "Text", "Signature", "Iv", });
     internal_static_org_otrmessenger_messaging_ClientInfo_descriptor =
       getDescriptor().getMessageTypes().get(2);
     internal_static_org_otrmessenger_messaging_ClientInfo_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_otrmessenger_messaging_ClientInfo_descriptor,
         new java.lang.String[] { "Username", "Key", "Online", });
     internal_static_org_otrmessenger_messaging_MsgClientToServer_descriptor =
       getDescriptor().getMessageTypes().get(3);
     internal_static_org_otrmessenger_messaging_MsgClientToServer_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_otrmessenger_messaging_MsgClientToServer_descriptor,
         new java.lang.String[] { "Credentials", "UpdatedKey", "AdminReq", "RequestInfoUsername", "Msg", "RequestKeyPairChange", });
     internal_static_org_otrmessenger_messaging_MsgServerToClient_descriptor =
       getDescriptor().getMessageTypes().get(4);
     internal_static_org_otrmessenger_messaging_MsgServerToClient_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_org_otrmessenger_messaging_MsgServerToClient_descriptor,
         new java.lang.String[] { "Users", "Msg", "State", "LoginSuccess", });
   }

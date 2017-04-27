@@ -7,15 +7,15 @@ public class FriendsList {
 	private ArrayList<Group> friends;
 	private ArrayList<User> banned;
 	
-	public boolean banUser(String username){
-		boolean confirm = false;
-		//TODO
-		/*
-		 * find the user with name == username
-		 * banned.add(user with name == username);
-		 * delFriendToGroup (user, group);
-		*/
-		return confirm;
+	//changed parameter to User
+	public boolean banUser(User usr){
+		banned.add(usr);
+		for (Group grp : friends){
+			if (grp.isInGroup(usr)){
+				return grp.delUser(usr);
+			}
+		}
+		return false;//it should never hit this?
 	}
 	//getFriendsList() is just the getter of friends, change it to getter?or change the attribute's name?
 	public ArrayList<Group> getFriendsList(){
@@ -25,31 +25,29 @@ public class FriendsList {
 	public ArrayList<User> getBannedList(){
 		return banned;
 	}
+	//do we need this new function not in Class diagram?
+	public boolean addGroup(Group grp){			
+		return friends.add(grp);	
+		}
+	//add an user to a specified group 
 	public boolean addFriendToGroup(User usr, Group grp){
-		boolean confirm = false;
-		//TODO
-		/*if (!friends.contains(grp)){
-		 *	print "error. group does not exist" 
-		 *}else{ 
-		 *	int indexOfGroup = friends.indexOf(grp);
-		 *	int sizeOfGroup=friends[indexOfGroup].members.size();
-		 *	friends[indexOfGroup].members.add(usr);
-		 *	int newSize = friends[friends.indexOf(grp)].members.size();
-		 *	if (newSize == sizeOfGroup +1){
-		 *		confirm = True;
-		 *	}
-		 * */
-		return confirm;
+		
+		if (!friends.contains(grp)){
+		 	addGroup(grp);
+		 	return addFriendToGroup(usr, grp);
+		 }else{ 
+		 	int indexOfGroup = friends.indexOf(grp);
+		 	return friends.get(indexOfGroup).addUser(usr);
+		 }
 	}
-	public boolean delFriendToGroup(User usr, Group grp){
-		boolean confirm = false;
-		//TODO
-		return confirm;
+	//deletes an user from a specified group
+	public boolean delFriendFromGroup(User usr, Group grp){
+		int indexOfGroup = friends.indexOf(grp);
+	 	return friends.get(indexOfGroup).delUser(usr);
 	}
 	//delGroup takes as parameter a Group, shouldn't this be String for the group's attribute "name"?
 	public boolean delGroup(Group groupName){
-		boolean confirm = false;
-		//TODO
-		return confirm;
+		return friends.remove(groupName);	
 	}
+	
 }
