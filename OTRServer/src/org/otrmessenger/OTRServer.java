@@ -15,11 +15,13 @@ public class OTRServer {
     private AssetHandler assets;
     private List<UserConn> activeConnections;
     private ServerState state;
+    protected int portNumber;
 
     private static OTRServer instance = null;
     protected OTRServer() {
         assets = new AssetHandler();
         activeConnections = Collections.synchronizedList(new ArrayList<UserConn>());
+        portNumber = 10050;
     }
 
     public static OTRServer getInstance() {
@@ -32,7 +34,7 @@ public class OTRServer {
     public void Launch() {
         state = ServerState.SERVER_LAUNCHED;
         try {
-            ServerSocket server = new ServerSocket(10050);
+            ServerSocket server = new ServerSocket(portNumber);
             while (state == ServerState.SERVER_LAUNCHED) {
                 Socket clientSock = server.accept();
                 UserConn userConn = new UserConn(clientSock);
@@ -70,7 +72,7 @@ public class OTRServer {
     }
 
     void Reset() {
-        // TODO
+        Stop();
+        this.assets.reset();
     }
-   }
-
+}

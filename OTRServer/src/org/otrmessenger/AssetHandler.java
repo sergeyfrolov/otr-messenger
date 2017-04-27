@@ -20,6 +20,10 @@ public class AssetHandler {
         return dbHandler.getUsers();
     }
 
+    void reset() {
+        dbHandler.reset();
+    }
+
     Boolean checkPassword(byte[] name, byte[] passHash) {
         return dbHandler.checkPassword(name, passHash);
     }

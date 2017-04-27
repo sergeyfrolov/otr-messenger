@@ -1,5 +1,6 @@
 package org.otrmessenger;
 
+import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,21 +12,27 @@ import java.util.List;
  */
 public class SQLiteDBHandler {
     private Connection conn;
+    private String pathToDB;
 
-    SQLiteDBHandler(String pathToDB) {
+    SQLiteDBHandler(String _pathToDB) {
+        pathToDB = _pathToDB;
+        connectToDB();
+        createTables();
+    }
+
+    private void connectToDB() {
         // credits: based on http://www.sqlitetutorial.net/sqlite-java/sqlite-jdbc-driver/
         try {
             // db parameters
             String url = "jdbc:sqlite:" + pathToDB;
             // create a connection to the database
             conn = DriverManager.getConnection(url);
-            createTables();
 
             System.out.println("Connection to SQLite has been established.");
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-        } finally {
+        }/* finally {
             try {
                 if (conn != null) {
                     conn.close();
@@ -33,7 +40,13 @@ public class SQLiteDBHandler {
             } catch (SQLException ex) {
                 System.out.println(ex.getMessage());
             }
-        }
+        }*/
+    }
+
+    public void reset() {
+        // TODO
+        connectToDB();
+        createTables();
     }
 
     private void createTables() {
