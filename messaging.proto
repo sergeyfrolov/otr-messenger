@@ -14,7 +14,19 @@ message Message {
 	optional bytes toUsername = 2;
 	optional bytes text = 3;
 	optional bytes signature = 4;
-        optional bytes iv = 5;
+    optional bytes iv = 5;
+	optional uint32 id = 10;
+}
+
+enum MessageStatus {
+	UNKNOWN = 0;
+	USER_OFFLINE = 1;
+	DELIVERED = 2;
+}
+
+message MessageStatusMsg {
+	optional MessageStatus status = 1;
+	optional uint32 id = 10;
 }
 
 message ClientInfo {
@@ -47,7 +59,6 @@ message MsgClientToServer {
 	optional bytes requestInfoUsername = 4; // username of person to request the key, if online etc.
 	optional Message msg = 5;
 	optional bool requestKeyPairChange = 6; // Sergey: I am not sure I understand how usecase #9 works
-
 }
 
 message MsgServerToClient {
@@ -55,5 +66,6 @@ message MsgServerToClient {
 	optional Message msg = 2;
 	optional ServerState state = 3;
 	optional bool loginSuccess = 4;
+	optional MessageStatusMsg msgStatus = 12;
 }
 
