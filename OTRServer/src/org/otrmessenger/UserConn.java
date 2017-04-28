@@ -220,12 +220,15 @@ public class UserConn implements Runnable {
             // if we want to figure this out client-side, we can uncomment following return
             return;
         }
-        Message.Builder message = Message.newBuilder();
-        System.out.println("server.getActiveConnections()" + server.getActiveConnections());
+        Messaging.MessageStatus status = Messaging.MessageStatus.USER_OFFLINE;
+        Messaging.MessageStatusMsg.Builder ackStatus = Messaging.MessageStatusMsg.newBuilder();
+        if (msgFromUser.hasId()) {
+            ackStatus.setId(msgFromUser.getId());
+        }
         for (UserConn userConn : server.getActiveConnections()) {
-            System.out.println("userConn" + userConn);
             if (userConn.getUsername().equals(msgFromUser.getToUsername().toStringUtf8())) {
-                System.out.println("Found user");
+                status = Messaging.MessageStatus.DELIVERED;
+                Message.Builder message = Message.newBuilder();
                 message.setToUsername(ByteString.copyFrom(username.getBytes()));
                 message.setFromUsername(ByteString.copyFrom(msgFromUser.getToUsername().toStringUtf8().getBytes()));
                 message.setText(msgFromUser.getText());
@@ -234,12 +237,13 @@ public class UserConn implements Runnable {
                 MsgServerToClient.Builder msgFromServer = MsgServerToClient.newBuilder();
                 msgFromServer.setMsg(message);
 
-                sendServerMsg(msgFromServer.build());
-                return;
+                userConn.sendServerMsg(msgFromServer.build());
             }
         }
-        // is user is offline, then:
-        // TODO: send back something
+        ackStatus.setStatus(status);
+        MsgServerToClient.Builder msgAck = MsgServerToClient.newBuilder();
+        msgAck.setMsgStatus(ackStatus.build());
+        sendServerMsg(msgAck.build());
     }
 
     private void HandleGetUserInfo(byte[] username) {
@@ -271,6 +275,7 @@ public class UserConn implements Runnable {
     }
 
     private void sendServerMsg(MsgServerToClient msg){
+        // TODO: lock
         System.out.print("% trying to send message:" + msg.toString());
         try {
             outputStream.writeInt(msg.getSerializedSize());
@@ -286,6 +291,7 @@ public class UserConn implements Runnable {
 
     //called repeatedly for many objects in the same stream.
     private MsgClientToServer recvClientMsg(){
+        // TODO: lock
         int length = 0;
         try {
             length = inputStream.readInt();
