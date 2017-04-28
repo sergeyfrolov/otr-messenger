@@ -20,10 +20,16 @@ public class User {
 	public void setUsername(String username) {
 		this.username = username;
 	}
+
 	public Signer getSignature() {
 		return signature;
 	}
+
 	public void setSignature(Signer signature) {
 		this.signature = signature;
+	}
+	
+	public String toString(){
+	    return this.username;
 	}
 }

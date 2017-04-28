@@ -1,5 +1,14 @@
 package org.otrmessenger.viewer;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.otrmessenger.viewer.Group;
 import org.otrmessenger.viewer.User;
 
@@ -8,17 +17,90 @@ public class FriendsList {
 	private ArrayList<User> banned;
 	
 	public FriendsList(){
-		
+	    this.friends = new ArrayList<Group>();
+	    this.banned = new ArrayList<User>();
+	    
+	    BufferedReader br = null;
+	    try {
+            br = new BufferedReader(new FileReader(".friends"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return;
+        }
+	    
+	    String line;
+	    try {
+            Group g = new Group();
+            while((line = br.readLine()) != null){
+                // check is line has whitespace (if so its a username, not a group name)
+                Pattern pattern = Pattern.compile("^\\s");
+                Matcher matcher = pattern.matcher(line);
+                boolean found = matcher.find();
+                if (!found){
+                    if (!g.getName().equals(""))
+                        this.friends.add(g);
+                    
+
+                    g = new Group();
+                    g.setName(line.replaceAll(":", ""));
+                }
+                else{
+                    if (line.length() > 0){
+                        g.addUser(new User(line.replaceAll("\\s+", "")));
+                    }
+                }
+            }
+            this.friends.add(g);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+	    
+	    try {
+            br = new BufferedReader(new FileReader(".enemies"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return;
+        }
+
+	    try {
+            while((line = br.readLine()) != null){
+                this.banned.add(new User(line.replaceAll("\\s+", "")));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 	}
+	
+	public void save(){
+	    File f = new File(".friends");
+	    File en = new File(".enemies");
+	    try {
+            PrintWriter out = new PrintWriter(f);
+            for (Group g: this.friends){
+                out.write(g.toString() + "\n");
+            }
+            out.close();
+            
+            out = new PrintWriter(en);
+            for (User b: this.banned){
+                out.write(b.toString() + "\n");
+            }
+            out.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+	}
+
 	//changed parameter to User
 	public boolean banUser(User usr){
-		banned.add(usr);
+		this.banned.add(usr);
 		for (Group grp : friends){
 			if (grp.isInGroup(usr)){
 				return grp.delUser(usr);
 			}
 		}
-		return false;//it should never hit this?
+		return false;//it should never hit this? unless person isn't in a group.
 	}
 	//getFriendsList() is just the getter of friends, change it to getter?or change the attribute's name?
 	public ArrayList<Group> getFriendsList(){
@@ -51,6 +133,19 @@ public class FriendsList {
 	//delGroup takes as parameter a Group, shouldn't this be String for the group's attribute "name"?
 	public boolean delGroup(Group groupName){
 		return friends.remove(groupName);	
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Groups:\n");
+		for (Group g: this.friends)
+		    builder.append(g.toString() + "\n");
+		builder.append("Banned:\n");
+		for (User u: this.banned)
+		    builder.append("\t" + u.toString() + "\n");
+		
+		return builder.toString();
 	}
 	
 }

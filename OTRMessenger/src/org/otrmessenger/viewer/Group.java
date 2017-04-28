@@ -6,11 +6,24 @@ public class Group {
 	private String name;
 
 	public Group(){
-		
+	    this.name = "";
+	    this.members = new ArrayList<User>();
 	}
+	
+	public Group(String n){
+	    this.members = new ArrayList<User>();
+	    String list[] = n.split("\\n");
+	    this.name = list[0];
+	    for (String l: list) {
+	        l = l.replaceAll("\\s+", "");
+	        this.members.add(new User(l));
+	    }
+	}
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -19,10 +32,12 @@ public class Group {
 	
 		return members.add(usr);	
 	}
+
 	public boolean delUser(User usr){
 				
 		return members.remove(usr);
 	}
+
 	//not in class diagram
 	public boolean isInGroup(User usr){
 		return members.contains(usr);
@@ -31,16 +46,17 @@ public class Group {
 	public void printMembers(){		
 		System.out.println(name); 
 		for (int index = 0; index<members.size(); index++){
-			System.out.println("\n"+members.get(index).username);
+			System.out.println("\n" + members.get(index).username);
 		}
 	}
+
 	//new function not in Class diagram
 	public String toString(){
 		StringBuilder builder = new StringBuilder();
-		builder.append("Group: "+name+"\n");
+		builder.append(name + ":");
 		//build a string with string builder name+"\n";
 		for (User user : members)
-			builder.append(user.username+"\n");	
+			builder.append("\n\t" + user.username);	
 		return builder.toString(); 
 	}
 }
