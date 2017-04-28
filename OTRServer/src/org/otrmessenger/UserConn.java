@@ -75,7 +75,12 @@ public class UserConn implements Runnable {
                     }
                 }
 
-                // todo: if not logged in abort
+                if (!loggedIn) {
+                    MsgServerToClient.Builder msg = MsgServerToClient.newBuilder();
+                    msg.setLoginSuccess(false);
+                    sendServerMsg(msg.build());
+                    continue;
+                }
 
                 if (clientMsg.hasAdminReq()) {
                     AdminRequest request = clientMsg.getAdminReq();
