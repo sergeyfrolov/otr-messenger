@@ -11,7 +11,7 @@ public class Host extends User {
 	private KeyPair DHKeys;
 	private ServerConnector SC;
 	private boolean isAdmin;
-	private FriendsList fl;
+	private FriendsList fl; 
 	private ArrayList<Chat> chats;
 	
 	private boolean genKeyPair(){

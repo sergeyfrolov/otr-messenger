@@ -7,6 +7,9 @@ public class FriendsList {
 	private ArrayList<Group> friends;
 	private ArrayList<User> banned;
 	
+	public FriendsList(){
+		
+	}
 	//changed parameter to User
 	public boolean banUser(User usr){
 		banned.add(usr);
