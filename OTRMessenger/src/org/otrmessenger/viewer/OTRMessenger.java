@@ -1,5 +1,6 @@
 package org.otrmessenger.viewer;
 
+import java.awt.Color;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -9,6 +10,8 @@ import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.awt.event.ActionEvent;
 
 public class OTRMessenger {
@@ -16,6 +19,7 @@ public class OTRMessenger {
 	private JFrame frame;
 	private JTextField UsernameField;
 	private JPasswordField passwordField;
+	private static Host curr;
 
 	/**
 	 * Launch the application.
@@ -54,7 +58,7 @@ public class OTRMessenger {
 		frame.getContentPane().add(lblUsername);
 		
 		JLabel lblPassword = new JLabel("Password");
-		lblPassword.setBounds(52, 112, 61, 16);
+		lblPassword.setBounds(52, 112, 81, 16);
 		frame.getContentPane().add(lblPassword);
 		
 		UsernameField = new JTextField();
@@ -65,21 +69,62 @@ public class OTRMessenger {
 		passwordField = new JPasswordField();
 		passwordField.setBounds(157, 101, 205, 32);
 		frame.getContentPane().add(passwordField);
+
+        JLabel err = new JLabel("Couldn't log in");
+        err.setBounds(180, 243, 505, 32);
+        err.setForeground(Color.RED);
+        err.setVisible(false);
+        frame.getContentPane().add(err);
 		
 		JButton btnLogIn = new JButton("Log In");
 		btnLogIn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//if successful it will open the landing page
+                MessageDigest messageDigest = null;
+                try {
+                    messageDigest = MessageDigest.getInstance("SHA-256");
+                } catch (NoSuchAlgorithmException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
+                messageDigest.update(passwordField.getText().getBytes());
+                String encryptedString = new String(messageDigest.digest());
+			    curr = new Host(UsernameField.getText(), encryptedString);
+			    boolean succ = curr.login();
+			    if (succ)
+                    frame.dispose();
+			    else{
+			        err.setVisible(true);
+			    }
 			}
 		});
 		btnLogIn.setFont(new Font("Lucida Grande", Font.BOLD, 16));
 		btnLogIn.setBounds(241, 166, 120, 46);
 		frame.getContentPane().add(btnLogIn);
 		
-		JButton btnSignIn = new JButton("Sign In");
+		JButton btnSignIn = new JButton("Sign Up");
 		btnSignIn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//sign up procedure and if successfull, it will launch the log in 
+                MessageDigest messageDigest = null;
+                try {
+                    messageDigest = MessageDigest.getInstance("SHA-256");
+                } catch (NoSuchAlgorithmException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
+                messageDigest.update(passwordField.getText().getBytes());
+                String encryptedString = new String(messageDigest.digest());
+			    curr = new Host(UsernameField.getText(), encryptedString);
+			    boolean succ = curr.signUp();
+			    if (succ){
+			        err.setText("Account created, login please");
+			        err.setVisible(true);
+			        UsernameField.setText("");
+			        passwordField.setText("");
+			    }
+			    else{
+			        err.setText("Couldn't create account");
+			        err.setVisible(true);
+			    }
 			}
 		});
 		btnSignIn.setBounds(11, 243, 117, 29);

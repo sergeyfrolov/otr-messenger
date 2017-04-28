@@ -5,6 +5,10 @@ public class User {
 	protected String username;
 	protected Signer signature;
 	
+	public User(){
+	    this("");
+	}
+
 	public User(String u){
 	    this.username = u;
 	}
@@ -12,6 +16,7 @@ public class User {
 	public String getUsername() {
 		return username;
 	}
+
 	public void setUsername(String username) {
 		this.username = username;
 	}
