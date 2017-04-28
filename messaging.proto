@@ -14,7 +14,7 @@ message Message {
 	optional bytes toUsername = 2;
 	optional bytes text = 3;
 	optional bytes signature = 4;
-    optional bytes iv = 5;
+        optional bytes iv = 5;
 	optional uint32 id = 10;
 }
 
