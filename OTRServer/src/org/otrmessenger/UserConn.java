@@ -257,17 +257,6 @@ public class UserConn implements Runnable {
         sendServerMsg(msg.build());
     }
 
-    // Enforces Business Requirement to
-    static public Boolean checkPasswordRequirements(String password) {
-        // based on https://coderanch.com/t/583177/java/validate-string-characters-letter-number
-        final Pattern letter = Pattern.compile("[a-zA-z]");
-        final Pattern digit = Pattern.compile("[0-9]");
-        final Pattern special = Pattern.compile ("[!@#$%&*()_+=|<>?{}\\[\\]~-]");
-        return (password.length() >= 8)
-                && special.matcher(password).find()
-                && digit.matcher(password).find()
-                && letter.matcher(password).find();
-    }
 
     private Boolean HandleUpdateKey(byte[] username, byte[] key) {
         if (getUsername().getBytes().equals(username)) {
