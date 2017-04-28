@@ -44,13 +44,11 @@ public class ServerConnector implements Runnable {
     }
     
     public void run(){
-        System.out.println("in run");
         while(running){
             int length = 0;
             byte[] buf;
             try {
                 length = in.readInt();
-                System.out.println(length);
                 buf = new byte[length];
                 in.readFully(buf);
             } catch (IOException e) {
@@ -69,7 +67,6 @@ public class ServerConnector implements Runnable {
     }
     
     public boolean loginUser(){
-        System.out.println("in loginUser");
         return initialConnection(false);
     }
     
@@ -84,12 +81,10 @@ public class ServerConnector implements Runnable {
     }
 
     private boolean initialConnection(boolean signUp){
-        System.out.println("in initialConnection");
         cred = credSetup(cred.getUsername(), cred.getPasswordHash(), signUp, false);
         MsgClientToServer.Builder ctsBuilder = MsgClientToServer.newBuilder();
         ctsBuilder.setCredentials(cred);
         MsgServerToClient msg = send(ctsBuilder.build());
-        System.out.println(msg);
         
         return msg.getLoginSuccess();
     }
@@ -124,13 +119,11 @@ public class ServerConnector implements Runnable {
     }
 
     public MsgServerToClient send(MsgClientToServer cts){
-        System.out.println("in send");
         try{
             out.writeInt(cts.getSerializedSize());
             out.flush();
             out.write(cts.toByteArray());
             out.flush();
-            System.out.println("after outs");
         }
         catch(IOException e){
             e.printStackTrace();
