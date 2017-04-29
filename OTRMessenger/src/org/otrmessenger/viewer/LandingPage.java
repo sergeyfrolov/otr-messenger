@@ -51,6 +51,14 @@ public class LandingPage
       };
   }
   
+public void setFL(FriendsList fl){
+    this.fl = fl;
+}
+
+public void setHost(Host h){
+    this.myself = h;
+}
+
 public void draw(){
     data = fl.toObjectArray();
     setTableModel(data, columnNames);
@@ -60,26 +68,17 @@ public void draw(){
     size.height += 100;
     size.width += 200;
     
-}
-
-  public LandingPage(Host m){
-    myself = m;
-    fl = new FriendsList(m.getUsername());
-    System.out.println(fl);
-    draw();
-    Dimension size = table.getPreferredSize();
-    size.height += 100;
-    size.width += 200;
-	
-	
-
+    LandingPage l = this;
+    
 	JButton btnAddFriend = new JButton("AddFriend");
 	btnAddFriend.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-		    myself = new AddFriend(myself).getHost();
-		    fl = new FriendsList(myself.getUsername());
-		    System.out.println(fl);
-		    draw();
+		    AddFriend af = new AddFriend(myself, l);
+//		    myself = af.getHost();
+//		    fl = new FriendsList(myself.getUsername());
+//		    System.out.println(fl);
+//		    frame.dispose();
+//		    draw();
 		}
 	});
 	btnAddFriend.setFont(new Font("Verdana", Font.PLAIN, 12));
@@ -100,6 +99,13 @@ public void draw(){
     frame.pack();
     frame.setLocation(300, 300);
     frame.setVisible(true);
+}
+
+  public LandingPage(Host m){
+    myself = m;
+    fl = new FriendsList(m.getUsername());
+    System.out.println(fl);
+    draw();
   }
   
 
