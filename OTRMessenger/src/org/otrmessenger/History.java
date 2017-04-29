@@ -5,6 +5,10 @@ import java.util.ArrayList;
 public class History {
 	private ArrayList<Message> savedMsgs;
 	
+	public History() {
+	    this.savedMsgs = new ArrayList<Message>();
+	}
+
 	public void addMsg(Message text){
 		savedMsgs.add(text);
 	}
