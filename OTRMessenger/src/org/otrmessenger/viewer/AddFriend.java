@@ -13,6 +13,7 @@ public class AddFriend {
 
 	private JFrame frame;
 	private JTextField textField;
+	private JTextField GroupField;
 	private JButton btnAdd;
 	private JButton btnCancel;
 	private Host myself;
@@ -40,11 +41,11 @@ public class AddFriend {
 		frame.getContentPane().setLayout(null);
 		
 		JLabel lblName = new JLabel("Name");
-		lblName.setBounds(43, 62, 61, 16);
+		lblName.setBounds(46, 37, 61, 16);
 		frame.getContentPane().add(lblName);
 		
 		textField = new JTextField();
-		textField.setBounds(119, 50, 194, 33);
+		textField.setBounds(119, 29, 194, 33);
 		frame.getContentPane().add(textField);
 		textField.setColumns(10);
 		
@@ -69,7 +70,7 @@ public class AddFriend {
 			    }
 			}
 		});
-		btnAdd.setBounds(43, 117, 117, 29);
+		btnAdd.setBounds(43, 132, 117, 29);
 		frame.getContentPane().add(btnAdd);
 		
 		btnCancel = new JButton("Cancel");
@@ -78,8 +79,17 @@ public class AddFriend {
 			    frame.dispose();
 			}
 		});
-		btnCancel.setBounds(196, 117, 117, 29);
+		btnCancel.setBounds(196, 132, 117, 29);
 		frame.getContentPane().add(btnCancel);
+		
+		JLabel lblGroup = new JLabel("Group");
+		lblGroup.setBounds(46, 82, 61, 16);
+		frame.getContentPane().add(lblGroup);
+		
+		GroupField = new JTextField();
+		GroupField.setBounds(119, 74, 194, 33);
+		frame.getContentPane().add(GroupField);
+		GroupField.setColumns(10);
 	}
 	
 	public Host getHost(){
