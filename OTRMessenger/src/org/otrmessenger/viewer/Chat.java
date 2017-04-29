@@ -25,25 +25,13 @@ public class Chat  {
 	private static String othername="other"; //for testing
 	
 	
-	public static void main(String[] args) {
-		othername = "other";
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Chat window = new Chat(othername);
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
 	/**
 	 * Create the application.
 	 */
 	public Chat(String name) {
+	    this.history = new History();
 		initialize(name);
+        this.frame.setVisible(true);
 	}
 
 	/**
@@ -56,6 +44,7 @@ public class Chat  {
 		frame.getContentPane().setLayout(null);
 		
 		JTextArea HistoryArea = new JTextArea();
+		HistoryArea.setEditable(false);
 		HistoryArea.setLineWrap(true);
 		HistoryArea.setWrapStyleWord(true);
 		HistoryArea.setBounds(17, 17, 415, 169);
@@ -70,6 +59,7 @@ public class Chat  {
 		JButton btnSend = new JButton("Send");
 		btnSend.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+			    String newMessage = messageField.getText();
 			}
 		});
 		btnSend.setBounds(339, 217, 93, 35);
