@@ -1,4 +1,5 @@
 package org.otrmessenger.viewer;
+import java.awt.Color;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -14,28 +15,19 @@ public class AddFriend {
 	private JTextField textField;
 	private JButton btnAdd;
 	private JButton btnCancel;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AddFriend window = new AddFriend();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	private Host myself;
 
 	/**
 	 * Create the application.
 	 */
-	public AddFriend() {
+	public AddFriend(Host m) {
+	    this.myself = m;
 		initialize();
+		this.frame.setVisible(true);
+	}
+
+	public AddFriend() {
+	    this(null);
 	}
 
 	/**
@@ -56,10 +48,25 @@ public class AddFriend {
 		frame.getContentPane().add(textField);
 		textField.setColumns(10);
 		
+		JLabel failedText = new JLabel("Friend not available");
+		failedText.setBounds(43, 100, 300, 16);
+		frame.getContentPane().add(failedText);
+		failedText.setForeground(Color.RED);
+		failedText.setVisible(false);
+		
 		btnAdd = new JButton("Add");
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//add a friend
+			    String newUserName = textField.getText();
+			    if (newUserName.length() > 0){
+			        boolean success = myself.addFriend(newUserName);
+			        if(!success){
+			            failedText.setVisible(true);
+			        }
+			        else{
+			            frame.dispose();
+			        }
+			    }
 			}
 		});
 		btnAdd.setBounds(43, 117, 117, 29);
@@ -68,11 +75,15 @@ public class AddFriend {
 		btnCancel = new JButton("Cancel");
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//cancel (close window)
+			    frame.dispose();
 			}
 		});
 		btnCancel.setBounds(196, 117, 117, 29);
 		frame.getContentPane().add(btnCancel);
+	}
+	
+	public Host getHost(){
+	    return myself;
 	}
 
 }
