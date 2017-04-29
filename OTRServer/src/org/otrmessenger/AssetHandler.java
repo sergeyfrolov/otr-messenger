@@ -40,7 +40,7 @@ public class AssetHandler {
         return dbHandler.setKey(name, key);
     }
 
-    void addUser(byte[] name, byte[] passHash){dbHandler.addUser(name, passHash); }
+    Boolean addUser(byte[] name, byte[] passHash){return dbHandler.addUser(name, passHash); }
 
     X509Certificate getCertKey() {
         return certHandler.getCertKey();

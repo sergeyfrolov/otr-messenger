@@ -39,7 +39,8 @@ public class OTRServer {
                 Socket clientSock = server.accept();
                 UserConn userConn = new UserConn(clientSock);
                 activeConnections.add(userConn);
-                userConn.run();
+                Thread t = new Thread(userConn);
+                t.start();
             }
         } catch (Exception e) {
             System.err.println("Exception caught:" + e);

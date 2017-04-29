@@ -155,13 +155,14 @@ public class SQLiteDBHandler {
             stmt.setBytes(2, name);
             // update
             stmt.executeUpdate();
+            return true;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return null;
+        return false;
     }
 
-    void addUser(byte[] name, byte[] passHash) {
+    Boolean addUser(byte[] name, byte[] passHash) {
         // loosely based on http://www.sqlitetutorial.net/sqlite-java/insert/
         String sql = "INSERT INTO USERS (USERNAME, PASSHASH) VALUES(?,?)";
 
@@ -169,8 +170,10 @@ public class SQLiteDBHandler {
             stmt.setBytes(1, name);
             stmt.setBytes(2, passHash);
             stmt.executeUpdate();
+            return true;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+            return false;
         }
     }
 
