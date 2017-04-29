@@ -3,7 +3,9 @@ package org.otrmessenger;
 import javax.net.ssl.SSLSocket;
 import java.io.*;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.regex.Pattern;
 
 import com.google.protobuf.ByteString;
@@ -50,7 +52,7 @@ public class UserConn implements Runnable {
             outputStream = new DataOutputStream(this.sock.getOutputStream());
         } catch (IOException e) {
             //report exception somewhere.
-            e.printStackTrace();
+            printPretty(e.toString()  + ":" + e.getMessage());
         }
             while (!sock.isClosed()) {
                 MsgClientToServer clientMsg = recvClientMsg();
@@ -59,17 +61,18 @@ public class UserConn implements Runnable {
                     try {
                         sock.close();
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        printPretty(e.toString()  + ":" + e.getMessage());
                     }
                     return;
                 }
 
-                System.out.print("# Received message:" + clientMsg.toString());
+                printPretty("received message {" + clientMsg.toString() + "}");
 
                 if (clientMsg.hasCredentials()) {
                     Credentials creds = clientMsg.getCredentials();
                     if (creds.getSignUp()) {
                         HandleSignUp(creds);
+                        continue;
                     } else {
                         HandleLogin(creds);
                     }
@@ -147,7 +150,6 @@ public class UserConn implements Runnable {
         }
         MsgServerToClient.Builder msg = MsgServerToClient.newBuilder();
         msg.setLoginSuccess(success);
-        sendServerMsg(msg.build());
         if (success) {
             setUsername(creds.getUsername().toStringUtf8());
             admin = cred_admin;
@@ -158,6 +160,7 @@ public class UserConn implements Runnable {
             admin = false;
             loggedIn = false;
         }
+        sendServerMsg(msg.build());
     }
 
     private void HandleSignUp(Credentials creds) {
@@ -167,9 +170,8 @@ public class UserConn implements Runnable {
             // No admin signing up
             success = false;
         } else {
-            assets.addUser(creds.getUsername().toByteArray(),
+            success = assets.addUser(creds.getUsername().toByteArray(),
                     creds.getPasswordHash().toByteArray());
-            success = true;
         }
         MsgServerToClient.Builder msg = MsgServerToClient.newBuilder();
         msg.setLoginSuccess(success);
@@ -215,7 +217,7 @@ public class UserConn implements Runnable {
 
     private void HandleSend(Message msgFromUser) {
         if (!Arrays.equals(msgFromUser.getFromUsername().toByteArray(), getUsername().getBytes())) {
-            System.out.println("User " + getUsername() + " tried to spoof message from " +
+            printPretty("User " + getUsername() + " tried to spoof message from " +
                     msgFromUser.getFromUsername().toStringUtf8());
             // if we want to figure this out client-side, we can uncomment following return
             return;
@@ -276,16 +278,16 @@ public class UserConn implements Runnable {
 
     private void sendServerMsg(MsgServerToClient msg){
         // TODO: lock
-        System.out.print("% trying to send message:" + msg.toString());
+        printPretty("send message {" + msg.toString() + "}");
         try {
             outputStream.writeInt(msg.getSerializedSize());
         } catch (IOException e) {
-            e.printStackTrace();
+            printPretty(e.toString()  + ":" + e.getMessage());
         }
         try {
             outputStream.write(msg.toByteArray());
         } catch (IOException e) {
-            e.printStackTrace();
+            printPretty(e.toString()  + ":" + e.getMessage());
         }
     }
 
@@ -296,23 +298,29 @@ public class UserConn implements Runnable {
         try {
             length = inputStream.readInt();
         } catch (IOException e) {
-            e.printStackTrace();
+            printPretty(e.toString()  + ":" + e.getMessage());
             return null;
         }
         byte[] buf = new byte[length];
         try {
             inputStream.readFully(buf);
         } catch (IOException e) {
-            e.printStackTrace();
+            printPretty(e.toString()  + ":" + e.getMessage());
             return null;
         }
         MsgClientToServer msg = null;
         try {
             msg = MsgClientToServer.parseFrom(buf);
         } catch (InvalidProtocolBufferException e) {
-            e.printStackTrace();
+            printPretty(e.toString()  + ":" + e.getMessage());
             return null;
         }
         return msg;
+    }
+
+    protected void printPretty(String s) {
+        Date dNow = new Date( );
+        SimpleDateFormat ft = new SimpleDateFormat ("[hh:mm:ss]");
+        System.out.println(ft.format(dNow) + " [" + getUsername() + "]: " + s);
     }
 }
