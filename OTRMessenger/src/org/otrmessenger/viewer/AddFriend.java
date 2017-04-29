@@ -17,18 +17,26 @@ public class AddFriend {
 	private JButton btnAdd;
 	private JButton btnCancel;
 	private Host myself;
+	private boolean addPressed;
+	private LandingPage lp;
 
 	/**
 	 * Create the application.
 	 */
-	public AddFriend(Host m) {
+	public AddFriend(Host m, LandingPage lp) {
+	    this.lp = lp;
+	    this.addPressed = false;
 	    this.myself = m;
 		initialize();
 		this.frame.setVisible(true);
 	}
 
 	public AddFriend() {
-	    this(null);
+	    this(null, null);
+	}
+	
+	public boolean isAddPressed(){
+	    return this.addPressed;
 	}
 
 	/**
@@ -60,12 +68,16 @@ public class AddFriend {
 			public void actionPerformed(ActionEvent e) {
 			    String newUserName = textField.getText();
 			    if (newUserName.length() > 0){
-			        boolean success = myself.addFriend(newUserName);
+			        boolean success = myself.addFriend(newUserName, GroupField.getText());
 			        if(!success){
 			            failedText.setVisible(true);
 			        }
 			        else{
+			            addPressed = true;
 			            frame.dispose();
+			            lp.setHost(myself);
+			            lp.setFL(new FriendsList(myself.getUsername()));
+			            lp.draw();
 			        }
 			    }
 			}
