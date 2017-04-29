@@ -49,6 +49,14 @@ public class Group {
 			System.out.println("\n" + members.get(index).username);
 		}
 	}
+	
+	public ArrayList<User> getMembers(){
+	    return this.members;
+	}
+
+	public int numMembers(){
+	    return this.members.size();
+	}
 
 	//new function not in Class diagram
 	public String toString(){
