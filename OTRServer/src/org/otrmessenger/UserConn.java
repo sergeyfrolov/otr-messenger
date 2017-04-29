@@ -256,10 +256,14 @@ public class UserConn implements Runnable {
             clientInfo.setKey(ByteString.copyFrom(assets.getKey(username)));
             clientInfo.setOnline(false);
             for (UserConn userConn : server.getActiveConnections()) {
-                if (userConn.getUsername().equals(username.toString())) {
+                if (Arrays.equals(userConn.getUsername().getBytes(), username)) {
                     clientInfo.setOnline(true);
                 }
             }
+        } else {
+            clientInfo.setOnline(false);
+            clientInfo.setUsername(ByteString.copyFromUtf8(""));
+            clientInfo.setKey(ByteString.copyFromUtf8(""));
         }
         msg.addUsers(clientInfo.build());
         sendServerMsg(msg.build());
