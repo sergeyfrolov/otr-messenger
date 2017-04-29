@@ -251,13 +251,19 @@ public class UserConn implements Runnable {
     private void HandleGetUserInfo(byte[] username) {
         MsgServerToClient.Builder msg = MsgServerToClient.newBuilder();
         ClientInfo.Builder clientInfo = ClientInfo.newBuilder();
-        clientInfo.setUsername(ByteString.copyFrom(username));
-        clientInfo.setKey(ByteString.copyFrom(assets.getKey(username)));
-        clientInfo.setOnline(false);
-        for (UserConn userConn : server.getActiveConnections()) {
-            if (userConn.getUsername().equals(username.toString())) {
-                clientInfo.setOnline(true);
+        if (assets.userExists(username)) {
+            clientInfo.setUsername(ByteString.copyFrom(username));
+            clientInfo.setKey(ByteString.copyFrom(assets.getKey(username)));
+            clientInfo.setOnline(false);
+            for (UserConn userConn : server.getActiveConnections()) {
+                if (Arrays.equals(userConn.getUsername().getBytes(), username)) {
+                    clientInfo.setOnline(true);
+                }
             }
+        } else {
+            clientInfo.setOnline(false);
+            clientInfo.setUsername(ByteString.copyFromUtf8(""));
+            clientInfo.setKey(ByteString.copyFromUtf8(""));
         }
         msg.addUsers(clientInfo.build());
         sendServerMsg(msg.build());
