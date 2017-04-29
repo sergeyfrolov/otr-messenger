@@ -2,6 +2,7 @@ package org.otrmessenger;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.List;
 
 import org.otrmessenger.messaging.Messaging.Message;
 import org.otrmessenger.viewer.User;
@@ -87,6 +88,16 @@ public class ServerConnector implements Runnable {
         MsgServerToClient msg = send(ctsBuilder.build());
         
         return msg.getLoginSuccess();
+    }
+    
+    public boolean addFriend(String n){
+        MsgClientToServer.Builder ctsBuilder = MsgClientToServer.newBuilder();
+        ctsBuilder.setRequestInfoUsername(ByteString.copyFromUtf8(n));
+        MsgServerToClient msg = send(ctsBuilder.build());
+        
+        List<ClientInfo> cil = msg.getUsersList();
+        
+        return cil.get(0).getUsername().toStringUtf8().equals(n);
     }
 
     public boolean signUp(){
