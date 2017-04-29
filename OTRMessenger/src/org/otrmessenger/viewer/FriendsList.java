@@ -15,16 +15,18 @@ import org.otrmessenger.viewer.User;
 public class FriendsList {
 	private ArrayList<Group> friends;
 	private ArrayList<User> banned;
+	private String uname;
 	
-	public FriendsList(){
+	public FriendsList(String u) {
+	    this.uname = u;
 	    this.friends = new ArrayList<Group>();
 	    this.banned = new ArrayList<User>();
 	    
 	    BufferedReader br = null;
 	    try {
-            br = new BufferedReader(new FileReader(".friends"));
+            br = new BufferedReader(new FileReader("." + u + ".friends"));
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            System.out.println("no friends yet!");
             return;
         }
 	    
@@ -59,7 +61,7 @@ public class FriendsList {
 	    try {
             br = new BufferedReader(new FileReader(".enemies"));
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            System.out.println("no banned users");
             return;
         }
 
@@ -70,10 +72,15 @@ public class FriendsList {
         } catch (IOException e) {
             e.printStackTrace();
         }
+	    
+	}
+
+	public FriendsList(){
+	    this("");
 	}
 	
 	public void save(){
-	    File f = new File(".friends");
+	    File f = new File("." + this.uname + ".friends");
 	    File en = new File(".enemies");
 	    try {
             PrintWriter out = new PrintWriter(f);
@@ -133,6 +140,31 @@ public class FriendsList {
 	//delGroup takes as parameter a Group, shouldn't this be String for the group's attribute "name"?
 	public boolean delGroup(Group groupName){
 		return friends.remove(groupName);	
+	}
+	
+	public int numFriends(){
+	    int sum = 0;
+	    for (Group g: this.friends){
+	        sum += g.numMembers();
+	    }
+	    
+	    return sum;
+	}
+	
+	public Object[][] toObjectArray(){
+	    Object[][] ret =  new Object[this.numFriends()][4];
+	    
+	    int ind = 0;
+	    for(Group g: this.friends){
+	        ArrayList<User> m = g.getMembers();
+	        for (User u: m){
+                Object[] o = {g.getName(), u.getUsername(), "GET", "DELETE"};
+                ret[ind] = o;
+                ind++;
+	        }
+	    }
+	    
+	    return ret;
 	}
 	
 	@Override
