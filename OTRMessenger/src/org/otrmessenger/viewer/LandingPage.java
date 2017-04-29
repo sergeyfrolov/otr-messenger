@@ -1,4 +1,5 @@
 package org.otrmessenger.viewer;
+// used http://stackoverflow.com/a/10348919 as a resource
 
 import java.awt.Color;
 import java.awt.Component;
@@ -22,10 +23,9 @@ import javax.swing.table.TableModel;
 
 public class LandingPage
 {
-	
   private JFrame frame;
   private String[] columnNames = { "Group", "Name", "Public Key", "Friend" };
-  private Object[][] data = { { new String("CS-mates"), new String("Ian Martiny"), "Get", "Delete" },{ new String("CS-mates"), new String("Sergey Frolov"), "Get", "Delete" },{ new String("CS-mates"), new String("Shirly Montero"), "Get", "Delete" } };
+  private Object[][] data = null;
   private TableModel model = new DefaultTableModel(data, columnNames)
   {
     private static final long serialVersionUID = 1L;
@@ -36,19 +36,50 @@ public class LandingPage
     }
   };
   private JTable table = new JTable(model);
+  private Host myself = null;
+  private FriendsList fl = null;
   
-  public LandingPage(String name)
-  {
-	frame = new JFrame("Home-"+name);
-	Dimension size = table.getPreferredSize();
-	size.height +=100;
-	size.width +=200;
+  private void setTableModel(Object d[][], String cnames[]){
+      this.model = new DefaultTableModel(d, cnames)
+      {
+        private static final long serialVersionUID = 1L;
+
+        public boolean isCellEditable(int row, int column)
+        {
+          return column == 1;
+        }
+      };
+  }
+  
+public void draw(){
+    data = fl.toObjectArray();
+    setTableModel(data, columnNames);
+    this.table = new JTable(this.model);
+    frame = new JFrame("Home-" + myself.getUsername());
+    Dimension size = table.getPreferredSize();
+    size.height += 100;
+    size.width += 200;
+    
+}
+
+  public LandingPage(Host m){
+    myself = m;
+    fl = new FriendsList(m.getUsername());
+    System.out.println(fl);
+    draw();
+    Dimension size = table.getPreferredSize();
+    size.height += 100;
+    size.width += 200;
 	
 	
+
 	JButton btnAddFriend = new JButton("AddFriend");
 	btnAddFriend.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-			//add friend when clicked
+		    myself = new AddFriend(myself).getHost();
+		    fl = new FriendsList(myself.getUsername());
+		    System.out.println(fl);
+		    draw();
 		}
 	});
 	btnAddFriend.setFont(new Font("Verdana", Font.PLAIN, 12));
@@ -70,20 +101,8 @@ public class LandingPage
     frame.setLocation(300, 300);
     frame.setVisible(true);
   }
-  /*
+  
 
-  public static void main(String[] args) throws Exception
-  {
-    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-    EventQueue.invokeLater(new Runnable()
-    {
-      public void run()
-      {
-        new LandingPage("HostName");
-      }
-    });
-  }
-*/
   class ClientsTableButtonRenderer extends JButton implements TableCellRenderer
   {
     public ClientsTableButtonRenderer()
@@ -140,7 +159,8 @@ public class LandingPage
     {
       if (clicked)
       {
-        JOptionPane.showMessageDialog(button, "Opening chat with : "+table.getValueAt(row, 1));
+          new Chat(table.getValueAt(row, 1).toString());
+//        JOptionPane.showMessageDialog(button, "Opening chat with : "+table.getValueAt(row, 1));
       }
       clicked = false;
       return new String(label);
