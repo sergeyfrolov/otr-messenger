@@ -26,7 +26,7 @@ public class ServerConnector implements Runnable {
             sock = new Socket(address, port);
             out = new DataOutputStream(sock.getOutputStream());
             in = new DataInputStream(sock.getInputStream());
-            running = true;
+            this.running = true;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -45,13 +45,19 @@ public class ServerConnector implements Runnable {
     }
     
     public void run(){
-        while(running){
+        while(this.running){
             int length = 0;
-            byte[] buf;
+            byte[] buf = null;
             try {
-                length = in.readInt();
-                buf = new byte[length];
-                in.readFully(buf);
+                if (in.available() > 0){
+                    System.out.println("in if");
+                    length = in.readInt();
+                    buf = new byte[length];
+                    in.readFully(buf);
+                }
+                else{
+                    continue;
+                }
             } catch (IOException e) {
                 e.printStackTrace();
                 return;
@@ -85,6 +91,7 @@ public class ServerConnector implements Runnable {
         cred = credSetup(cred.getUsername(), cred.getPasswordHash(), signUp, false);
         MsgClientToServer.Builder ctsBuilder = MsgClientToServer.newBuilder();
         ctsBuilder.setCredentials(cred);
+        System.out.println("about to send");
         MsgServerToClient msg = send(ctsBuilder.build());
         
         return msg.getLoginSuccess();
@@ -161,16 +168,21 @@ public class ServerConnector implements Runnable {
         return msg;
     }
     
+    public boolean getRunning(){
+        return this.running;
+    }
+    
+    
     public void close(){
         try {
             sock.close();
-            running = false;
+            this.running = false;
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
     
     public void terminate(){
-        running = false;
+        this.running = false;
     }
 }
