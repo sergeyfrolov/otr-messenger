@@ -81,7 +81,6 @@ public class ServerConnector implements Runnable {
             MsgServerToClient msg = null;
             try {
                 msg = MsgServerToClient.parseFrom(buf);
-                System.out.println(msg);
                 host.receiveMessage(msg.getMsg());
             } catch (InvalidProtocolBufferException e) {
                 e.printStackTrace();
@@ -108,7 +107,6 @@ public class ServerConnector implements Runnable {
         cred = credSetup(cred.getUsername(), cred.getPasswordHash(), signUp, false);
         MsgClientToServer.Builder ctsBuilder = MsgClientToServer.newBuilder();
         ctsBuilder.setCredentials(cred);
-        System.out.println("about to send");
         MsgServerToClient msg = send(ctsBuilder.build());
         
         return msg.getLoginSuccess();
@@ -154,7 +152,6 @@ public class ServerConnector implements Runnable {
     }
 
     public MsgServerToClient send(MsgClientToServer cts){
-        System.out.println(cts);
         try{
             out.writeInt(cts.getSerializedSize());
             out.flush();
@@ -202,5 +199,9 @@ public class ServerConnector implements Runnable {
     
     public void terminate(){
         this.running = false;
+    }
+    
+    public void restart(){
+        this.running = true;
     }
 }
