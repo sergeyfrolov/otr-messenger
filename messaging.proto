@@ -54,11 +54,12 @@ enum ServerState {
 
 message MsgClientToServer {
 	optional Credentials credentials = 1;
-	optional bytes updatedKey = 2;
-	optional AdminRequest adminReq = 3;
-	optional bytes requestInfoUsername = 4; // username of person to request the key, if online etc.
-	optional Message msg = 5;
-	optional bool requestKeyPairChange = 6; // Sergey: I am not sure I understand how usecase #9 works
+	optional bytes updatedSignKey = 2;
+	optional bytes updatedEncryptionKey = 3;
+	optional AdminRequest adminReq = 4;
+	optional bytes requestInfoUsername = 5; // username of person to request the key, if online etc.
+	optional Message msg = 6;
+	optional bool requestKeyPairChange = 7; // Sergey: I am not sure I understand how usecase #9 works
 }
 
 message MsgServerToClient {
@@ -66,6 +67,7 @@ message MsgServerToClient {
 	optional Message msg = 2;
 	optional ServerState state = 3;
 	optional bool loginSuccess = 4;
+	optional bool keyUpdateSuccess = 5;
 	optional MessageStatusMsg msgStatus = 12;
 }
 

@@ -2866,25 +2866,34 @@ public final class Messaging {
     org.otrmessenger.messaging.Messaging.CredentialsOrBuilder getCredentialsOrBuilder();
 
     /**
-     * <code>optional bytes updatedKey = 2;</code>
+     * <code>optional bytes updatedSignKey = 2;</code>
      */
-    boolean hasUpdatedKey();
+    boolean hasUpdatedSignKey();
     /**
-     * <code>optional bytes updatedKey = 2;</code>
+     * <code>optional bytes updatedSignKey = 2;</code>
      */
-    com.google.protobuf.ByteString getUpdatedKey();
+    com.google.protobuf.ByteString getUpdatedSignKey();
 
     /**
-     * <code>optional .org.otrmessenger.messaging.AdminRequest adminReq = 3;</code>
+     * <code>optional bytes updatedEncryptionKey = 3;</code>
+     */
+    boolean hasUpdatedEncryptionKey();
+    /**
+     * <code>optional bytes updatedEncryptionKey = 3;</code>
+     */
+    com.google.protobuf.ByteString getUpdatedEncryptionKey();
+
+    /**
+     * <code>optional .org.otrmessenger.messaging.AdminRequest adminReq = 4;</code>
      */
     boolean hasAdminReq();
     /**
-     * <code>optional .org.otrmessenger.messaging.AdminRequest adminReq = 3;</code>
+     * <code>optional .org.otrmessenger.messaging.AdminRequest adminReq = 4;</code>
      */
     org.otrmessenger.messaging.Messaging.AdminRequest getAdminReq();
 
     /**
-     * <code>optional bytes requestInfoUsername = 4;</code>
+     * <code>optional bytes requestInfoUsername = 5;</code>
      *
      * <pre>
      * username of person to request the key, if online etc.
@@ -2892,7 +2901,7 @@ public final class Messaging {
      */
     boolean hasRequestInfoUsername();
     /**
-     * <code>optional bytes requestInfoUsername = 4;</code>
+     * <code>optional bytes requestInfoUsername = 5;</code>
      *
      * <pre>
      * username of person to request the key, if online etc.
@@ -2901,20 +2910,20 @@ public final class Messaging {
     com.google.protobuf.ByteString getRequestInfoUsername();
 
     /**
-     * <code>optional .org.otrmessenger.messaging.Message msg = 5;</code>
+     * <code>optional .org.otrmessenger.messaging.Message msg = 6;</code>
      */
     boolean hasMsg();
     /**
-     * <code>optional .org.otrmessenger.messaging.Message msg = 5;</code>
+     * <code>optional .org.otrmessenger.messaging.Message msg = 6;</code>
      */
     org.otrmessenger.messaging.Messaging.Message getMsg();
     /**
-     * <code>optional .org.otrmessenger.messaging.Message msg = 5;</code>
+     * <code>optional .org.otrmessenger.messaging.Message msg = 6;</code>
      */
     org.otrmessenger.messaging.Messaging.MessageOrBuilder getMsgOrBuilder();
 
     /**
-     * <code>optional bool requestKeyPairChange = 6;</code>
+     * <code>optional bool requestKeyPairChange = 7;</code>
      *
      * <pre>
      * Sergey: I am not sure I understand how usecase #9 works
@@ -2922,7 +2931,7 @@ public final class Messaging {
      */
     boolean hasRequestKeyPairChange();
     /**
-     * <code>optional bool requestKeyPairChange = 6;</code>
+     * <code>optional bool requestKeyPairChange = 7;</code>
      *
      * <pre>
      * Sergey: I am not sure I understand how usecase #9 works
@@ -2997,28 +3006,33 @@ public final class Messaging {
             }
             case 18: {
               bitField0_ |= 0x00000002;
-              updatedKey_ = input.readBytes();
+              updatedSignKey_ = input.readBytes();
               break;
             }
-            case 24: {
+            case 26: {
+              bitField0_ |= 0x00000004;
+              updatedEncryptionKey_ = input.readBytes();
+              break;
+            }
+            case 32: {
               int rawValue = input.readEnum();
               org.otrmessenger.messaging.Messaging.AdminRequest value = org.otrmessenger.messaging.Messaging.AdminRequest.valueOf(rawValue);
               if (value == null) {
-                unknownFields.mergeVarintField(3, rawValue);
+                unknownFields.mergeVarintField(4, rawValue);
               } else {
-                bitField0_ |= 0x00000004;
+                bitField0_ |= 0x00000008;
                 adminReq_ = value;
               }
               break;
             }
-            case 34: {
-              bitField0_ |= 0x00000008;
+            case 42: {
+              bitField0_ |= 0x00000010;
               requestInfoUsername_ = input.readBytes();
               break;
             }
-            case 42: {
+            case 50: {
               org.otrmessenger.messaging.Messaging.Message.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000010) == 0x00000010)) {
+              if (((bitField0_ & 0x00000020) == 0x00000020)) {
                 subBuilder = msg_.toBuilder();
               }
               msg_ = input.readMessage(org.otrmessenger.messaging.Messaging.Message.PARSER, extensionRegistry);
@@ -3026,11 +3040,11 @@ public final class Messaging {
                 subBuilder.mergeFrom(msg_);
                 msg_ = subBuilder.buildPartial();
               }
-              bitField0_ |= 0x00000010;
+              bitField0_ |= 0x00000020;
               break;
             }
-            case 48: {
-              bitField0_ |= 0x00000020;
+            case 56: {
+              bitField0_ |= 0x00000040;
               requestKeyPairChange_ = input.readBool();
               break;
             }
@@ -3095,50 +3109,65 @@ public final class Messaging {
       return credentials_;
     }
 
-    public static final int UPDATEDKEY_FIELD_NUMBER = 2;
-    private com.google.protobuf.ByteString updatedKey_;
+    public static final int UPDATEDSIGNKEY_FIELD_NUMBER = 2;
+    private com.google.protobuf.ByteString updatedSignKey_;
     /**
-     * <code>optional bytes updatedKey = 2;</code>
+     * <code>optional bytes updatedSignKey = 2;</code>
      */
-    public boolean hasUpdatedKey() {
+    public boolean hasUpdatedSignKey() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
-     * <code>optional bytes updatedKey = 2;</code>
+     * <code>optional bytes updatedSignKey = 2;</code>
      */
-    public com.google.protobuf.ByteString getUpdatedKey() {
-      return updatedKey_;
+    public com.google.protobuf.ByteString getUpdatedSignKey() {
+      return updatedSignKey_;
     }
 
-    public static final int ADMINREQ_FIELD_NUMBER = 3;
-    private org.otrmessenger.messaging.Messaging.AdminRequest adminReq_;
+    public static final int UPDATEDENCRYPTIONKEY_FIELD_NUMBER = 3;
+    private com.google.protobuf.ByteString updatedEncryptionKey_;
     /**
-     * <code>optional .org.otrmessenger.messaging.AdminRequest adminReq = 3;</code>
+     * <code>optional bytes updatedEncryptionKey = 3;</code>
      */
-    public boolean hasAdminReq() {
+    public boolean hasUpdatedEncryptionKey() {
       return ((bitField0_ & 0x00000004) == 0x00000004);
     }
     /**
-     * <code>optional .org.otrmessenger.messaging.AdminRequest adminReq = 3;</code>
+     * <code>optional bytes updatedEncryptionKey = 3;</code>
+     */
+    public com.google.protobuf.ByteString getUpdatedEncryptionKey() {
+      return updatedEncryptionKey_;
+    }
+
+    public static final int ADMINREQ_FIELD_NUMBER = 4;
+    private org.otrmessenger.messaging.Messaging.AdminRequest adminReq_;
+    /**
+     * <code>optional .org.otrmessenger.messaging.AdminRequest adminReq = 4;</code>
+     */
+    public boolean hasAdminReq() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional .org.otrmessenger.messaging.AdminRequest adminReq = 4;</code>
      */
     public org.otrmessenger.messaging.Messaging.AdminRequest getAdminReq() {
       return adminReq_;
     }
 
-    public static final int REQUESTINFOUSERNAME_FIELD_NUMBER = 4;
+    public static final int REQUESTINFOUSERNAME_FIELD_NUMBER = 5;
     private com.google.protobuf.ByteString requestInfoUsername_;
     /**
-     * <code>optional bytes requestInfoUsername = 4;</code>
+     * <code>optional bytes requestInfoUsername = 5;</code>
      *
      * <pre>
      * username of person to request the key, if online etc.
      * </pre>
      */
     public boolean hasRequestInfoUsername() {
-      return ((bitField0_ & 0x00000008) == 0x00000008);
+      return ((bitField0_ & 0x00000010) == 0x00000010);
     }
     /**
-     * <code>optional bytes requestInfoUsername = 4;</code>
+     * <code>optional bytes requestInfoUsername = 5;</code>
      *
      * <pre>
      * username of person to request the key, if online etc.
@@ -3148,41 +3177,41 @@ public final class Messaging {
       return requestInfoUsername_;
     }
 
-    public static final int MSG_FIELD_NUMBER = 5;
+    public static final int MSG_FIELD_NUMBER = 6;
     private org.otrmessenger.messaging.Messaging.Message msg_;
     /**
-     * <code>optional .org.otrmessenger.messaging.Message msg = 5;</code>
+     * <code>optional .org.otrmessenger.messaging.Message msg = 6;</code>
      */
     public boolean hasMsg() {
-      return ((bitField0_ & 0x00000010) == 0x00000010);
+      return ((bitField0_ & 0x00000020) == 0x00000020);
     }
     /**
-     * <code>optional .org.otrmessenger.messaging.Message msg = 5;</code>
+     * <code>optional .org.otrmessenger.messaging.Message msg = 6;</code>
      */
     public org.otrmessenger.messaging.Messaging.Message getMsg() {
       return msg_;
     }
     /**
-     * <code>optional .org.otrmessenger.messaging.Message msg = 5;</code>
+     * <code>optional .org.otrmessenger.messaging.Message msg = 6;</code>
      */
     public org.otrmessenger.messaging.Messaging.MessageOrBuilder getMsgOrBuilder() {
       return msg_;
     }
 
-    public static final int REQUESTKEYPAIRCHANGE_FIELD_NUMBER = 6;
+    public static final int REQUESTKEYPAIRCHANGE_FIELD_NUMBER = 7;
     private boolean requestKeyPairChange_;
     /**
-     * <code>optional bool requestKeyPairChange = 6;</code>
+     * <code>optional bool requestKeyPairChange = 7;</code>
      *
      * <pre>
      * Sergey: I am not sure I understand how usecase #9 works
      * </pre>
      */
     public boolean hasRequestKeyPairChange() {
-      return ((bitField0_ & 0x00000020) == 0x00000020);
+      return ((bitField0_ & 0x00000040) == 0x00000040);
     }
     /**
-     * <code>optional bool requestKeyPairChange = 6;</code>
+     * <code>optional bool requestKeyPairChange = 7;</code>
      *
      * <pre>
      * Sergey: I am not sure I understand how usecase #9 works
@@ -3194,7 +3223,8 @@ public final class Messaging {
 
     private void initFields() {
       credentials_ = org.otrmessenger.messaging.Messaging.Credentials.getDefaultInstance();
-      updatedKey_ = com.google.protobuf.ByteString.EMPTY;
+      updatedSignKey_ = com.google.protobuf.ByteString.EMPTY;
+      updatedEncryptionKey_ = com.google.protobuf.ByteString.EMPTY;
       adminReq_ = org.otrmessenger.messaging.Messaging.AdminRequest.LAUNCH;
       requestInfoUsername_ = com.google.protobuf.ByteString.EMPTY;
       msg_ = org.otrmessenger.messaging.Messaging.Message.getDefaultInstance();
@@ -3223,19 +3253,22 @@ public final class Messaging {
         output.writeMessage(1, credentials_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeBytes(2, updatedKey_);
+        output.writeBytes(2, updatedSignKey_);
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeEnum(3, adminReq_.getNumber());
+        output.writeBytes(3, updatedEncryptionKey_);
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        output.writeBytes(4, requestInfoUsername_);
+        output.writeEnum(4, adminReq_.getNumber());
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        output.writeMessage(5, msg_);
+        output.writeBytes(5, requestInfoUsername_);
       }
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
-        output.writeBool(6, requestKeyPairChange_);
+        output.writeMessage(6, msg_);
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        output.writeBool(7, requestKeyPairChange_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -3252,23 +3285,27 @@ public final class Messaging {
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(2, updatedKey_);
+          .computeBytesSize(2, updatedSignKey_);
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(3, adminReq_.getNumber());
+          .computeBytesSize(3, updatedEncryptionKey_);
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(4, requestInfoUsername_);
+          .computeEnumSize(4, adminReq_.getNumber());
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(5, msg_);
+          .computeBytesSize(5, requestInfoUsername_);
       }
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(6, requestKeyPairChange_);
+          .computeMessageSize(6, msg_);
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(7, requestKeyPairChange_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -3395,20 +3432,22 @@ public final class Messaging {
           credentialsBuilder_.clear();
         }
         bitField0_ = (bitField0_ & ~0x00000001);
-        updatedKey_ = com.google.protobuf.ByteString.EMPTY;
+        updatedSignKey_ = com.google.protobuf.ByteString.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000002);
-        adminReq_ = org.otrmessenger.messaging.Messaging.AdminRequest.LAUNCH;
+        updatedEncryptionKey_ = com.google.protobuf.ByteString.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000004);
-        requestInfoUsername_ = com.google.protobuf.ByteString.EMPTY;
+        adminReq_ = org.otrmessenger.messaging.Messaging.AdminRequest.LAUNCH;
         bitField0_ = (bitField0_ & ~0x00000008);
+        requestInfoUsername_ = com.google.protobuf.ByteString.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000010);
         if (msgBuilder_ == null) {
           msg_ = org.otrmessenger.messaging.Messaging.Message.getDefaultInstance();
         } else {
           msgBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000010);
-        requestKeyPairChange_ = false;
         bitField0_ = (bitField0_ & ~0x00000020);
+        requestKeyPairChange_ = false;
+        bitField0_ = (bitField0_ & ~0x00000040);
         return this;
       }
 
@@ -3448,25 +3487,29 @@ public final class Messaging {
         if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
           to_bitField0_ |= 0x00000002;
         }
-        result.updatedKey_ = updatedKey_;
+        result.updatedSignKey_ = updatedSignKey_;
         if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
           to_bitField0_ |= 0x00000004;
         }
-        result.adminReq_ = adminReq_;
+        result.updatedEncryptionKey_ = updatedEncryptionKey_;
         if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
           to_bitField0_ |= 0x00000008;
         }
-        result.requestInfoUsername_ = requestInfoUsername_;
+        result.adminReq_ = adminReq_;
         if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
           to_bitField0_ |= 0x00000010;
+        }
+        result.requestInfoUsername_ = requestInfoUsername_;
+        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+          to_bitField0_ |= 0x00000020;
         }
         if (msgBuilder_ == null) {
           result.msg_ = msg_;
         } else {
           result.msg_ = msgBuilder_.build();
         }
-        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
-          to_bitField0_ |= 0x00000020;
+        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+          to_bitField0_ |= 0x00000040;
         }
         result.requestKeyPairChange_ = requestKeyPairChange_;
         result.bitField0_ = to_bitField0_;
@@ -3488,8 +3531,11 @@ public final class Messaging {
         if (other.hasCredentials()) {
           mergeCredentials(other.getCredentials());
         }
-        if (other.hasUpdatedKey()) {
-          setUpdatedKey(other.getUpdatedKey());
+        if (other.hasUpdatedSignKey()) {
+          setUpdatedSignKey(other.getUpdatedSignKey());
+        }
+        if (other.hasUpdatedEncryptionKey()) {
+          setUpdatedEncryptionKey(other.getUpdatedEncryptionKey());
         }
         if (other.hasAdminReq()) {
           setAdminReq(other.getAdminReq());
@@ -3652,71 +3698,106 @@ public final class Messaging {
         return credentialsBuilder_;
       }
 
-      private com.google.protobuf.ByteString updatedKey_ = com.google.protobuf.ByteString.EMPTY;
+      private com.google.protobuf.ByteString updatedSignKey_ = com.google.protobuf.ByteString.EMPTY;
       /**
-       * <code>optional bytes updatedKey = 2;</code>
+       * <code>optional bytes updatedSignKey = 2;</code>
        */
-      public boolean hasUpdatedKey() {
+      public boolean hasUpdatedSignKey() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
-       * <code>optional bytes updatedKey = 2;</code>
+       * <code>optional bytes updatedSignKey = 2;</code>
        */
-      public com.google.protobuf.ByteString getUpdatedKey() {
-        return updatedKey_;
+      public com.google.protobuf.ByteString getUpdatedSignKey() {
+        return updatedSignKey_;
       }
       /**
-       * <code>optional bytes updatedKey = 2;</code>
+       * <code>optional bytes updatedSignKey = 2;</code>
        */
-      public Builder setUpdatedKey(com.google.protobuf.ByteString value) {
+      public Builder setUpdatedSignKey(com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
   bitField0_ |= 0x00000002;
-        updatedKey_ = value;
+        updatedSignKey_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional bytes updatedKey = 2;</code>
+       * <code>optional bytes updatedSignKey = 2;</code>
        */
-      public Builder clearUpdatedKey() {
+      public Builder clearUpdatedSignKey() {
         bitField0_ = (bitField0_ & ~0x00000002);
-        updatedKey_ = getDefaultInstance().getUpdatedKey();
+        updatedSignKey_ = getDefaultInstance().getUpdatedSignKey();
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.ByteString updatedEncryptionKey_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <code>optional bytes updatedEncryptionKey = 3;</code>
+       */
+      public boolean hasUpdatedEncryptionKey() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional bytes updatedEncryptionKey = 3;</code>
+       */
+      public com.google.protobuf.ByteString getUpdatedEncryptionKey() {
+        return updatedEncryptionKey_;
+      }
+      /**
+       * <code>optional bytes updatedEncryptionKey = 3;</code>
+       */
+      public Builder setUpdatedEncryptionKey(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        updatedEncryptionKey_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bytes updatedEncryptionKey = 3;</code>
+       */
+      public Builder clearUpdatedEncryptionKey() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        updatedEncryptionKey_ = getDefaultInstance().getUpdatedEncryptionKey();
         onChanged();
         return this;
       }
 
       private org.otrmessenger.messaging.Messaging.AdminRequest adminReq_ = org.otrmessenger.messaging.Messaging.AdminRequest.LAUNCH;
       /**
-       * <code>optional .org.otrmessenger.messaging.AdminRequest adminReq = 3;</code>
+       * <code>optional .org.otrmessenger.messaging.AdminRequest adminReq = 4;</code>
        */
       public boolean hasAdminReq() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
+        return ((bitField0_ & 0x00000008) == 0x00000008);
       }
       /**
-       * <code>optional .org.otrmessenger.messaging.AdminRequest adminReq = 3;</code>
+       * <code>optional .org.otrmessenger.messaging.AdminRequest adminReq = 4;</code>
        */
       public org.otrmessenger.messaging.Messaging.AdminRequest getAdminReq() {
         return adminReq_;
       }
       /**
-       * <code>optional .org.otrmessenger.messaging.AdminRequest adminReq = 3;</code>
+       * <code>optional .org.otrmessenger.messaging.AdminRequest adminReq = 4;</code>
        */
       public Builder setAdminReq(org.otrmessenger.messaging.Messaging.AdminRequest value) {
         if (value == null) {
           throw new NullPointerException();
         }
-        bitField0_ |= 0x00000004;
+        bitField0_ |= 0x00000008;
         adminReq_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional .org.otrmessenger.messaging.AdminRequest adminReq = 3;</code>
+       * <code>optional .org.otrmessenger.messaging.AdminRequest adminReq = 4;</code>
        */
       public Builder clearAdminReq() {
-        bitField0_ = (bitField0_ & ~0x00000004);
+        bitField0_ = (bitField0_ & ~0x00000008);
         adminReq_ = org.otrmessenger.messaging.Messaging.AdminRequest.LAUNCH;
         onChanged();
         return this;
@@ -3724,17 +3805,17 @@ public final class Messaging {
 
       private com.google.protobuf.ByteString requestInfoUsername_ = com.google.protobuf.ByteString.EMPTY;
       /**
-       * <code>optional bytes requestInfoUsername = 4;</code>
+       * <code>optional bytes requestInfoUsername = 5;</code>
        *
        * <pre>
        * username of person to request the key, if online etc.
        * </pre>
        */
       public boolean hasRequestInfoUsername() {
-        return ((bitField0_ & 0x00000008) == 0x00000008);
+        return ((bitField0_ & 0x00000010) == 0x00000010);
       }
       /**
-       * <code>optional bytes requestInfoUsername = 4;</code>
+       * <code>optional bytes requestInfoUsername = 5;</code>
        *
        * <pre>
        * username of person to request the key, if online etc.
@@ -3744,7 +3825,7 @@ public final class Messaging {
         return requestInfoUsername_;
       }
       /**
-       * <code>optional bytes requestInfoUsername = 4;</code>
+       * <code>optional bytes requestInfoUsername = 5;</code>
        *
        * <pre>
        * username of person to request the key, if online etc.
@@ -3754,20 +3835,20 @@ public final class Messaging {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000008;
+  bitField0_ |= 0x00000010;
         requestInfoUsername_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional bytes requestInfoUsername = 4;</code>
+       * <code>optional bytes requestInfoUsername = 5;</code>
        *
        * <pre>
        * username of person to request the key, if online etc.
        * </pre>
        */
       public Builder clearRequestInfoUsername() {
-        bitField0_ = (bitField0_ & ~0x00000008);
+        bitField0_ = (bitField0_ & ~0x00000010);
         requestInfoUsername_ = getDefaultInstance().getRequestInfoUsername();
         onChanged();
         return this;
@@ -3777,13 +3858,13 @@ public final class Messaging {
       private com.google.protobuf.SingleFieldBuilder<
           org.otrmessenger.messaging.Messaging.Message, org.otrmessenger.messaging.Messaging.Message.Builder, org.otrmessenger.messaging.Messaging.MessageOrBuilder> msgBuilder_;
       /**
-       * <code>optional .org.otrmessenger.messaging.Message msg = 5;</code>
+       * <code>optional .org.otrmessenger.messaging.Message msg = 6;</code>
        */
       public boolean hasMsg() {
-        return ((bitField0_ & 0x00000010) == 0x00000010);
+        return ((bitField0_ & 0x00000020) == 0x00000020);
       }
       /**
-       * <code>optional .org.otrmessenger.messaging.Message msg = 5;</code>
+       * <code>optional .org.otrmessenger.messaging.Message msg = 6;</code>
        */
       public org.otrmessenger.messaging.Messaging.Message getMsg() {
         if (msgBuilder_ == null) {
@@ -3793,7 +3874,7 @@ public final class Messaging {
         }
       }
       /**
-       * <code>optional .org.otrmessenger.messaging.Message msg = 5;</code>
+       * <code>optional .org.otrmessenger.messaging.Message msg = 6;</code>
        */
       public Builder setMsg(org.otrmessenger.messaging.Messaging.Message value) {
         if (msgBuilder_ == null) {
@@ -3805,11 +3886,11 @@ public final class Messaging {
         } else {
           msgBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x00000010;
+        bitField0_ |= 0x00000020;
         return this;
       }
       /**
-       * <code>optional .org.otrmessenger.messaging.Message msg = 5;</code>
+       * <code>optional .org.otrmessenger.messaging.Message msg = 6;</code>
        */
       public Builder setMsg(
           org.otrmessenger.messaging.Messaging.Message.Builder builderForValue) {
@@ -3819,15 +3900,15 @@ public final class Messaging {
         } else {
           msgBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00000010;
+        bitField0_ |= 0x00000020;
         return this;
       }
       /**
-       * <code>optional .org.otrmessenger.messaging.Message msg = 5;</code>
+       * <code>optional .org.otrmessenger.messaging.Message msg = 6;</code>
        */
       public Builder mergeMsg(org.otrmessenger.messaging.Messaging.Message value) {
         if (msgBuilder_ == null) {
-          if (((bitField0_ & 0x00000010) == 0x00000010) &&
+          if (((bitField0_ & 0x00000020) == 0x00000020) &&
               msg_ != org.otrmessenger.messaging.Messaging.Message.getDefaultInstance()) {
             msg_ =
               org.otrmessenger.messaging.Messaging.Message.newBuilder(msg_).mergeFrom(value).buildPartial();
@@ -3838,11 +3919,11 @@ public final class Messaging {
         } else {
           msgBuilder_.mergeFrom(value);
         }
-        bitField0_ |= 0x00000010;
+        bitField0_ |= 0x00000020;
         return this;
       }
       /**
-       * <code>optional .org.otrmessenger.messaging.Message msg = 5;</code>
+       * <code>optional .org.otrmessenger.messaging.Message msg = 6;</code>
        */
       public Builder clearMsg() {
         if (msgBuilder_ == null) {
@@ -3851,19 +3932,19 @@ public final class Messaging {
         } else {
           msgBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000010);
+        bitField0_ = (bitField0_ & ~0x00000020);
         return this;
       }
       /**
-       * <code>optional .org.otrmessenger.messaging.Message msg = 5;</code>
+       * <code>optional .org.otrmessenger.messaging.Message msg = 6;</code>
        */
       public org.otrmessenger.messaging.Messaging.Message.Builder getMsgBuilder() {
-        bitField0_ |= 0x00000010;
+        bitField0_ |= 0x00000020;
         onChanged();
         return getMsgFieldBuilder().getBuilder();
       }
       /**
-       * <code>optional .org.otrmessenger.messaging.Message msg = 5;</code>
+       * <code>optional .org.otrmessenger.messaging.Message msg = 6;</code>
        */
       public org.otrmessenger.messaging.Messaging.MessageOrBuilder getMsgOrBuilder() {
         if (msgBuilder_ != null) {
@@ -3873,7 +3954,7 @@ public final class Messaging {
         }
       }
       /**
-       * <code>optional .org.otrmessenger.messaging.Message msg = 5;</code>
+       * <code>optional .org.otrmessenger.messaging.Message msg = 6;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
           org.otrmessenger.messaging.Messaging.Message, org.otrmessenger.messaging.Messaging.Message.Builder, org.otrmessenger.messaging.Messaging.MessageOrBuilder> 
@@ -3891,17 +3972,17 @@ public final class Messaging {
 
       private boolean requestKeyPairChange_ ;
       /**
-       * <code>optional bool requestKeyPairChange = 6;</code>
+       * <code>optional bool requestKeyPairChange = 7;</code>
        *
        * <pre>
        * Sergey: I am not sure I understand how usecase #9 works
        * </pre>
        */
       public boolean hasRequestKeyPairChange() {
-        return ((bitField0_ & 0x00000020) == 0x00000020);
+        return ((bitField0_ & 0x00000040) == 0x00000040);
       }
       /**
-       * <code>optional bool requestKeyPairChange = 6;</code>
+       * <code>optional bool requestKeyPairChange = 7;</code>
        *
        * <pre>
        * Sergey: I am not sure I understand how usecase #9 works
@@ -3911,27 +3992,27 @@ public final class Messaging {
         return requestKeyPairChange_;
       }
       /**
-       * <code>optional bool requestKeyPairChange = 6;</code>
+       * <code>optional bool requestKeyPairChange = 7;</code>
        *
        * <pre>
        * Sergey: I am not sure I understand how usecase #9 works
        * </pre>
        */
       public Builder setRequestKeyPairChange(boolean value) {
-        bitField0_ |= 0x00000020;
+        bitField0_ |= 0x00000040;
         requestKeyPairChange_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional bool requestKeyPairChange = 6;</code>
+       * <code>optional bool requestKeyPairChange = 7;</code>
        *
        * <pre>
        * Sergey: I am not sure I understand how usecase #9 works
        * </pre>
        */
       public Builder clearRequestKeyPairChange() {
-        bitField0_ = (bitField0_ & ~0x00000020);
+        bitField0_ = (bitField0_ & ~0x00000040);
         requestKeyPairChange_ = false;
         onChanged();
         return this;
@@ -4006,6 +4087,15 @@ public final class Messaging {
      * <code>optional bool loginSuccess = 4;</code>
      */
     boolean getLoginSuccess();
+
+    /**
+     * <code>optional bool keyUpdateSuccess = 5;</code>
+     */
+    boolean hasKeyUpdateSuccess();
+    /**
+     * <code>optional bool keyUpdateSuccess = 5;</code>
+     */
+    boolean getKeyUpdateSuccess();
 
     /**
      * <code>optional .org.otrmessenger.messaging.MessageStatusMsg msgStatus = 12;</code>
@@ -4109,9 +4199,14 @@ public final class Messaging {
               loginSuccess_ = input.readBool();
               break;
             }
+            case 40: {
+              bitField0_ |= 0x00000008;
+              keyUpdateSuccess_ = input.readBool();
+              break;
+            }
             case 98: {
               org.otrmessenger.messaging.Messaging.MessageStatusMsg.Builder subBuilder = null;
-              if (((bitField0_ & 0x00000008) == 0x00000008)) {
+              if (((bitField0_ & 0x00000010) == 0x00000010)) {
                 subBuilder = msgStatus_.toBuilder();
               }
               msgStatus_ = input.readMessage(org.otrmessenger.messaging.Messaging.MessageStatusMsg.PARSER, extensionRegistry);
@@ -4119,7 +4214,7 @@ public final class Messaging {
                 subBuilder.mergeFrom(msgStatus_);
                 msgStatus_ = subBuilder.buildPartial();
               }
-              bitField0_ |= 0x00000008;
+              bitField0_ |= 0x00000010;
               break;
             }
           }
@@ -4251,13 +4346,28 @@ public final class Messaging {
       return loginSuccess_;
     }
 
+    public static final int KEYUPDATESUCCESS_FIELD_NUMBER = 5;
+    private boolean keyUpdateSuccess_;
+    /**
+     * <code>optional bool keyUpdateSuccess = 5;</code>
+     */
+    public boolean hasKeyUpdateSuccess() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional bool keyUpdateSuccess = 5;</code>
+     */
+    public boolean getKeyUpdateSuccess() {
+      return keyUpdateSuccess_;
+    }
+
     public static final int MSGSTATUS_FIELD_NUMBER = 12;
     private org.otrmessenger.messaging.Messaging.MessageStatusMsg msgStatus_;
     /**
      * <code>optional .org.otrmessenger.messaging.MessageStatusMsg msgStatus = 12;</code>
      */
     public boolean hasMsgStatus() {
-      return ((bitField0_ & 0x00000008) == 0x00000008);
+      return ((bitField0_ & 0x00000010) == 0x00000010);
     }
     /**
      * <code>optional .org.otrmessenger.messaging.MessageStatusMsg msgStatus = 12;</code>
@@ -4277,6 +4387,7 @@ public final class Messaging {
       msg_ = org.otrmessenger.messaging.Messaging.Message.getDefaultInstance();
       state_ = org.otrmessenger.messaging.Messaging.ServerState.SERVER_UNKNOWN;
       loginSuccess_ = false;
+      keyUpdateSuccess_ = false;
       msgStatus_ = org.otrmessenger.messaging.Messaging.MessageStatusMsg.getDefaultInstance();
     }
     private byte memoizedIsInitialized = -1;
@@ -4311,6 +4422,9 @@ public final class Messaging {
         output.writeBool(4, loginSuccess_);
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeBool(5, keyUpdateSuccess_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
         output.writeMessage(12, msgStatus_);
       }
       getUnknownFields().writeTo(output);
@@ -4339,6 +4453,10 @@ public final class Messaging {
           .computeBoolSize(4, loginSuccess_);
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(5, keyUpdateSuccess_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(12, msgStatus_);
       }
@@ -4478,12 +4596,14 @@ public final class Messaging {
         bitField0_ = (bitField0_ & ~0x00000004);
         loginSuccess_ = false;
         bitField0_ = (bitField0_ & ~0x00000008);
+        keyUpdateSuccess_ = false;
+        bitField0_ = (bitField0_ & ~0x00000010);
         if (msgStatusBuilder_ == null) {
           msgStatus_ = org.otrmessenger.messaging.Messaging.MessageStatusMsg.getDefaultInstance();
         } else {
           msgStatusBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000010);
+        bitField0_ = (bitField0_ & ~0x00000020);
         return this;
       }
 
@@ -4540,6 +4660,10 @@ public final class Messaging {
         if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
           to_bitField0_ |= 0x00000008;
         }
+        result.keyUpdateSuccess_ = keyUpdateSuccess_;
+        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+          to_bitField0_ |= 0x00000010;
+        }
         if (msgStatusBuilder_ == null) {
           result.msgStatus_ = msgStatus_;
         } else {
@@ -4595,6 +4719,9 @@ public final class Messaging {
         }
         if (other.hasLoginSuccess()) {
           setLoginSuccess(other.getLoginSuccess());
+        }
+        if (other.hasKeyUpdateSuccess()) {
+          setKeyUpdateSuccess(other.getKeyUpdateSuccess());
         }
         if (other.hasMsgStatus()) {
           mergeMsgStatus(other.getMsgStatus());
@@ -5055,6 +5182,38 @@ public final class Messaging {
         return this;
       }
 
+      private boolean keyUpdateSuccess_ ;
+      /**
+       * <code>optional bool keyUpdateSuccess = 5;</code>
+       */
+      public boolean hasKeyUpdateSuccess() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional bool keyUpdateSuccess = 5;</code>
+       */
+      public boolean getKeyUpdateSuccess() {
+        return keyUpdateSuccess_;
+      }
+      /**
+       * <code>optional bool keyUpdateSuccess = 5;</code>
+       */
+      public Builder setKeyUpdateSuccess(boolean value) {
+        bitField0_ |= 0x00000010;
+        keyUpdateSuccess_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool keyUpdateSuccess = 5;</code>
+       */
+      public Builder clearKeyUpdateSuccess() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        keyUpdateSuccess_ = false;
+        onChanged();
+        return this;
+      }
+
       private org.otrmessenger.messaging.Messaging.MessageStatusMsg msgStatus_ = org.otrmessenger.messaging.Messaging.MessageStatusMsg.getDefaultInstance();
       private com.google.protobuf.SingleFieldBuilder<
           org.otrmessenger.messaging.Messaging.MessageStatusMsg, org.otrmessenger.messaging.Messaging.MessageStatusMsg.Builder, org.otrmessenger.messaging.Messaging.MessageStatusMsgOrBuilder> msgStatusBuilder_;
@@ -5062,7 +5221,7 @@ public final class Messaging {
        * <code>optional .org.otrmessenger.messaging.MessageStatusMsg msgStatus = 12;</code>
        */
       public boolean hasMsgStatus() {
-        return ((bitField0_ & 0x00000010) == 0x00000010);
+        return ((bitField0_ & 0x00000020) == 0x00000020);
       }
       /**
        * <code>optional .org.otrmessenger.messaging.MessageStatusMsg msgStatus = 12;</code>
@@ -5087,7 +5246,7 @@ public final class Messaging {
         } else {
           msgStatusBuilder_.setMessage(value);
         }
-        bitField0_ |= 0x00000010;
+        bitField0_ |= 0x00000020;
         return this;
       }
       /**
@@ -5101,7 +5260,7 @@ public final class Messaging {
         } else {
           msgStatusBuilder_.setMessage(builderForValue.build());
         }
-        bitField0_ |= 0x00000010;
+        bitField0_ |= 0x00000020;
         return this;
       }
       /**
@@ -5109,7 +5268,7 @@ public final class Messaging {
        */
       public Builder mergeMsgStatus(org.otrmessenger.messaging.Messaging.MessageStatusMsg value) {
         if (msgStatusBuilder_ == null) {
-          if (((bitField0_ & 0x00000010) == 0x00000010) &&
+          if (((bitField0_ & 0x00000020) == 0x00000020) &&
               msgStatus_ != org.otrmessenger.messaging.Messaging.MessageStatusMsg.getDefaultInstance()) {
             msgStatus_ =
               org.otrmessenger.messaging.Messaging.MessageStatusMsg.newBuilder(msgStatus_).mergeFrom(value).buildPartial();
@@ -5120,7 +5279,7 @@ public final class Messaging {
         } else {
           msgStatusBuilder_.mergeFrom(value);
         }
-        bitField0_ |= 0x00000010;
+        bitField0_ |= 0x00000020;
         return this;
       }
       /**
@@ -5133,14 +5292,14 @@ public final class Messaging {
         } else {
           msgStatusBuilder_.clear();
         }
-        bitField0_ = (bitField0_ & ~0x00000010);
+        bitField0_ = (bitField0_ & ~0x00000020);
         return this;
       }
       /**
        * <code>optional .org.otrmessenger.messaging.MessageStatusMsg msgStatus = 12;</code>
        */
       public org.otrmessenger.messaging.Messaging.MessageStatusMsg.Builder getMsgStatusBuilder() {
-        bitField0_ |= 0x00000010;
+        bitField0_ |= 0x00000020;
         onChanged();
         return getMsgStatusFieldBuilder().getBuilder();
       }
@@ -5230,28 +5389,30 @@ public final class Messaging {
       "\r\"Y\n\020MessageStatusMsg\0229\n\006status\030\001 \001(\0162)." +
       "org.otrmessenger.messaging.MessageStatus" +
       "\022\n\n\002id\030\n \001(\r\";\n\nClientInfo\022\020\n\010username\030\001" +
-      " \002(\014\022\013\n\003key\030\002 \001(\014\022\016\n\006online\030\003 \001(\010\"\216\002\n\021Ms",
+      " \002(\014\022\013\n\003key\030\002 \001(\014\022\016\n\006online\030\003 \001(\010\"\260\002\n\021Ms",
       "gClientToServer\022<\n\013credentials\030\001 \001(\0132\'.o" +
-      "rg.otrmessenger.messaging.Credentials\022\022\n" +
-      "\nupdatedKey\030\002 \001(\014\022:\n\010adminReq\030\003 \001(\0162(.or" +
-      "g.otrmessenger.messaging.AdminRequest\022\033\n" +
-      "\023requestInfoUsername\030\004 \001(\014\0220\n\003msg\030\005 \001(\0132" +
-      "#.org.otrmessenger.messaging.Message\022\034\n\024" +
-      "requestKeyPairChange\030\006 \001(\010\"\213\002\n\021MsgServer" +
-      "ToClient\0225\n\005users\030\001 \003(\0132&.org.otrmesseng" +
-      "er.messaging.ClientInfo\0220\n\003msg\030\002 \001(\0132#.o" +
-      "rg.otrmessenger.messaging.Message\0226\n\005sta",
-      "te\030\003 \001(\0162\'.org.otrmessenger.messaging.Se" +
-      "rverState\022\024\n\014loginSuccess\030\004 \001(\010\022?\n\tmsgSt" +
-      "atus\030\014 \001(\0132,.org.otrmessenger.messaging." +
-      "MessageStatusMsg*=\n\rMessageStatus\022\013\n\007UNK" +
-      "NOWN\020\000\022\020\n\014USER_OFFLINE\020\001\022\r\n\tDELIVERED\020\002*" +
-      "\201\001\n\014AdminRequest\022\n\n\006LAUNCH\020\001\022\010\n\004STOP\020\002\022\t" +
-      "\n\005RESET\020\003\022\025\n\021GET_CURRENT_STATE\020\004\022\021\n\rGET_" +
-      "ALL_USERS\020\005\022\024\n\020GET_ONLINE_USERS\020\006\022\020\n\014GET" +
-      "_ALL_KEYS\020\007*\\\n\013ServerState\022\022\n\016SERVER_UNK" +
-      "NOWN\020\000\022\023\n\017SERVER_LAUNCHED\020\001\022\022\n\016SERVER_ST",
-      "OPPED\020\002\022\020\n\014SERVER_RESET\020\003"
+      "rg.otrmessenger.messaging.Credentials\022\026\n" +
+      "\016updatedSignKey\030\002 \001(\014\022\034\n\024updatedEncrypti" +
+      "onKey\030\003 \001(\014\022:\n\010adminReq\030\004 \001(\0162(.org.otrm" +
+      "essenger.messaging.AdminRequest\022\033\n\023reque" +
+      "stInfoUsername\030\005 \001(\014\0220\n\003msg\030\006 \001(\0132#.org." +
+      "otrmessenger.messaging.Message\022\034\n\024reques" +
+      "tKeyPairChange\030\007 \001(\010\"\245\002\n\021MsgServerToClie" +
+      "nt\0225\n\005users\030\001 \003(\0132&.org.otrmessenger.mes" +
+      "saging.ClientInfo\0220\n\003msg\030\002 \001(\0132#.org.otr",
+      "messenger.messaging.Message\0226\n\005state\030\003 \001" +
+      "(\0162\'.org.otrmessenger.messaging.ServerSt" +
+      "ate\022\024\n\014loginSuccess\030\004 \001(\010\022\030\n\020keyUpdateSu" +
+      "ccess\030\005 \001(\010\022?\n\tmsgStatus\030\014 \001(\0132,.org.otr" +
+      "messenger.messaging.MessageStatusMsg*=\n\r" +
+      "MessageStatus\022\013\n\007UNKNOWN\020\000\022\020\n\014USER_OFFLI" +
+      "NE\020\001\022\r\n\tDELIVERED\020\002*\201\001\n\014AdminRequest\022\n\n\006" +
+      "LAUNCH\020\001\022\010\n\004STOP\020\002\022\t\n\005RESET\020\003\022\025\n\021GET_CUR" +
+      "RENT_STATE\020\004\022\021\n\rGET_ALL_USERS\020\005\022\024\n\020GET_O" +
+      "NLINE_USERS\020\006\022\020\n\014GET_ALL_KEYS\020\007*\\\n\013Serve",
+      "rState\022\022\n\016SERVER_UNKNOWN\020\000\022\023\n\017SERVER_LAU" +
+      "NCHED\020\001\022\022\n\016SERVER_STOPPED\020\002\022\020\n\014SERVER_RE" +
+      "SET\020\003"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -5294,13 +5455,13 @@ public final class Messaging {
     internal_static_org_otrmessenger_messaging_MsgClientToServer_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_org_otrmessenger_messaging_MsgClientToServer_descriptor,
-        new java.lang.String[] { "Credentials", "UpdatedKey", "AdminReq", "RequestInfoUsername", "Msg", "RequestKeyPairChange", });
+        new java.lang.String[] { "Credentials", "UpdatedSignKey", "UpdatedEncryptionKey", "AdminReq", "RequestInfoUsername", "Msg", "RequestKeyPairChange", });
     internal_static_org_otrmessenger_messaging_MsgServerToClient_descriptor =
       getDescriptor().getMessageTypes().get(5);
     internal_static_org_otrmessenger_messaging_MsgServerToClient_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_org_otrmessenger_messaging_MsgServerToClient_descriptor,
-        new java.lang.String[] { "Users", "Msg", "State", "LoginSuccess", "MsgStatus", });
+        new java.lang.String[] { "Users", "Msg", "State", "LoginSuccess", "KeyUpdateSuccess", "MsgStatus", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)
