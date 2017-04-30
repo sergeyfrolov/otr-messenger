@@ -31,8 +31,9 @@ message MessageStatusMsg {
 
 message ClientInfo {
 	required bytes username = 1;
-	optional bytes key = 2;
-	optional bool  online = 3;
+	optional bytes sign_key = 2;
+	optional bytes encryption_key = 3;
+	optional bool  online = 4;
 }
 
 enum AdminRequest {

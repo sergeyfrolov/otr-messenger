@@ -2295,20 +2295,29 @@ public final class Messaging {
     com.google.protobuf.ByteString getUsername();
 
     /**
-     * <code>optional bytes key = 2;</code>
+     * <code>optional bytes sign_key = 2;</code>
      */
-    boolean hasKey();
+    boolean hasSignKey();
     /**
-     * <code>optional bytes key = 2;</code>
+     * <code>optional bytes sign_key = 2;</code>
      */
-    com.google.protobuf.ByteString getKey();
+    com.google.protobuf.ByteString getSignKey();
 
     /**
-     * <code>optional bool online = 3;</code>
+     * <code>optional bytes encryption_key = 3;</code>
+     */
+    boolean hasEncryptionKey();
+    /**
+     * <code>optional bytes encryption_key = 3;</code>
+     */
+    com.google.protobuf.ByteString getEncryptionKey();
+
+    /**
+     * <code>optional bool online = 4;</code>
      */
     boolean hasOnline();
     /**
-     * <code>optional bool online = 3;</code>
+     * <code>optional bool online = 4;</code>
      */
     boolean getOnline();
   }
@@ -2371,11 +2380,16 @@ public final class Messaging {
             }
             case 18: {
               bitField0_ |= 0x00000002;
-              key_ = input.readBytes();
+              signKey_ = input.readBytes();
               break;
             }
-            case 24: {
+            case 26: {
               bitField0_ |= 0x00000004;
+              encryptionKey_ = input.readBytes();
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000008;
               online_ = input.readBool();
               break;
             }
@@ -2434,31 +2448,46 @@ public final class Messaging {
       return username_;
     }
 
-    public static final int KEY_FIELD_NUMBER = 2;
-    private com.google.protobuf.ByteString key_;
+    public static final int SIGN_KEY_FIELD_NUMBER = 2;
+    private com.google.protobuf.ByteString signKey_;
     /**
-     * <code>optional bytes key = 2;</code>
+     * <code>optional bytes sign_key = 2;</code>
      */
-    public boolean hasKey() {
+    public boolean hasSignKey() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
-     * <code>optional bytes key = 2;</code>
+     * <code>optional bytes sign_key = 2;</code>
      */
-    public com.google.protobuf.ByteString getKey() {
-      return key_;
+    public com.google.protobuf.ByteString getSignKey() {
+      return signKey_;
     }
 
-    public static final int ONLINE_FIELD_NUMBER = 3;
-    private boolean online_;
+    public static final int ENCRYPTION_KEY_FIELD_NUMBER = 3;
+    private com.google.protobuf.ByteString encryptionKey_;
     /**
-     * <code>optional bool online = 3;</code>
+     * <code>optional bytes encryption_key = 3;</code>
      */
-    public boolean hasOnline() {
+    public boolean hasEncryptionKey() {
       return ((bitField0_ & 0x00000004) == 0x00000004);
     }
     /**
-     * <code>optional bool online = 3;</code>
+     * <code>optional bytes encryption_key = 3;</code>
+     */
+    public com.google.protobuf.ByteString getEncryptionKey() {
+      return encryptionKey_;
+    }
+
+    public static final int ONLINE_FIELD_NUMBER = 4;
+    private boolean online_;
+    /**
+     * <code>optional bool online = 4;</code>
+     */
+    public boolean hasOnline() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional bool online = 4;</code>
      */
     public boolean getOnline() {
       return online_;
@@ -2466,7 +2495,8 @@ public final class Messaging {
 
     private void initFields() {
       username_ = com.google.protobuf.ByteString.EMPTY;
-      key_ = com.google.protobuf.ByteString.EMPTY;
+      signKey_ = com.google.protobuf.ByteString.EMPTY;
+      encryptionKey_ = com.google.protobuf.ByteString.EMPTY;
       online_ = false;
     }
     private byte memoizedIsInitialized = -1;
@@ -2490,10 +2520,13 @@ public final class Messaging {
         output.writeBytes(1, username_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeBytes(2, key_);
+        output.writeBytes(2, signKey_);
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeBool(3, online_);
+        output.writeBytes(3, encryptionKey_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeBool(4, online_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -2510,11 +2543,15 @@ public final class Messaging {
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(2, key_);
+          .computeBytesSize(2, signKey_);
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(3, online_);
+          .computeBytesSize(3, encryptionKey_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(4, online_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -2635,10 +2672,12 @@ public final class Messaging {
         super.clear();
         username_ = com.google.protobuf.ByteString.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000001);
-        key_ = com.google.protobuf.ByteString.EMPTY;
+        signKey_ = com.google.protobuf.ByteString.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000002);
-        online_ = false;
+        encryptionKey_ = com.google.protobuf.ByteString.EMPTY;
         bitField0_ = (bitField0_ & ~0x00000004);
+        online_ = false;
+        bitField0_ = (bitField0_ & ~0x00000008);
         return this;
       }
 
@@ -2674,9 +2713,13 @@ public final class Messaging {
         if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
           to_bitField0_ |= 0x00000002;
         }
-        result.key_ = key_;
+        result.signKey_ = signKey_;
         if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
           to_bitField0_ |= 0x00000004;
+        }
+        result.encryptionKey_ = encryptionKey_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
         }
         result.online_ = online_;
         result.bitField0_ = to_bitField0_;
@@ -2698,8 +2741,11 @@ public final class Messaging {
         if (other.hasUsername()) {
           setUsername(other.getUsername());
         }
-        if (other.hasKey()) {
-          setKey(other.getKey());
+        if (other.hasSignKey()) {
+          setSignKey(other.getSignKey());
+        }
+        if (other.hasEncryptionKey()) {
+          setEncryptionKey(other.getEncryptionKey());
         }
         if (other.hasOnline()) {
           setOnline(other.getOnline());
@@ -2770,68 +2816,103 @@ public final class Messaging {
         return this;
       }
 
-      private com.google.protobuf.ByteString key_ = com.google.protobuf.ByteString.EMPTY;
+      private com.google.protobuf.ByteString signKey_ = com.google.protobuf.ByteString.EMPTY;
       /**
-       * <code>optional bytes key = 2;</code>
+       * <code>optional bytes sign_key = 2;</code>
        */
-      public boolean hasKey() {
+      public boolean hasSignKey() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
-       * <code>optional bytes key = 2;</code>
+       * <code>optional bytes sign_key = 2;</code>
        */
-      public com.google.protobuf.ByteString getKey() {
-        return key_;
+      public com.google.protobuf.ByteString getSignKey() {
+        return signKey_;
       }
       /**
-       * <code>optional bytes key = 2;</code>
+       * <code>optional bytes sign_key = 2;</code>
        */
-      public Builder setKey(com.google.protobuf.ByteString value) {
+      public Builder setSignKey(com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
   bitField0_ |= 0x00000002;
-        key_ = value;
+        signKey_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional bytes key = 2;</code>
+       * <code>optional bytes sign_key = 2;</code>
        */
-      public Builder clearKey() {
+      public Builder clearSignKey() {
         bitField0_ = (bitField0_ & ~0x00000002);
-        key_ = getDefaultInstance().getKey();
+        signKey_ = getDefaultInstance().getSignKey();
+        onChanged();
+        return this;
+      }
+
+      private com.google.protobuf.ByteString encryptionKey_ = com.google.protobuf.ByteString.EMPTY;
+      /**
+       * <code>optional bytes encryption_key = 3;</code>
+       */
+      public boolean hasEncryptionKey() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional bytes encryption_key = 3;</code>
+       */
+      public com.google.protobuf.ByteString getEncryptionKey() {
+        return encryptionKey_;
+      }
+      /**
+       * <code>optional bytes encryption_key = 3;</code>
+       */
+      public Builder setEncryptionKey(com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        encryptionKey_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bytes encryption_key = 3;</code>
+       */
+      public Builder clearEncryptionKey() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        encryptionKey_ = getDefaultInstance().getEncryptionKey();
         onChanged();
         return this;
       }
 
       private boolean online_ ;
       /**
-       * <code>optional bool online = 3;</code>
+       * <code>optional bool online = 4;</code>
        */
       public boolean hasOnline() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
+        return ((bitField0_ & 0x00000008) == 0x00000008);
       }
       /**
-       * <code>optional bool online = 3;</code>
+       * <code>optional bool online = 4;</code>
        */
       public boolean getOnline() {
         return online_;
       }
       /**
-       * <code>optional bool online = 3;</code>
+       * <code>optional bool online = 4;</code>
        */
       public Builder setOnline(boolean value) {
-        bitField0_ |= 0x00000004;
+        bitField0_ |= 0x00000008;
         online_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional bool online = 3;</code>
+       * <code>optional bool online = 4;</code>
        */
       public Builder clearOnline() {
-        bitField0_ = (bitField0_ & ~0x00000004);
+        bitField0_ = (bitField0_ & ~0x00000008);
         online_ = false;
         onChanged();
         return this;
@@ -5388,31 +5469,31 @@ public final class Messaging {
       "\n\tsignature\030\004 \001(\014\022\n\n\002iv\030\005 \001(\014\022\n\n\002id\030\n \001(" +
       "\r\"Y\n\020MessageStatusMsg\0229\n\006status\030\001 \001(\0162)." +
       "org.otrmessenger.messaging.MessageStatus" +
-      "\022\n\n\002id\030\n \001(\r\";\n\nClientInfo\022\020\n\010username\030\001" +
-      " \002(\014\022\013\n\003key\030\002 \001(\014\022\016\n\006online\030\003 \001(\010\"\260\002\n\021Ms",
-      "gClientToServer\022<\n\013credentials\030\001 \001(\0132\'.o" +
-      "rg.otrmessenger.messaging.Credentials\022\026\n" +
-      "\016updatedSignKey\030\002 \001(\014\022\034\n\024updatedEncrypti" +
-      "onKey\030\003 \001(\014\022:\n\010adminReq\030\004 \001(\0162(.org.otrm" +
-      "essenger.messaging.AdminRequest\022\033\n\023reque" +
-      "stInfoUsername\030\005 \001(\014\0220\n\003msg\030\006 \001(\0132#.org." +
-      "otrmessenger.messaging.Message\022\034\n\024reques" +
-      "tKeyPairChange\030\007 \001(\010\"\245\002\n\021MsgServerToClie" +
-      "nt\0225\n\005users\030\001 \003(\0132&.org.otrmessenger.mes" +
-      "saging.ClientInfo\0220\n\003msg\030\002 \001(\0132#.org.otr",
-      "messenger.messaging.Message\0226\n\005state\030\003 \001" +
-      "(\0162\'.org.otrmessenger.messaging.ServerSt" +
-      "ate\022\024\n\014loginSuccess\030\004 \001(\010\022\030\n\020keyUpdateSu" +
-      "ccess\030\005 \001(\010\022?\n\tmsgStatus\030\014 \001(\0132,.org.otr" +
-      "messenger.messaging.MessageStatusMsg*=\n\r" +
-      "MessageStatus\022\013\n\007UNKNOWN\020\000\022\020\n\014USER_OFFLI" +
-      "NE\020\001\022\r\n\tDELIVERED\020\002*\201\001\n\014AdminRequest\022\n\n\006" +
-      "LAUNCH\020\001\022\010\n\004STOP\020\002\022\t\n\005RESET\020\003\022\025\n\021GET_CUR" +
-      "RENT_STATE\020\004\022\021\n\rGET_ALL_USERS\020\005\022\024\n\020GET_O" +
-      "NLINE_USERS\020\006\022\020\n\014GET_ALL_KEYS\020\007*\\\n\013Serve",
-      "rState\022\022\n\016SERVER_UNKNOWN\020\000\022\023\n\017SERVER_LAU" +
-      "NCHED\020\001\022\022\n\016SERVER_STOPPED\020\002\022\020\n\014SERVER_RE" +
-      "SET\020\003"
+      "\022\n\n\002id\030\n \001(\r\"X\n\nClientInfo\022\020\n\010username\030\001" +
+      " \002(\014\022\020\n\010sign_key\030\002 \001(\014\022\026\n\016encryption_key",
+      "\030\003 \001(\014\022\016\n\006online\030\004 \001(\010\"\260\002\n\021MsgClientToSe" +
+      "rver\022<\n\013credentials\030\001 \001(\0132\'.org.otrmesse" +
+      "nger.messaging.Credentials\022\026\n\016updatedSig" +
+      "nKey\030\002 \001(\014\022\034\n\024updatedEncryptionKey\030\003 \001(\014" +
+      "\022:\n\010adminReq\030\004 \001(\0162(.org.otrmessenger.me" +
+      "ssaging.AdminRequest\022\033\n\023requestInfoUsern" +
+      "ame\030\005 \001(\014\0220\n\003msg\030\006 \001(\0132#.org.otrmessenge" +
+      "r.messaging.Message\022\034\n\024requestKeyPairCha" +
+      "nge\030\007 \001(\010\"\245\002\n\021MsgServerToClient\0225\n\005users" +
+      "\030\001 \003(\0132&.org.otrmessenger.messaging.Clie",
+      "ntInfo\0220\n\003msg\030\002 \001(\0132#.org.otrmessenger.m" +
+      "essaging.Message\0226\n\005state\030\003 \001(\0162\'.org.ot" +
+      "rmessenger.messaging.ServerState\022\024\n\014logi" +
+      "nSuccess\030\004 \001(\010\022\030\n\020keyUpdateSuccess\030\005 \001(\010" +
+      "\022?\n\tmsgStatus\030\014 \001(\0132,.org.otrmessenger.m" +
+      "essaging.MessageStatusMsg*=\n\rMessageStat" +
+      "us\022\013\n\007UNKNOWN\020\000\022\020\n\014USER_OFFLINE\020\001\022\r\n\tDEL" +
+      "IVERED\020\002*\201\001\n\014AdminRequest\022\n\n\006LAUNCH\020\001\022\010\n" +
+      "\004STOP\020\002\022\t\n\005RESET\020\003\022\025\n\021GET_CURRENT_STATE\020" +
+      "\004\022\021\n\rGET_ALL_USERS\020\005\022\024\n\020GET_ONLINE_USERS",
+      "\020\006\022\020\n\014GET_ALL_KEYS\020\007*\\\n\013ServerState\022\022\n\016S" +
+      "ERVER_UNKNOWN\020\000\022\023\n\017SERVER_LAUNCHED\020\001\022\022\n\016" +
+      "SERVER_STOPPED\020\002\022\020\n\014SERVER_RESET\020\003"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -5449,7 +5530,7 @@ public final class Messaging {
     internal_static_org_otrmessenger_messaging_ClientInfo_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_org_otrmessenger_messaging_ClientInfo_descriptor,
-        new java.lang.String[] { "Username", "Key", "Online", });
+        new java.lang.String[] { "Username", "SignKey", "EncryptionKey", "Online", });
     internal_static_org_otrmessenger_messaging_MsgClientToServer_descriptor =
       getDescriptor().getMessageTypes().get(4);
     internal_static_org_otrmessenger_messaging_MsgClientToServer_fieldAccessorTable = new
