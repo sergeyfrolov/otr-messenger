@@ -13,6 +13,7 @@ import org.otrmessenger.History;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -30,6 +31,7 @@ public class Chat  {
 	private JFrame frame;
 	private JTextField messageField;
 	private static String othername="other"; //for testing
+	JTextArea HistoryArea;
 	
 	
 	/**
@@ -52,7 +54,7 @@ public class Chat  {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		JTextArea HistoryArea = new JTextArea();
+		HistoryArea = new JTextArea();
 		HistoryArea.setEditable(false);
 		HistoryArea.setLineWrap(true);
 		HistoryArea.setWrapStyleWord(true);
@@ -75,15 +77,23 @@ public class Chat  {
                 msgBuilder.setFromUsername(ByteString.copyFromUtf8(host.getUsername()));
                 msgBuilder.setText(ByteString.copyFromUtf8(newMessage));
                 Message m = msgBuilder.build();
-                history.addMsg(m);
-                updateHistoryArea(HistoryArea);
-                host.sendMessage(other, m);
+                if (host.sendMessage(other, m)){
+                    history.addMsg(m);
+                    updateHistoryArea(HistoryArea);
+                }
+                else{
+                    msgBuilder.setText(ByteString.copyFromUtf8("user " + other.getUsername() + " is not available"));
+                    m = msgBuilder.build();
+                    history.addMsg(m);
+                    updateHistoryArea(HistoryArea);
+                }
 			}
 		});
 		btnSend.setBounds(339, 217, 93, 35);
 		frame.getContentPane().add(btnSend);
 	}
 	
+
 	private void updateHistoryArea(JTextArea historyArea){
 	    StringBuilder strBuilder = new StringBuilder();
 	    
@@ -98,5 +108,13 @@ public class Chat  {
 	    historyArea.setText(strBuilder.toString());
 	    
 	}
+	
+	public User getOther(){
+	    return this.other;
+	}
 
+	public void receiveMessage(Message msg){
+	    history.addMsg(msg);
+	    updateHistoryArea(HistoryArea);
+	}
 }

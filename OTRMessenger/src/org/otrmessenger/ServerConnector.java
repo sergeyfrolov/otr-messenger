@@ -5,6 +5,7 @@ import java.net.Socket;
 import java.util.List;
 
 import org.otrmessenger.messaging.Messaging.Message;
+import org.otrmessenger.viewer.Host;
 import org.otrmessenger.viewer.User;
 
 import com.google.protobuf.ByteString;
@@ -18,7 +19,23 @@ public class ServerConnector implements Runnable {
     private DataInputStream in = null;
     private Credentials cred;
     private boolean running;
+    private Host host;
     
+    
+    public ServerConnector(Host h, byte[] passHash, String address, int port){
+        this.host = h;
+        cred = credSetup(ByteString.copyFromUtf8(h.getUsername()), 
+                ByteString.copyFrom(passHash), false, false);
+        try {
+            sock = new Socket(address, port);
+            out = new DataOutputStream(sock.getOutputStream());
+            in = new DataInputStream(sock.getInputStream());
+            this.running = true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public ServerConnector(String usrName, byte[] passHash, String address, int port){
         cred = credSetup(ByteString.copyFromUtf8(usrName), 
                 ByteString.copyFrom(passHash), false, false);
@@ -50,7 +67,6 @@ public class ServerConnector implements Runnable {
             byte[] buf = null;
             try {
                 if (in.available() > 0){
-                    System.out.println("in if");
                     length = in.readInt();
                     buf = new byte[length];
                     in.readFully(buf);
@@ -66,6 +82,7 @@ public class ServerConnector implements Runnable {
             try {
                 msg = MsgServerToClient.parseFrom(buf);
                 System.out.println(msg);
+                host.receiveMessage(msg.getMsg());
             } catch (InvalidProtocolBufferException e) {
                 e.printStackTrace();
                 return;
@@ -137,6 +154,7 @@ public class ServerConnector implements Runnable {
     }
 
     public MsgServerToClient send(MsgClientToServer cts){
+        System.out.println(cts);
         try{
             out.writeInt(cts.getSerializedSize());
             out.flush();

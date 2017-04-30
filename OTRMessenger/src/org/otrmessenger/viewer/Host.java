@@ -22,9 +22,12 @@ public class Host extends User {
 //	}
 	
 	public Host(String s, String password){
+	    this.chats = new ArrayList<Chat> ();
 	    this.username = s;
-	    this.SC = new ServerConnector(s, password.getBytes(), "10.233.19.23", 10050);
+//	    this.SC = new ServerConnector(s, password.getBytes(), "10.233.19.23", 10050);
 //	    this.SC = new ServerConnector(s, password.getBytes(), "localhost", 10050);
+//	    this.SC = new ServerConnector(this, password.getBytes(), "10.233.19.23", 10050);
+	    this.SC = new ServerConnector(this, password.getBytes(), "localhost", 10050);
 	    
 //	    this.thread = new Thread(this.SC);
 //	    this.thread.start();
@@ -65,12 +68,12 @@ public class Host extends User {
 	}
 	
 	public boolean signUp() {
-        try {
-            this.SC.terminate();
-            this.thread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            this.SC.terminate();
+//            this.thread.join();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
         boolean ret = this.SC.signUp();
 	    this.thread = new Thread(this.SC);
 	    this.thread.start();
@@ -103,14 +106,28 @@ public class Host extends User {
 	    this.thread.start();
 		return ret;
 	}
-	public boolean receiveMessage(User from, Message msg){
-		boolean confirm = false;
-		//TODO
-		return confirm;
+
+	public boolean receiveMessage(Message msg){
+		for (Chat c: this.chats){
+		    System.out.println("in chats loop");
+		    System.out.println(c.getOther().getUsername());
+		    System.out.println(msg.getFromUsername().toStringUtf8());
+		    if (msg.getFromUsername().toStringUtf8().equals(c.getOther().getUsername())){
+		        c.receiveMessage(msg);
+		        return true;
+		    }
+		}
+		
+		// here don't already have a chat with user, need to open one.
+		
+		Chat c = new Chat(msg.getFromUsername().toStringUtf8(), this);
+		
+		addChat(c);
+		c.receiveMessage(msg);
+
+		return true;
 	}
-	public boolean addChat(User other){
-		boolean confirm = false;
-		//TODO
-		return confirm;
+	public boolean addChat(Chat c){
+		return chats.add(c);
 	}
 }
