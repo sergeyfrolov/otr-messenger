@@ -104,7 +104,6 @@ public void draw(){
   public LandingPage(Host m){
     myself = m;
     fl = new FriendsList(m.getUsername());
-    System.out.println(fl);
     draw();
   }
   
