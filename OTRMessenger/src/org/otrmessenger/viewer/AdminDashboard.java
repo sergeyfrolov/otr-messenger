@@ -1,4 +1,5 @@
 package org.otrmessenger.viewer;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -6,8 +7,12 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
 import javax.swing.JSeparator;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -134,7 +139,7 @@ public class AllUsers {
 	private void initialize() {
 		frameAU = new JFrame("All Users");
 		frameAU.setBounds(200, 100, 450, 300);
-		frameAU.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frameAU.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frameAU.getContentPane().setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -163,7 +168,7 @@ public class OnlineUsers {
 	private void initialize() {
 		frameOU = new JFrame("Online Users");
 		frameOU.setBounds(300, 100, 450, 300);
-		frameOU.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frameOU.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frameOU.getContentPane().setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -179,37 +184,44 @@ public class OnlineUsers {
 		frameOU.getContentPane().add(lblOf);
 	}
 }
-public class PublicKeys {
+public class PublicKeys
+{
+	
+  private JFrame framePK;
+  private String[] columnNames = { "Name", "Public Key" };
+  private Object[][] data = { { new String("Morpheus"), new String("2vXtakeOtheZpillL1R") },{ new String("King_Leonidas"), new String("Ak/PV07nq91jhz2wPG") } };
+  private TableModel model = new DefaultTableModel(data, columnNames)
+  {
+    private static final long serialVersionUID = 1L;
 
-	private JFrame framePK;				
-	/**
-	 * Create the application.
-	 */
-	public PublicKeys() {
-		initialize();
-	}
+    public boolean isCellEditable(int row, int column)
+    {
+      return column == 1;
+    }
+  };
+  private JTable table = new JTable(model);
+  
+  public PublicKeys()
+  {
+	framePK = new JFrame("Public Key");
+	Dimension size = table.getPreferredSize();
+	size.height +=100;
+	size.width +=200;
+	 
+    table.setPreferredScrollableViewportSize(size);
+    table.setShowHorizontalLines(true);
+    table.setShowVerticalLines(false);
+    
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
-		framePK = new JFrame("Online Users");
-		framePK.setBounds(400, 100, 450, 300);
-		framePK.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		framePK.getContentPane().setLayout(null);
-		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(21, 47, 402, 199);
-		framePK.getContentPane().add(scrollPane);
-		
-		JTextArea textArea = new JTextArea();
-		scrollPane.setViewportView(textArea);
-		
-		JLabel lblOf = new JLabel("Online: 1 of 12"); //this text should be read from server?
-		lblOf.setHorizontalAlignment(SwingConstants.CENTER);
-		lblOf.setBounds(155, 19, 137, 16);
-		framePK.getContentPane().add(lblOf);
-	}
+    JScrollPane scroll = new JScrollPane(table);
+    framePK.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    framePK.getContentPane().add(scroll);
+    framePK.pack();
+    framePK.setLocation(400, 100);
+    framePK.setVisible(true);
+  }
+
+
 }
 
 }
