@@ -12,9 +12,9 @@ import java.util.List;
 
 
 public class OTRServer {
-    private AssetHandler assets;
-    private List<UserConn> activeConnections;
-    private ServerState state;
+    protected AssetHandler assets;
+    protected List<UserConn> activeConnections;
+    protected ServerState state;
     protected int portNumber;
 
     private static OTRServer instance = null;
@@ -46,19 +46,8 @@ public class OTRServer {
             System.err.println("Exception caught:" + e);
         }
     }
-    public AssetHandler getAssets() {
-        return assets;
-    }
 
-    public List<UserConn> getActiveConnections() {
-        return activeConnections;
-    }
-
-    ServerState getState() {
-        return state;
-    }
-
-    void Stop() {
+    public void Stop() {
         state = ServerState.SERVER_STOPPED;
         for (UserConn conn : activeConnections) {
             if (!conn.isAdmin()) {
@@ -73,8 +62,20 @@ public class OTRServer {
         // TODO: consider listening for admin connections
     }
 
-    void Reset() {
+    public void Reset() {
         Stop();
         this.assets.reset();
+    }
+
+    public AssetHandler getAssets() {
+        return assets;
+    }
+
+    public List<UserConn> getActiveConnections() {
+        return activeConnections;
+    }
+
+    public ServerState getState() {
+        return state;
     }
 }

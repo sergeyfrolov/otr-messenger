@@ -113,28 +113,24 @@ public class UserConn implements Runnable {
 
     }
 
-    String getUsername() {
+    public String getUsername() {
         return this.username;
     }
 
-    void setUsername(String name) {
+    public void setUsername(String name) {
         this.username = name;
     }
 
     //SSLSocket getSocket() {
-    Socket getSocket() {
+    public Socket getSocket() {
         return this.sock;
     }
 
-    void setSocket(SSLSocket sock) {
+    public void setSocket(Socket sock) {
         this.sock = sock;
     }
 
-    void setSocket(Socket sock) {
-        this.sock = sock;
-    }
-
-    Boolean isAdmin() {
+    public Boolean isAdmin() {
         return this.admin;
     }
 
@@ -231,8 +227,8 @@ public class UserConn implements Runnable {
             if (userConn.getUsername().equals(msgFromUser.getToUsername().toStringUtf8())) {
                 status = Messaging.MessageStatus.DELIVERED;
                 Message.Builder message = Message.newBuilder();
-                message.setToUsername(ByteString.copyFrom(username.getBytes()));
-                message.setFromUsername(ByteString.copyFrom(msgFromUser.getToUsername().toStringUtf8().getBytes()));
+                message.setFromUsername(ByteString.copyFrom(username.getBytes()));
+                message.setToUsername(ByteString.copyFrom(msgFromUser.getToUsername().toStringUtf8().getBytes()));
                 message.setText(msgFromUser.getText());
                 message.setSignature(msgFromUser.getSignature());
 
@@ -253,7 +249,10 @@ public class UserConn implements Runnable {
         ClientInfo.Builder clientInfo = ClientInfo.newBuilder();
         if (assets.userExists(username)) {
             clientInfo.setUsername(ByteString.copyFrom(username));
-            clientInfo.setKey(ByteString.copyFrom(assets.getKey(username)));
+            byte[] key = assets.getKey(username);
+            if (key != null) {
+                clientInfo.setKey(ByteString.copyFrom(key));
+            }
             clientInfo.setOnline(false);
             for (UserConn userConn : server.getActiveConnections()) {
                 if (Arrays.equals(userConn.getUsername().getBytes(), username)) {

@@ -11,8 +11,8 @@ import java.util.List;
  * Created by sfrolov on 4/8/17.
  */
 public class SQLiteDBHandler {
-    private Connection conn;
-    private String pathToDB;
+    protected Connection conn;
+    protected String pathToDB;
 
     SQLiteDBHandler(String _pathToDB) {
         pathToDB = _pathToDB;
@@ -20,7 +20,7 @@ public class SQLiteDBHandler {
         createTables();
     }
 
-    private void connectToDB() {
+    protected void connectToDB() {
         // credits: based on http://www.sqlitetutorial.net/sqlite-java/sqlite-jdbc-driver/
         try {
             // db parameters
@@ -49,7 +49,7 @@ public class SQLiteDBHandler {
         createTables();
     }
 
-    private void createTables() {
+    protected void createTables() {
         List<String> sqlQueries = new LinkedList<String>();
         sqlQueries.add("CREATE TABLE  USERS ( " +
                 "USERNAME           TEXT           PRIMARY KEY, " +
@@ -68,7 +68,7 @@ public class SQLiteDBHandler {
         System.out.println("All tables created successfully");
     }
 
-    List<byte[]> getUsers() {
+    public List<byte[]> getUsers() {
         // loosely based on http://www.sqlitetutorial.net/sqlite-java/select/
         String sql = "SELECT USERNAME FROM USERS";
         List<byte[]> users = new ArrayList<byte[]>();
@@ -86,7 +86,7 @@ public class SQLiteDBHandler {
         return users;
     }
 
-    Boolean checkPassword(byte[] name, byte[] passHash) {
+    public Boolean checkPassword(byte[] name, byte[] passHash) {
         if ((passHash.length == 0) || (name.length == 0)) {
             return false;
         }
@@ -106,7 +106,7 @@ public class SQLiteDBHandler {
         return false;
     }
 
-    Boolean checkAdminPassword(byte[] name, byte[] passHash) {
+    public Boolean checkAdminPassword(byte[] name, byte[] passHash) {
         if ((passHash.length == 0) || (name.length == 0)) {
             return false;
         }
@@ -126,7 +126,7 @@ public class SQLiteDBHandler {
         return false;
     }
 
-    byte[] getKey(byte[] name) {
+    public byte[] getKey(byte[] name) {
         String sql = "SELECT PUBLIC_SIGN_KEY FROM USERS "
                 + "WHERE USERNAME = ?";
 
@@ -143,7 +143,7 @@ public class SQLiteDBHandler {
         return null;
     }
 
-    Boolean setKey(byte[] name, byte[] passHash) {
+    public Boolean setKey(byte[] name, byte[] passHash) {
         // loosely based on http://www.sqlitetutorial.net/sqlite-java/update/
         String sql = "UPDATE USERS SET PASSHASH = ? "
                 + "WHERE USERNAME = ?";
@@ -162,7 +162,7 @@ public class SQLiteDBHandler {
         return false;
     }
 
-    Boolean addUser(byte[] name, byte[] passHash) {
+    public Boolean addUser(byte[] name, byte[] passHash) {
         // loosely based on http://www.sqlitetutorial.net/sqlite-java/insert/
         String sql = "INSERT INTO USERS (USERNAME, PASSHASH) VALUES(?,?)";
 
@@ -177,7 +177,7 @@ public class SQLiteDBHandler {
         }
     }
 
-    Boolean userExists(byte[] name) {
+    public Boolean userExists(byte[] name) {
         String sql = "SELECT * from USERS "
                 + "WHERE USERNAME = ?";
 
@@ -187,7 +187,7 @@ public class SQLiteDBHandler {
             stmt.setBytes(1, name);
             // update
             ResultSet rs  = stmt.executeQuery();
-            return (rs.getString(0).length() > 0);
+            return (rs.getString("USERNAME").length() > 0);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }

@@ -12,13 +12,13 @@ import java.security.cert.X509Certificate;
  * Created by sfrolov on 4/8/17.
  */
 public class CertFileHandler {
-    private File CertFile;
+    protected File CertFile;
 
     CertFileHandler(String filename) {
         CertFile = new File(filename);
     }
 
-    X509Certificate getCertKey() {
+    public X509Certificate getCertKey() {
         CertificateFactory fact = null;
         try {
             fact = CertificateFactory.getInstance("X.509");
