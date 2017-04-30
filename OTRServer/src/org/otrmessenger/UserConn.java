@@ -1,16 +1,13 @@
 package org.otrmessenger;
 
-import javax.net.ssl.SSLSocket;
 import java.io.*;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.regex.Pattern;
 
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.otrmessenger.messaging.Messaging;
 import org.otrmessenger.messaging.Messaging.Credentials;
 import org.otrmessenger.messaging.Messaging.MsgClientToServer;
@@ -100,9 +97,14 @@ public class UserConn implements Runnable {
                     HandleGetUserInfo(bstrUsername.toByteArray());
                 }
 
-                if (clientMsg.hasUpdatedKey()) {
-                    ByteString bstrKey = clientMsg.getUpdatedKey();
-                    HandleUpdateKey(getUsername().getBytes(), bstrKey.toByteArray());
+                if (clientMsg.hasUpdatedSignKey()) {
+                    ByteString bstrKey = clientMsg.getUpdatedSignKey();
+                    HandleUpdateSignKey(getUsername().getBytes(), bstrKey.toByteArray());
+                }
+
+                if (clientMsg.hasUpdatedEncryptionKey()) {
+                    ByteString bstrKey = clientMsg.getUpdatedEncryptionKey();
+                    HandleUpdateEncryptionKey(getUsername().getBytes(), bstrKey.toByteArray());
                 }
 
                 if (clientMsg.hasRequestKeyPairChange()) {
@@ -181,7 +183,7 @@ public class UserConn implements Runnable {
                 for (byte[] username : assets.getUsers()) {
                     ClientInfo.Builder clientInfo = ClientInfo.newBuilder();
                     clientInfo.setUsername(ByteString.copyFrom(username));
-                    clientInfo.setKey(ByteString.copyFrom(assets.getKey(username)));
+                    clientInfo.setSignKey(ByteString.copyFrom(assets.getSignKey(username)));
                     msg.addUsers(clientInfo.build());
                 }
             case GET_ALL_USERS:
@@ -249,9 +251,13 @@ public class UserConn implements Runnable {
         ClientInfo.Builder clientInfo = ClientInfo.newBuilder();
         if (assets.userExists(username)) {
             clientInfo.setUsername(ByteString.copyFrom(username));
-            byte[] key = assets.getKey(username);
-            if (key != null) {
-                clientInfo.setKey(ByteString.copyFrom(key));
+            byte[] sign_key = assets.getSignKey(username);
+            if (sign_key != null) {
+                clientInfo.setSignKey(ByteString.copyFrom(sign_key));
+            }
+            byte[] enc_key = assets.getEncryptionKey(username);
+            if (enc_key != null) {
+                clientInfo.setEncryptionKey(ByteString.copyFrom(enc_key));
             }
             clientInfo.setOnline(false);
             for (UserConn userConn : server.getActiveConnections()) {
@@ -262,23 +268,32 @@ public class UserConn implements Runnable {
         } else {
             clientInfo.setOnline(false);
             clientInfo.setUsername(ByteString.copyFromUtf8(""));
-            clientInfo.setKey(ByteString.copyFromUtf8(""));
+            clientInfo.setSignKey(ByteString.copyFromUtf8(""));
         }
         msg.addUsers(clientInfo.build());
         sendServerMsg(msg.build());
     }
 
-
-    private Boolean HandleUpdateKey(byte[] username, byte[] key) {
-        if (getUsername().getBytes().equals(username)) {
-            return assets.setKey(username, key);
+    private Boolean HandleUpdateSignKey(byte[] username, byte[] key) {
+        boolean success = false;
+        if(Arrays.equals(username, getUsername().getBytes())) {
+            success = assets.setSignKey(username, key);
         }
-        return false;
-/*
         MsgServerToClient.Builder msg = MsgServerToClient.newBuilder();
-        msg.set // TODO: ADD UPDATE KEY SUCCESS
+        msg.setKeyUpdateSuccess(success);
         sendServerMsg(msg.build());
-*/
+        return success;
+    }
+
+    private Boolean HandleUpdateEncryptionKey(byte[] username, byte[] key) {
+        boolean success = false;
+        if(Arrays.equals(username, getUsername().getBytes())) {
+            success = assets.setEncryptionKey(username, key);
+        }
+        MsgServerToClient.Builder msg = MsgServerToClient.newBuilder();
+        msg.setKeyUpdateSuccess(success);
+        sendServerMsg(msg.build());
+        return success;
     }
 
     private void sendServerMsg(MsgServerToClient msg){

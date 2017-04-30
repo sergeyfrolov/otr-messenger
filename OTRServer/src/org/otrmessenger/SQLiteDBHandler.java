@@ -54,7 +54,8 @@ public class SQLiteDBHandler {
         sqlQueries.add("CREATE TABLE  USERS ( " +
                 "USERNAME           TEXT           PRIMARY KEY, " +
                 "PASSHASH           varbinary(32), " +
-                "PUBLIC_SIGN_KEY    varbinary(32)," +
+                "PUBLIC_SIGN_KEY    varbinary(128), " +
+                "PUBLIC_ENC_KEY     varbinary(128), " +
                 "ADMIN              boolean not null default 0);");
         for (String sqlQuery: sqlQueries) {
             try {
@@ -126,7 +127,7 @@ public class SQLiteDBHandler {
         return false;
     }
 
-    public byte[] getKey(byte[] name) {
+    public byte[] getSignKey(byte[] name) {
         String sql = "SELECT PUBLIC_SIGN_KEY FROM USERS "
                 + "WHERE USERNAME = ?";
 
@@ -143,9 +144,45 @@ public class SQLiteDBHandler {
         return null;
     }
 
-    public Boolean setKey(byte[] name, byte[] passHash) {
+    public Boolean setSignKey(byte[] name, byte[] passHash) {
         // loosely based on http://www.sqlitetutorial.net/sqlite-java/update/
-        String sql = "UPDATE USERS SET PASSHASH = ? "
+        String sql = "UPDATE USERS SET PUBLIC_SIGN_KEY = ? "
+                + "WHERE USERNAME = ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            // set the corresponding param
+            stmt.setBytes(1, passHash);
+            stmt.setBytes(2, name);
+            // update
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
+
+    public byte[] getEncryptionKey(byte[] name) {
+        String sql = "SELECT PUBLIC_ENC_KEY FROM USERS "
+                + "WHERE USERNAME = ?";
+
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            // set the corresponding param
+            stmt.setBytes(1, name);
+            // update
+            ResultSet rs  = stmt.executeQuery();
+            return rs.getBytes("PUBLIC_ENC_KEY");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    public Boolean setEncryptionKey(byte[] name, byte[] passHash) {
+        // loosely based on http://www.sqlitetutorial.net/sqlite-java/update/
+        String sql = "UPDATE USERS SET PUBLIC_ENC_KEY = ? "
                 + "WHERE USERNAME = ?";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
