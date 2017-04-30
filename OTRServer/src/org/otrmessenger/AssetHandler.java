@@ -32,12 +32,20 @@ public class AssetHandler {
         return dbHandler.checkAdminPassword(name, passHash);
     }
 
-    public byte[] getKey(byte[] name) {
-        return dbHandler.getKey(name);
+    public byte[] getSignKey(byte[] name) {
+        return dbHandler.getSignKey(name);
     }
 
-    public Boolean setKey(byte[] name, byte[] key) {
-        return dbHandler.setKey(name, key);
+    public Boolean setSignKey(byte[] name, byte[] key) {
+        return dbHandler.setSignKey(name, key);
+    }
+
+    public byte[] getEncryptionKey(byte[] name) {
+        return dbHandler.getEncryptionKey(name);
+    }
+
+    public Boolean setEncryptionKey(byte[] name, byte[] key) {
+        return dbHandler.setEncryptionKey(name, key);
     }
 
     public Boolean addUser(byte[] name, byte[] passHash){return dbHandler.addUser(name, passHash); }
