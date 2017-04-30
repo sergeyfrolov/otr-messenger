@@ -1,5 +1,6 @@
 package org.otrmessenger;
-import org.otrmessenger.Message;
+
+import org.otrmessenger.messaging.Messaging.Message;
 import java.util.ArrayList;
 
 public class History {
@@ -15,5 +16,9 @@ public class History {
 	public Message getMsg(int index){
 		
 		return savedMsgs.get(index); 
+	}
+	
+	public int numMessages(){
+	    return savedMsgs.size();
 	}
 }
