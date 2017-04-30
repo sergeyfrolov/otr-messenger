@@ -89,6 +89,7 @@ public class OTRMessenger {
                 messageDigest.update(passwordField.getText().getBytes());
                 String encryptedString = new String(messageDigest.digest());
 			    curr = new Host(UsernameField.getText(), encryptedString);
+			    System.out.println("created curr");
 			    boolean succ = curr.login();
 			    if (succ){
                     frame.dispose();

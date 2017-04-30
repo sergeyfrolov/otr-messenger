@@ -165,7 +165,7 @@ public void draw(){
     {
       if (clicked)
       {
-          new Chat(table.getValueAt(row, 1).toString());
+          new Chat(table.getValueAt(row, 1).toString(), myself);
 //        JOptionPane.showMessageDialog(button, "Opening chat with : "+table.getValueAt(row, 1));
       }
       clicked = false;
