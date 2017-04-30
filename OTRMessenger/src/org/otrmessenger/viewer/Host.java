@@ -42,6 +42,7 @@ public class Host extends User {
             e.printStackTrace();
         }
 	    boolean ret = this.SC.addFriend(n);
+	    this.SC.restart();
 	    this.thread = new Thread(this.SC);
 	    this.thread.start();
 	    if (ret){
@@ -62,6 +63,7 @@ public class Host extends User {
 //            e.printStackTrace();
 //        }
         boolean ret = this.SC.loginUser();
+	    this.SC.restart();
 	    this.thread = new Thread(this.SC);
 	    this.thread.start();
 	    return ret;
@@ -75,6 +77,7 @@ public class Host extends User {
 //            e.printStackTrace();
 //        }
         boolean ret = this.SC.signUp();
+	    this.SC.restart();
 	    this.thread = new Thread(this.SC);
 	    this.thread.start();
 	    return ret;
@@ -102,6 +105,7 @@ public class Host extends User {
             e.printStackTrace();
         }
         boolean ret = this.SC.sendMessage(to, msg);
+	    this.SC.restart();
 	    this.thread = new Thread(this.SC);
 	    this.thread.start();
 		return ret;
@@ -109,9 +113,6 @@ public class Host extends User {
 
 	public boolean receiveMessage(Message msg){
 		for (Chat c: this.chats){
-		    System.out.println("in chats loop");
-		    System.out.println(c.getOther().getUsername());
-		    System.out.println(msg.getFromUsername().toStringUtf8());
 		    if (msg.getFromUsername().toStringUtf8().equals(c.getOther().getUsername())){
 		        c.receiveMessage(msg);
 		        return true;
