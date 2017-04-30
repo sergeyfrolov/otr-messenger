@@ -16,6 +16,7 @@ message Message {
 	optional bytes signature = 4;
         optional bytes iv = 5;
 	optional uint32 id = 10;
+        optional bytes pubkey = 11;
 }
 
 enum MessageStatus {
