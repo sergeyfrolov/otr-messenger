@@ -2,10 +2,11 @@ package org.otrmessenger.viewer;
 import java.util.ArrayList;
 
 import org.otrmessenger.crypto.KeyPair;
+import org.otrmessenger.messaging.Messaging.Message;
 import org.otrmessenger.ServerConnector;
 import org.otrmessenger.viewer.FriendsList;
 import org.otrmessenger.viewer.Chat;
-import org.otrmessenger.Message;
+
 
 public class Host extends User {
 	private KeyPair DHKeys;
@@ -13,21 +14,33 @@ public class Host extends User {
 	private boolean isAdmin;
 	private FriendsList fl; 
 	private ArrayList<Chat> chats;
+	private Thread thread;
 	
-	public Host() {
-	    this.SC = new ServerConnector();
-	    this.fl = new FriendsList();
-	}
+//	public Host() {
+//	    this.SC = new ServerConnector();
+//	    this.fl = new FriendsList();
+//	}
 	
 	public Host(String s, String password){
 	    this.username = s;
 	    this.SC = new ServerConnector(s, password.getBytes(), "10.233.19.23", 10050);
 //	    this.SC = new ServerConnector(s, password.getBytes(), "localhost", 10050);
+	    
+//	    this.thread = new Thread(this.SC);
+//	    this.thread.start();
 	    this.fl = new FriendsList(this.username);
 	}
 	
 	public boolean addFriend(String n, String g){
+        try {
+            this.SC.terminate();
+            this.thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 	    boolean ret = this.SC.addFriend(n);
+	    this.thread = new Thread(this.SC);
+	    this.thread.start();
 	    if (ret){
 	        Group gr = new Group();
 	        gr.setName(g);
@@ -39,11 +52,29 @@ public class Host extends User {
 	}
 	
 	public boolean login(){
-	    return this.SC.loginUser();
+//        this.SC.terminate();
+//        try {
+//            this.thread.join();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+        boolean ret = this.SC.loginUser();
+	    this.thread = new Thread(this.SC);
+	    this.thread.start();
+	    return ret;
 	}
 	
 	public boolean signUp() {
-	    return this.SC.signUp();
+        try {
+            this.SC.terminate();
+            this.thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        boolean ret = this.SC.signUp();
+	    this.thread = new Thread(this.SC);
+	    this.thread.start();
+	    return ret;
 	}
 	
 	public void drawFriendsList(){
@@ -61,9 +92,16 @@ public class Host extends User {
 		return confirm;
 	}
 	public boolean sendMessage(User to, Message msg){
-		boolean confirm = false;
-		//TODO
-		return confirm;
+        this.SC.terminate();
+        try {
+            this.thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        boolean ret = this.SC.sendMessage(to, msg);
+	    this.thread = new Thread(this.SC);
+	    this.thread.start();
+		return ret;
 	}
 	public boolean receiveMessage(User from, Message msg){
 		boolean confirm = false;
