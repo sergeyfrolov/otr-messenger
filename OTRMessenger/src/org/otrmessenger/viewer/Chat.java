@@ -8,6 +8,7 @@ import com.google.protobuf.ByteString;
 
 import org.otrmessenger.messaging.Messaging.Message;
 import org.otrmessenger.crypto.EncrypterAES;
+import org.otrmessenger.crypto.Signer;
 import org.otrmessenger.History;
 
 import java.awt.EventQueue;
@@ -31,6 +32,7 @@ public class Chat  {
 	private JFrame frame;
 	private JTextField messageField;
 	private static String othername="other"; //for testing
+	private boolean checkSigs;
 	JTextArea HistoryArea;
 	
 	
@@ -40,9 +42,14 @@ public class Chat  {
 	public Chat(String name, Host h) {
 	    this.host = h;
 	    this.other = new User(name);
+	    getUserSigningKey();
 	    this.history = new History();
 		initialize(name);
         this.frame.setVisible(true);
+	}
+	
+	public void getUserSigningKey(){
+	    checkSigs = this.host.requestSigningKey(other);
 	}
 
 	/**
@@ -76,7 +83,7 @@ public class Chat  {
                 msgBuilder.setToUsername(ByteString.copyFromUtf8(other.getUsername()));
                 msgBuilder.setFromUsername(ByteString.copyFromUtf8(host.getUsername()));
                 msgBuilder.setText(ByteString.copyFromUtf8(newMessage));
-                Message m = msgBuilder.build();
+                Message m = host.signMessage(msgBuilder.build());
                 if (host.sendMessage(other, m)){
                     history.addMsg(m);
                     updateHistoryArea(HistoryArea);
@@ -114,6 +121,15 @@ public class Chat  {
 	}
 
 	public void receiveMessage(Message msg){
+	    if (checkSigs){
+	        if (!other.verifyMessage(msg)){
+	            Message.Builder msgBuilder = Message.newBuilder();
+	            msgBuilder.setFromUsername(msg.getFromUsername());
+	            msgBuilder.setToUsername(msg.getToUsername());
+	            msgBuilder.setText(ByteString.copyFromUtf8("User's signature didn't match this message"));
+	            msg = msgBuilder.build();
+	        }
+	    }
 	    history.addMsg(msg);
 	    updateHistoryArea(HistoryArea);
 	}
