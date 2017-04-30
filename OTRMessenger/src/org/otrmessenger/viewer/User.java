@@ -1,6 +1,7 @@
 package org.otrmessenger.viewer;
 
 import org.otrmessenger.crypto.Signer;
+import org.otrmessenger.messaging.Messaging.Message;
 public class User {
 	protected String username;
 	protected Signer signature;
@@ -27,6 +28,13 @@ public class User {
 
 	public void setSignature(Signer signature) {
 		this.signature = signature;
+	}
+	
+	public boolean verifyMessage(Message m){
+	    if (!this.signature.equals(null))
+            return this.signature.verify(m);
+	    
+	    return false;
 	}
 	
 	public String toString(){

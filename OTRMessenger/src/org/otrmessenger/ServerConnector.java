@@ -21,7 +21,6 @@ public class ServerConnector implements Runnable {
     private boolean running;
     private Host host;
     
-    
     public ServerConnector(Host h, byte[] passHash, String address, int port){
         this.host = h;
         cred = credSetup(ByteString.copyFromUtf8(h.getUsername()), 
@@ -81,7 +80,14 @@ public class ServerConnector implements Runnable {
             MsgServerToClient msg = null;
             try {
                 msg = MsgServerToClient.parseFrom(buf);
-                host.receiveMessage(msg.getMsg());
+                final Message m = msg.getMsg();
+                Thread t = new Thread(new Runnable() {
+                         public void run()
+                         {
+                            host.receiveMessage(m);
+                         }
+                });
+                t.start();
             } catch (InvalidProtocolBufferException e) {
                 e.printStackTrace();
                 return;
@@ -112,6 +118,34 @@ public class ServerConnector implements Runnable {
         return msg.getLoginSuccess();
     }
     
+    public boolean sendSigningKey(byte[] key) {
+        MsgClientToServer.Builder ctsBuilder = MsgClientToServer.newBuilder();
+        ctsBuilder.setUpdatedSignKey(ByteString.copyFrom(key));
+        MsgServerToClient msg = send(ctsBuilder.build());
+        
+        return true;
+    }
+    
+    public byte[] requestEncryptionKey(String s){
+        MsgClientToServer.Builder ctsBuilder = MsgClientToServer.newBuilder();
+        ctsBuilder.setRequestInfoUsername(ByteString.copyFromUtf8(s));
+        MsgServerToClient msg = send(ctsBuilder.build());
+        
+        List<ClientInfo> cil = msg.getUsersList();
+        
+        return cil.get(0).getEncryptionKey().toByteArray();
+    }
+
+    public byte[] requestSigningKey(String s){
+        MsgClientToServer.Builder ctsBuilder = MsgClientToServer.newBuilder();
+        ctsBuilder.setRequestInfoUsername(ByteString.copyFromUtf8(s));
+        MsgServerToClient msg = send(ctsBuilder.build());
+        
+        List<ClientInfo> cil = msg.getUsersList();
+        
+        return cil.get(0).getSignKey().toByteArray();
+    }
+    
     public boolean addFriend(String n){
         MsgClientToServer.Builder ctsBuilder = MsgClientToServer.newBuilder();
         ctsBuilder.setRequestInfoUsername(ByteString.copyFromUtf8(n));
@@ -138,6 +172,14 @@ public class ServerConnector implements Runnable {
         MsgServerToClient response = send(ctsBuilder.build());
 //        System.out.println(response);
         return response.getMsgStatus().getStatus() == MessageStatus.DELIVERED;
+    }
+    
+    public boolean setEncryptionKey(byte[] pubKey){
+        MsgClientToServer.Builder ctsBuilder = MsgClientToServer.newBuilder();
+        ctsBuilder.setUpdatedEncryptionKey(ByteString.copyFrom(pubKey));
+        MsgServerToClient response = send(ctsBuilder.build());
+        
+        return response.getKeyUpdateSuccess();
     }
 
     private Message msgSetup(ByteString fromUser, ByteString toUser,

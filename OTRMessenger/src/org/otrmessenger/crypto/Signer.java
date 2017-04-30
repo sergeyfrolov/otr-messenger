@@ -14,7 +14,7 @@ public class Signer {
     private Signature sig;
     
     public Signer(){
-        this.kp = new KeyPair();
+        this.kp = new KeyPair("signing");
         try {
             this.sig = Signature.getInstance("SHA1withDSA");
         } catch (NoSuchAlgorithmException e) {
@@ -41,6 +41,8 @@ public class Signer {
         
         m.setText(txt.getText());
         m.setIv(txt.getIv());
+        m.setFromUsername(txt.getFromUsername());
+        m.setToUsername(txt.getToUsername());
         try {
             this.sig.update(txt.getText().toByteArray());
             m.setSignature(ByteString.copyFrom(this.sig.sign()));
@@ -65,6 +67,10 @@ public class Signer {
             e.printStackTrace();
             return false;
         }
+    }
+    
+    public byte[] getPublicKey(){
+        return this.kp.getPub().getEncoded();
     }
 
 }

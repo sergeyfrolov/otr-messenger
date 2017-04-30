@@ -15,7 +15,16 @@ import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
 
+import javax.crypto.KeyAgreement;
+import javax.crypto.interfaces.DHPublicKey;
+import javax.crypto.spec.DHParameterSpec;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JTextArea;
@@ -43,9 +52,43 @@ public class Chat  {
 	    this.host = h;
 	    this.other = new User(name);
 	    getUserSigningKey();
+	    createEncrypter();
 	    this.history = new History();
 		initialize(name);
         this.frame.setVisible(true);
+	}
+	
+	public void createEncrypter(){
+	    DHPublicKey othersEncKey = (DHPublicKey)this.host.requestEncryptionKey(other);
+	    DHParameterSpec dhParamSpec = othersEncKey.getParams();
+        KeyPairGenerator myKeyPairGen = null;
+        try {
+            myKeyPairGen = KeyPairGenerator.getInstance("DH");
+        } catch (NoSuchAlgorithmException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+        try {
+            myKeyPairGen.initialize(dhParamSpec);
+        } catch (InvalidAlgorithmParameterException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        KeyPair myKeyPair = myKeyPairGen.generateKeyPair();
+        KeyAgreement ourKeyAgree = null;
+        try {
+            ourKeyAgree = KeyAgreement.getInstance("DH");
+        } catch (NoSuchAlgorithmException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        try {
+            ourKeyAgree.init(myKeyPair.getPrivate());
+        } catch (InvalidKeyException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
 	}
 	
 	public void getUserSigningKey(){
@@ -58,7 +101,7 @@ public class Chat  {
 	private void initialize(String name) {
 		frame = new JFrame("Chatting with "+name);
 		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
 		HistoryArea = new JTextArea();

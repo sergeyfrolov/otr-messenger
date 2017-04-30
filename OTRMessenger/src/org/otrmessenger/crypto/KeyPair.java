@@ -10,23 +10,35 @@ public class KeyPair {
 	private PublicKey pub;
 	private PrivateKey priv;
 	
-	public KeyPair(){
-	    KeyPairGenerator keyGen = null;
+	public KeyPair(String type){
+        KeyPairGenerator keyGen = null;
         SecureRandom random = null;
-        try {
-            keyGen = KeyPairGenerator.getInstance("DSA");
-            random = SecureRandom.getInstance("SHA1PRNG");
-        } catch (NoSuchAlgorithmException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
+	    if (type.equals("signing")){
+            try {
+                keyGen = KeyPairGenerator.getInstance("DSA");
+                random = SecureRandom.getInstance("SHA1PRNG");
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            }
+	    }
+	    else{
+            try {
+                keyGen = KeyPairGenerator.getInstance("DiffieHellman");
+                random = SecureRandom.getInstance("SHA1PRNG");
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            }
+	    }
         keyGen.initialize(1024, random);
 
         java.security.KeyPair pair = keyGen.generateKeyPair();
         this.priv = pair.getPrivate();
         this.pub = pair.getPublic();
 
+	}
+	
+	public KeyPair(PublicKey p){
+	    this.pub = p;
 	}
 
     public PublicKey getPub() {
