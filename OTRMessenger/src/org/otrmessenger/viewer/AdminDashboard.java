@@ -134,7 +134,7 @@ public class AllUsers {
 	private void initialize() {
 		frameAU = new JFrame("All Users");
 		frameAU.setBounds(200, 100, 450, 300);
-		frameAU.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frameAU.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frameAU.getContentPane().setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -163,7 +163,7 @@ public class OnlineUsers {
 	private void initialize() {
 		frameOU = new JFrame("Online Users");
 		frameOU.setBounds(300, 100, 450, 300);
-		frameOU.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frameOU.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frameOU.getContentPane().setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -195,7 +195,7 @@ public class PublicKeys {
 	private void initialize() {
 		framePK = new JFrame("Online Users");
 		framePK.setBounds(400, 100, 450, 300);
-		framePK.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		framePK.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		framePK.getContentPane().setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
