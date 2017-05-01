@@ -43,7 +43,15 @@ public class Host extends User {
 	}
 	
 	public void setEncryptionKey(){
-	    this.SC.setEncryptionKey(this.DHKeys.getPub().getEncoded());
+	    this.SC.setEncryptionKey(this.DHKeys.getPublic().getEncoded());
+	}
+	
+	public PublicKey getPublicKey(){
+	    return this.DHKeys.getPublic();
+	}
+	
+	public KeyPair getKeyPair(){
+	    return this.DHKeys;
 	}
 	
 	public PublicKey requestEncryptionKey(User other){
@@ -145,9 +153,11 @@ public class Host extends User {
         boolean ret = this.SC.loginUser();
 	    addSigningKeyToServer();
 	    setEncryptionKey();
-	    this.SC.restart();
-	    this.thread = new Thread(this.SC);
-	    this.thread.start();
+	    if (ret){
+            this.SC.restart();
+            this.thread = new Thread(this.SC);
+            this.thread.start();
+	    }
 	    return ret;
 	}
 	
@@ -169,7 +179,7 @@ public class Host extends User {
 	    
 	}
 
-	private boolean genKeyPair(){
+	public boolean genKeyPair(){
 		boolean confirm = false;
 		//TODO
 		return confirm;

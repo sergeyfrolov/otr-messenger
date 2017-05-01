@@ -143,7 +143,10 @@ public class ServerConnector implements Runnable {
         
         List<ClientInfo> cil = msg.getUsersList();
         
-        return cil.get(0).getSignKey().toByteArray();
+        if (cil.size() > 0)
+            return cil.get(0).getSignKey().toByteArray();
+        
+        return null;
     }
     
     public boolean addFriend(String n){
@@ -161,16 +164,13 @@ public class ServerConnector implements Runnable {
     }
 
     public boolean sendMessage(User to, Message msg){
-//        cred = credSetup(cred.getUsername(), cred.getPasswordHash(), false, false);
 
         Message newMsg = msgSetup(cred.getUsername(), ByteString.copyFromUtf8(to.getUsername()),
-                msg.getIv(), msg.getSignature(), msg.getText());
+                msg);
 
         MsgClientToServer.Builder ctsBuilder = MsgClientToServer.newBuilder();
-//        ctsBuilder.setCredentials(cred);
         ctsBuilder.setMsg(newMsg);
         MsgServerToClient response = send(ctsBuilder.build());
-//        System.out.println(response);
         return response.getMsgStatus().getStatus() == MessageStatus.DELIVERED;
     }
     
@@ -183,13 +183,14 @@ public class ServerConnector implements Runnable {
     }
 
     private Message msgSetup(ByteString fromUser, ByteString toUser,
-            ByteString iv, ByteString signature, ByteString text) {
+            Message msg) {
         Message.Builder msgBuilder = Message.newBuilder();
         msgBuilder.setFromUsername(fromUser);
         msgBuilder.setToUsername(toUser);
-        msgBuilder.setIv(iv);
-        msgBuilder.setSignature(signature);
-        msgBuilder.setText(text);
+        msgBuilder.setIv(msg.getIv());
+        msgBuilder.setSignature(msg.getSignature());
+        msgBuilder.setText(msg.getText());
+        msgBuilder.setPubkey(msg.getPubkey());
         return msgBuilder.build();
     }
 

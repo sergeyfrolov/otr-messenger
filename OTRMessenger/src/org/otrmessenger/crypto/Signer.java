@@ -34,11 +34,13 @@ public class Signer {
     public Message sign(Message txt){
         Message.Builder m = Message.newBuilder();
         try {
-            this.sig.initSign(this.kp.getPriv());
+            this.sig.initSign(this.kp.getPrivate());
         } catch (InvalidKeyException e) {
             e.printStackTrace();
         }
         
+//        System.out.println("Pubkey in signer: " + txt.getPubkey().toStringUtf8());
+        m.setPubkey(txt.getPubkey());
         m.setText(txt.getText());
         m.setIv(txt.getIv());
         m.setFromUsername(txt.getFromUsername());
@@ -55,7 +57,7 @@ public class Signer {
     
     public boolean verify(Message txt){
         try {
-            this.sig.initVerify(this.kp.getPub());
+            this.sig.initVerify(this.kp.getPublic());
         } catch (InvalidKeyException e) {
             e.printStackTrace();
         }
@@ -70,7 +72,7 @@ public class Signer {
     }
     
     public byte[] getPublicKey(){
-        return this.kp.getPub().getEncoded();
+        return this.kp.getPublic().getEncoded();
     }
 
 }

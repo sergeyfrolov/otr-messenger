@@ -37,6 +37,7 @@ public class EncrypterAES {
 	}
 
 	public Message encrypt(Message txt){
+		updateIV();
 		Message.Builder m = Message.newBuilder(); 
 		try {
             cipher.init(Cipher.ENCRYPT_MODE, this.key, 
@@ -50,8 +51,11 @@ public class EncrypterAES {
         } catch (IllegalBlockSizeException | BadPaddingException e) {
             e.printStackTrace();
         }
+//        System.out.println("Pubkey in encrypter: " + txt.getPubkey().toStringUtf8());
+		m.setPubkey(txt.getPubkey());
+		m.setFromUsername(txt.getFromUsername());
+		m.setToUsername(txt.getToUsername());
 		m.setIv(ByteString.copyFrom(this.IV.getIV()));
-		updateIV();
 
 		return m.build();
 	}
@@ -71,6 +75,10 @@ public class EncrypterAES {
         } catch (IllegalBlockSizeException | BadPaddingException e) {
             e.printStackTrace();
         }
+		m.setPubkey(txt.getPubkey());
+		m.setFromUsername(txt.getFromUsername());
+		m.setToUsername(txt.getToUsername());
+		m.setIv(ByteString.copyFrom(this.IV.getIV()));
 		
 		return m.build();
 	}

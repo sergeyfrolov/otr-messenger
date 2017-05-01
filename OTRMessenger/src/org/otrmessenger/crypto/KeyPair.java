@@ -40,12 +40,17 @@ public class KeyPair {
 	public KeyPair(PublicKey p){
 	    this.pub = p;
 	}
+	
+	public KeyPair(java.security.KeyPair kp) {
+	    this.pub = kp.getPublic();
+	    this.priv = kp.getPrivate();
+	}
 
-    public PublicKey getPub() {
+    public PublicKey getPublic() {
         return pub;
     }
 
-    public PrivateKey getPriv() {
+    public PrivateKey getPrivate() {
         return priv;
     }
 }
