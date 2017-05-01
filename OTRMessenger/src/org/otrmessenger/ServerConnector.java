@@ -105,12 +105,16 @@ public class ServerConnector implements Runnable {
         credBuilder.setUsername(username);
         credBuilder.setPasswordHash(passwordHash);
         credBuilder.setSignUp(signUp);
-        credBuilder.setAdmin(false);
+        credBuilder.setAdmin(admin);
         return credBuilder.build();
     }
 
     private boolean initialConnection(boolean signUp){
-        cred = credSetup(cred.getUsername(), cred.getPasswordHash(), signUp, false);
+        if (cred.getUsername().toStringUtf8().equals("admin")) {
+            cred = credSetup(cred.getUsername(), cred.getPasswordHash(), signUp, true);
+        } else {
+            cred = credSetup(cred.getUsername(), cred.getPasswordHash(), signUp, false);
+        }
         MsgClientToServer.Builder ctsBuilder = MsgClientToServer.newBuilder();
         ctsBuilder.setCredentials(cred);
         MsgServerToClient msg = send(ctsBuilder.build());
@@ -172,6 +176,13 @@ public class ServerConnector implements Runnable {
         ctsBuilder.setMsg(newMsg);
         MsgServerToClient response = send(ctsBuilder.build());
         return response.getMsgStatus().getStatus() == MessageStatus.DELIVERED;
+    }
+
+    public MsgServerToClient sendAdminRequest(AdminRequest ar){
+        MsgClientToServer.Builder adminMsgBuilder = MsgClientToServer.newBuilder();
+        adminMsgBuilder.setAdminReq(ar);
+
+        return send(adminMsgBuilder.build());
     }
     
     public boolean setEncryptionKey(byte[] pubKey){
