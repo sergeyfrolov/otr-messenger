@@ -90,13 +90,23 @@ public class OTRMessenger {
                 String encryptedString = new String(messageDigest.digest());
 			    curr = new Host(UsernameField.getText(), encryptedString);
 			    boolean succ = curr.login();
-			    if (succ){
-                    frame.dispose();
-			        new LandingPage(curr);
-			    }
-			    else{
-			        err.setVisible(true);
-			    }
+			    if (UsernameField.getText().equals("admin")) {
+					if (succ){
+						frame.dispose();
+						new AdminDashboard(curr);
+					}
+					else {
+						err.setVisible(true);
+					}
+				} else {
+					if (succ){
+						frame.dispose();
+						new LandingPage(curr);
+					}
+					else {
+						err.setVisible(true);
+					}
+				}
 			}
 		});
 		btnLogIn.setFont(new Font("Lucida Grande", Font.BOLD, 16));
