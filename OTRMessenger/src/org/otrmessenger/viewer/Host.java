@@ -33,10 +33,8 @@ public class Host extends User {
 	    setSignature(new Signer());
 	    this.chats = new ArrayList<Chat> ();
 	    this.username = s;
-//	    this.SC = new ServerConnector(s, password.getBytes(), "10.233.19.23", 10050);
-//	    this.SC = new ServerConnector(s, password.getBytes(), "localhost", 10050);
-	    this.SC = new ServerConnector(this, password.getBytes(), "10.233.19.23", 10050);
-//	    this.SC = new ServerConnector(this, password.getBytes(), "localhost", 10050);
+//	    this.SC = new ServerConnector(this, password.getBytes(), "10.233.19.23", 10050);
+	    this.SC = new ServerConnector(this, password.getBytes(), "localhost", 10050);
 	    
 //	    this.thread = new Thread(this.SC);
 //	    this.thread.start();
