@@ -143,7 +143,10 @@ public class ServerConnector implements Runnable {
         
         List<ClientInfo> cil = msg.getUsersList();
         
-        return cil.get(0).getSignKey().toByteArray();
+        if (cil.size() > 0)
+            return cil.get(0).getSignKey().toByteArray();
+        
+        return null;
     }
     
     public boolean addFriend(String n){
