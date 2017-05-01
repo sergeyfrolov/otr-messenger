@@ -117,6 +117,7 @@ public class Chat  {
         }
         
         byte[] sharedKey = ourKeyAgree.generateSecret();
+//        System.out.println("sharedKey = " + Base64.getEncoder().encodeToString(sharedKey));
         Key sKey = new Key(Base64.getEncoder().encodeToString(sharedKey), "salt", "AES");
         this.AES = new EncrypterAES(sKey);
         return myKeyPair.getPublic().getEncoded();
