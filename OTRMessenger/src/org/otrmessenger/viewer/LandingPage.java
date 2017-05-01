@@ -84,6 +84,22 @@ public void draw(){
 	btnAddFriend.setFont(new Font("Verdana", Font.PLAIN, 12));
 	btnAddFriend.setBounds(10, size.height-50, 100, 50);
 	frame.getContentPane().add(btnAddFriend);
+	
+	JButton btnChangeKey = new JButton("AddFriend");
+	btnChangeKey.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+		    myself.genKeyPair();
+//		    myself = af.getHost();
+//		    fl = new FriendsList(myself.getUsername());
+//		    System.out.println(fl);
+//		    frame.dispose();
+//		    draw();
+		}
+	});
+	btnChangeKey.setFont(new Font("Verdana", Font.PLAIN, 12));
+	btnChangeKey.setBounds(10, size.height-50, 100, 50);
+	frame.getContentPane().add(btnChangeKey);
+	
     table.getColumnModel().getColumn(1).setCellRenderer(new ClientsTableButtonRenderer());
     table.getColumnModel().getColumn(1).setCellEditor(new ClientsTableRenderer(new JCheckBox()));
     
