@@ -23,7 +23,7 @@ import javax.swing.table.TableModel;
 
 public class LandingPage
 {
-  private JFrame frame;
+  public JFrame frame;
   private String[] columnNames = { "Group", "Name", "Public Key", "Friend" };
   private Object[][] data = null;
   private TableModel model = new DefaultTableModel(data, columnNames)

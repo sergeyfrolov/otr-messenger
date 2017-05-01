@@ -77,6 +77,7 @@ public class AddFriend {
 			            frame.dispose();
 			            lp.setHost(myself);
 			            lp.setFL(new FriendsList(myself.getUsername()));
+			            lp.frame.dispose();
 			            lp.draw();
 			        }
 			    }
