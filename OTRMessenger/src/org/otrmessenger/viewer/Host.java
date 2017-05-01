@@ -177,7 +177,7 @@ public class Host extends User {
 	    
 	}
 
-	private boolean genKeyPair(){
+	public boolean genKeyPair(){
 		boolean confirm = false;
 		//TODO
 		return confirm;
