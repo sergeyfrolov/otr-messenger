@@ -229,7 +229,7 @@ public class AdminDashboard {
             table.setShowVerticalLines(true);
             table.getColumn("Name").setWidth(200);
             table.getColumn("Name").setMaxWidth(300);
-            table.getColumn("Public Key").setCellRenderer(new RenderRedGreen());
+            table.getColumn("Public Key").setCellRenderer(new RenderWrappable());
 
             JScrollPane scroll = new JScrollPane(table);
             framePK.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -244,7 +244,7 @@ public class AdminDashboard {
 
 }
 
-final class RenderRedGreen extends DefaultTableCellRenderer {
+final class RenderWrappable extends DefaultTableCellRenderer {
 
     JTextArea textarea;
 
