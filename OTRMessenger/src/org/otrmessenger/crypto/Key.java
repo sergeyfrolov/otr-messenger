@@ -36,6 +36,7 @@ public class Key {
                 e.printStackTrace();
                 return;
             }
+
 		if (type.equals("AES")){
 			KeySpec spec = new PBEKeySpec(pass.toCharArray(), salt.getBytes(), this.ITCOUNT, this.AESKEYLEN);
 			SecretKey tmp = null;
