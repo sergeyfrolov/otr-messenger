@@ -22,6 +22,7 @@ public class OTRServer {
         assets = new AssetHandler();
         activeConnections = Collections.synchronizedList(new ArrayList<UserConn>());
         portNumber = 10050;
+        state = ServerState.SERVER_UNKNOWN;
     }
 
     public static OTRServer getInstance() {
@@ -32,18 +33,20 @@ public class OTRServer {
     }
 
     public void Launch() {
-        state = ServerState.SERVER_LAUNCHED;
-        try {
-            ServerSocket server = new ServerSocket(portNumber);
-            while (state == ServerState.SERVER_LAUNCHED) {
-                Socket clientSock = server.accept();
-                UserConn userConn = new UserConn(clientSock);
-                activeConnections.add(userConn);
-                Thread t = new Thread(userConn);
-                t.start();
+        if (state != ServerState.SERVER_LAUNCHED) {
+            state = ServerState.SERVER_LAUNCHED;
+            try {
+                ServerSocket server = new ServerSocket(portNumber);
+                while (state == ServerState.SERVER_LAUNCHED) {
+                    Socket clientSock = server.accept();
+                    UserConn userConn = new UserConn(clientSock);
+                    activeConnections.add(userConn);
+                    Thread t = new Thread(userConn);
+                    t.start();
+                }
+            } catch (Exception e) {
+                System.err.println("Exception caught:" + e);
             }
-        } catch (Exception e) {
-            System.err.println("Exception caught:" + e);
         }
     }
 
