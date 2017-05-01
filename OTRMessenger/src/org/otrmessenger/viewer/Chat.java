@@ -163,7 +163,6 @@ public class Chat  {
                 }
                 Message histMessage = msgBuilder.build();
                 Message m = host.signMessage(AES.encrypt(histMessage));
-                System.out.println(m);
                 if (host.sendMessage(other, m)){
                     history.addMsg(histMessage);
                     updateHistoryArea(HistoryArea);
@@ -210,7 +209,6 @@ public class Chat  {
 	            msg = msgBuilder.build();
 	        }
 
-	        System.out.println(msg);
 	        byte[] pubKey = msg.getPubkey().toByteArray();
 	        if(pubKey.length > 0){
 	            //need to decrypt message
