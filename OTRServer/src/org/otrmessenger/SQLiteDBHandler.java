@@ -112,7 +112,7 @@ public class SQLiteDBHandler {
             return false;
         }
         String sql = "SELECT PASSHASH FROM USERS  "
-                + "WHERE USERNAME = ? AND ADMIN=1";
+                + "WHERE USERNAME = ? AND ADMIN = 1";
 
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             // set the corresponding param

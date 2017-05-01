@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import org.otrmessenger.crypto.KeyPair;
 import org.otrmessenger.crypto.Signer;
+import org.otrmessenger.messaging.Messaging;
 import org.otrmessenger.messaging.Messaging.Message;
 import org.otrmessenger.ServerConnector;
 import org.otrmessenger.viewer.FriendsList;
@@ -190,16 +191,30 @@ public class Host extends User {
 		return confirm;
 	}
 	public boolean sendMessage(User to, Message msg){
-        this.SC.terminate();
-        try {
-            this.thread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        boolean ret = this.SC.sendMessage(to, msg);
-	    this.SC.restart();
-	    this.thread = new Thread(this.SC);
-	    this.thread.start();
+		this.SC.terminate();
+		try {
+			this.thread.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		boolean ret = this.SC.sendMessage(to, msg);
+		this.SC.restart();
+		this.thread = new Thread(this.SC);
+		this.thread.start();
+		return ret;
+	}
+
+	public Messaging.MsgServerToClient sendAdminRequest(Messaging.AdminRequest ar){
+		this.SC.terminate();
+		try {
+			this.thread.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		Messaging.MsgServerToClient ret = this.SC.sendAdminRequest(ar);
+		this.SC.restart();
+		this.thread = new Thread(this.SC);
+		this.thread.start();
 		return ret;
 	}
 

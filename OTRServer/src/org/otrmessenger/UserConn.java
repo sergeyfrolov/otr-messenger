@@ -57,6 +57,7 @@ public class UserConn implements Runnable {
                     // If errored during message recv(could be just end of connection)
                     try {
                         sock.close();
+                        server.getActiveConnections().remove(this);
                     } catch (IOException e) {
                         printPretty(e.toString()  + ":" + e.getMessage());
                     }
@@ -112,7 +113,6 @@ public class UserConn implements Runnable {
                     // TODO: wat?
                 }
             }
-
     }
 
     public String getUsername() {
@@ -186,29 +186,36 @@ public class UserConn implements Runnable {
                     clientInfo.setSignKey(ByteString.copyFrom(assets.getSignKey(username)));
                     msg.addUsers(clientInfo.build());
                 }
+                break;
             case GET_ALL_USERS:
                 for (byte[] username : assets.getUsers()) {
                     ClientInfo.Builder clientInfo = ClientInfo.newBuilder();
                     clientInfo.setUsername(ByteString.copyFrom(username));
                     msg.addUsers(clientInfo.build());
                 }
+                break;
             case GET_ONLINE_USERS:
                 for (UserConn userConn : server.getActiveConnections()) {
                     ClientInfo.Builder clientInfo = ClientInfo.newBuilder();
                     clientInfo.setUsername(ByteString.copyFrom(userConn.getUsername().getBytes()));
                     msg.addUsers(clientInfo.build());
                 }
+                break;
             case GET_CURRENT_STATE:
                 msg.setState(server.getState());
+                break;
             case LAUNCH:
                 server.Launch();
                 msg.setState(server.getState());
+                break;
             case RESET:
                 server.Reset();
                 msg.setState(server.getState());
+                break;
             case STOP:
                 server.Stop();
                 msg.setState(server.getState());
+                break;
         }
         sendServerMsg(msg.build());
     }
@@ -228,14 +235,9 @@ public class UserConn implements Runnable {
         for (UserConn userConn : server.getActiveConnections()) {
             if (userConn.getUsername().equals(msgFromUser.getToUsername().toStringUtf8())) {
                 status = Messaging.MessageStatus.DELIVERED;
-                Message.Builder message = Message.newBuilder();
-                message.setFromUsername(ByteString.copyFrom(username.getBytes()));
-                message.setToUsername(ByteString.copyFrom(msgFromUser.getToUsername().toStringUtf8().getBytes()));
-                message.setText(msgFromUser.getText());
-                message.setSignature(msgFromUser.getSignature());
 
                 MsgServerToClient.Builder msgFromServer = MsgServerToClient.newBuilder();
-                msgFromServer.setMsg(message);
+                msgFromServer.setMsg(msgFromUser);
 
                 userConn.sendServerMsg(msgFromServer.build());
             }
