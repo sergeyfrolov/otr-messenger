@@ -74,36 +74,31 @@ public void draw(){
 	btnAddFriend.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 		    AddFriend af = new AddFriend(myself, l);
-//		    myself = af.getHost();
-//		    fl = new FriendsList(myself.getUsername());
-//		    System.out.println(fl);
-//		    frame.dispose();
-//		    draw();
 		}
 	});
 	btnAddFriend.setFont(new Font("Verdana", Font.PLAIN, 12));
 	btnAddFriend.setBounds(10, size.height-50, 100, 50);
 	frame.getContentPane().add(btnAddFriend);
 	
-	JButton btnChangeKey = new JButton("AddFriend");
+	JButton btnChangeKey = new JButton("Change keys");
 	btnChangeKey.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 		    myself.genKeyPair();
-//		    myself = af.getHost();
-//		    fl = new FriendsList(myself.getUsername());
-//		    System.out.println(fl);
-//		    frame.dispose();
-//		    draw();
 		}
 	});
 	btnChangeKey.setFont(new Font("Verdana", Font.PLAIN, 12));
-	btnChangeKey.setBounds(10, size.height-50, 100, 50);
+	btnChangeKey.setBounds(300, size.height-50, 200, 50);
 	frame.getContentPane().add(btnChangeKey);
 	
     table.getColumnModel().getColumn(1).setCellRenderer(new ClientsTableButtonRenderer());
     table.getColumnModel().getColumn(1).setCellEditor(new ClientsTableRenderer(new JCheckBox()));
     
+    table.getColumnModel().getColumn(2).setCellRenderer(new ClientsTableButtonRenderer());
+    table.getColumnModel().getColumn(2).setCellEditor(new ClientsTableRenderer(new JCheckBox()));
    
+    table.getColumnModel().getColumn(3).setCellRenderer(new ClientsTableButtonRenderer());
+    table.getColumnModel().getColumn(3).setCellEditor(new ClientsTableRenderer(new JCheckBox()));
+
     table.setPreferredScrollableViewportSize(size);
     table.setShowHorizontalLines(true);
     table.setShowVerticalLines(false);
@@ -181,7 +176,7 @@ public void draw(){
       if (clicked)
       {
           myself.addChat(new Chat(table.getValueAt(row, 1).toString(), myself));
-//        JOptionPane.showMessageDialog(button, "Opening chat with : "+table.getValueAt(row, 1));
+//        JOptionPane.showMessageDialog(button, "Opening chat with : "+table.getValueAt(row, 2));
       }
       clicked = false;
       return new String(label);
