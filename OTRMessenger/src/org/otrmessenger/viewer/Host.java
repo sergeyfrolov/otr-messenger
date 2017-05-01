@@ -153,9 +153,11 @@ public class Host extends User {
         boolean ret = this.SC.loginUser();
 	    addSigningKeyToServer();
 	    setEncryptionKey();
-	    this.SC.restart();
-	    this.thread = new Thread(this.SC);
-	    this.thread.start();
+	    if (ret){
+            this.SC.restart();
+            this.thread = new Thread(this.SC);
+            this.thread.start();
+	    }
 	    return ret;
 	}
 	
