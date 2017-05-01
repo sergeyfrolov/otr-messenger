@@ -1,13 +1,14 @@
 package org.otrmessenger.viewer;
 import org.otrmessenger.viewer.Host;
 import org.otrmessenger.viewer.User;
+import java.util.Base64;
 
 import com.google.protobuf.ByteString;
 
-//import com.google.protobuf.Message;
-
 import org.otrmessenger.messaging.Messaging.Message;
 import org.otrmessenger.crypto.EncrypterAES;
+import org.otrmessenger.crypto.Key;
+import org.otrmessenger.crypto.KeyPair;
 import org.otrmessenger.crypto.Signer;
 import org.otrmessenger.History;
 
@@ -17,10 +18,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
-import java.security.KeyPair;
+import java.security.KeyFactory;
+//import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.X509EncodedKeySpec;
 
 import javax.crypto.KeyAgreement;
 import javax.crypto.interfaces.DHPublicKey;
@@ -37,10 +41,9 @@ public class Chat  {
 	private Host host;
 	private User other;
 	private History history;
-	private EncrypterAES AES;
+	private EncrypterAES AES = null;
 	private JFrame frame;
 	private JTextField messageField;
-	private static String othername="other"; //for testing
 	private boolean checkSigs;
 	JTextArea HistoryArea;
 	
@@ -52,29 +55,46 @@ public class Chat  {
 	    this.host = h;
 	    this.other = new User(name);
 	    getUserSigningKey();
-	    createEncrypter();
 	    this.history = new History();
 		initialize(name);
         this.frame.setVisible(true);
 	}
 	
-	public void createEncrypter(){
-	    DHPublicKey othersEncKey = (DHPublicKey)this.host.requestEncryptionKey(other);
-	    DHParameterSpec dhParamSpec = othersEncKey.getParams();
-        KeyPairGenerator myKeyPairGen = null;
-        try {
-            myKeyPairGen = KeyPairGenerator.getInstance("DH");
-        } catch (NoSuchAlgorithmException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-        }
-        try {
-            myKeyPairGen.initialize(dhParamSpec);
-        } catch (InvalidAlgorithmParameterException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        KeyPair myKeyPair = myKeyPairGen.generateKeyPair();
+	public byte[] createEncrypter(byte[] optPubKey){
+	    PublicKey othersEncKey;
+        DHParameterSpec dhParamSpec;
+        KeyPair myKeyPair;
+	    if (optPubKey.length == 0){
+            othersEncKey = this.host.requestEncryptionKey(other);
+            dhParamSpec = ((DHPublicKey)othersEncKey).getParams();
+            KeyPairGenerator myKeyPairGen = null;
+            try {
+                myKeyPairGen = KeyPairGenerator.getInstance("DH");
+            } catch (NoSuchAlgorithmException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+            try {
+                myKeyPairGen.initialize(dhParamSpec);
+            } catch (InvalidAlgorithmParameterException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            myKeyPair = new KeyPair(myKeyPairGen.generateKeyPair());
+	    }
+	    else{
+	        try {
+                othersEncKey = KeyFactory.getInstance("DiffieHellman").generatePublic(
+                        new X509EncodedKeySpec(optPubKey));
+            } catch (InvalidKeySpecException | NoSuchAlgorithmException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+                return null;
+            }
+	        dhParamSpec = ((DHPublicKey) this.host.getPublicKey()).getParams();
+	        myKeyPair = this.host.getKeyPair();
+	    }
+
         KeyAgreement ourKeyAgree = null;
         try {
             ourKeyAgree = KeyAgreement.getInstance("DH");
@@ -88,7 +108,18 @@ public class Chat  {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
+        
+        try {
+            ourKeyAgree.doPhase(othersEncKey, true);
+        } catch (InvalidKeyException | IllegalStateException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
+        byte[] sharedKey = ourKeyAgree.generateSecret();
+        Key sKey = new Key(Base64.getEncoder().encodeToString(sharedKey), "salt", "AES");
+        this.AES = new EncrypterAES(sKey);
+        return myKeyPair.getPublic().getEncoded();
 	}
 	
 	public void getUserSigningKey(){
@@ -126,9 +157,15 @@ public class Chat  {
                 msgBuilder.setToUsername(ByteString.copyFromUtf8(other.getUsername()));
                 msgBuilder.setFromUsername(ByteString.copyFromUtf8(host.getUsername()));
                 msgBuilder.setText(ByteString.copyFromUtf8(newMessage));
-                Message m = host.signMessage(msgBuilder.build());
+                if (AES == null){
+                    byte[] pk = createEncrypter(new byte[]{});
+                    msgBuilder.setPubkey(ByteString.copyFrom(pk));
+                }
+                Message histMessage = msgBuilder.build();
+                Message m = host.signMessage(AES.encrypt(histMessage));
+                System.out.println(m);
                 if (host.sendMessage(other, m)){
-                    history.addMsg(m);
+                    history.addMsg(histMessage);
                     updateHistoryArea(HistoryArea);
                 }
                 else{
@@ -171,6 +208,17 @@ public class Chat  {
 	            msgBuilder.setToUsername(msg.getToUsername());
 	            msgBuilder.setText(ByteString.copyFromUtf8("User's signature didn't match this message"));
 	            msg = msgBuilder.build();
+	        }
+
+	        System.out.println(msg);
+	        byte[] pubKey = msg.getPubkey().toByteArray();
+	        if(pubKey.length > 0){
+	            //need to decrypt message
+	            createEncrypter(pubKey);
+	            msg = AES.decrypt(msg);
+	        }
+	        else if(AES != null){
+	            msg = AES.decrypt(msg);
 	        }
 	    }
 	    history.addMsg(msg);
